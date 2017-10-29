@@ -47,4 +47,5 @@ typings/
 *.tgz
 .yarn-integrity
 .env
-test/.idea/
+test/
+.idea/
