@@ -19,8 +19,8 @@ router.post('/create', function (req, res, next) {
         use_code: req.body.use_code,
         sanitation_code: req.body.sanitation_code,
         location: {
-            x: req.body.loc_x,
-            y: req.body.loc_y,
+            x: Number(req.body.loc_x),
+            y: Number(req.body.loc_y),
             description: req.body.loc_des
         },
         owner: req.body.owner

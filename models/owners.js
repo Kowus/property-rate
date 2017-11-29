@@ -21,4 +21,4 @@ let ownerSchema = new mongoose.Schema({
     address: String,
     properties:Array
 });
-module.exports = mongoose.model('Onwer', ownerSchema);
+module.exports = mongoose.model('Owner', ownerSchema);
