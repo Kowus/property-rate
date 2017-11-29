@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 let ownerSchema = new mongoose.Schema({
-    firstname: {
+    givenName: {
         type: String,
         required: true
     },
-    lastname: {
+    familyName: {
         type: String,
         required: true
     },
-    othername: {
+    displayName: {
         type: String
     },
     email: {

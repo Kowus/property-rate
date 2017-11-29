@@ -1,12 +1,13 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var configDb = require('./config/database');
+var env = require('./config/env');
 var mongoose = require('mongoose');
-mongoose.connect(configDb.url, {useMongoClient: true});
+mongoose.connect(env.database.url, {useMongoClient: true});
 
 var index = require('./routes/index');
 var users = require('./routes/users');
