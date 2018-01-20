@@ -10,7 +10,7 @@ var express = require('express'),
     session = require('express-session'),
     flash = require('connect-flash'),
     mongoose = require('mongoose'),
-    redis = require('redis').createClient(config.redis.url, {no_ready_check: true}),
+    redis = require('redis').createClient(env.redis.url, {no_ready_check: true}),
     RedisStore = require('connect-redis')(session),
     helmet =require('helmet')
 ;
@@ -28,7 +28,7 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-require('./config/passport')(passport)
+require('./config/passport')(passport);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -37,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     resave: false,
     saveUninitialized:true,
+    secret: env.session.secret,
     store:new RedisStore({client:redis})
 }));
 app.use(passport.initialize());

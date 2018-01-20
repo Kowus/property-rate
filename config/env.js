@@ -4,14 +4,17 @@
 */
 
 module.exports = {
-    database:{
-        url:process.env.MONGODB_URI
+    database: {
+        url: process.env.MONGODB_URI
     },
-    node_mailer:{
-        user:process.env.NODE_MAILER_AUTH_EMAIL,
-        pass:process.env.NODE_MAILER_AUTH_PASSWORD
+    node_mailer: {
+        user: process.env.NODE_MAILER_AUTH_EMAIL,
+        pass: process.env.NODE_MAILER_AUTH_PASSWORD
     },
-    redis:{
-        url:process.env.REDIS_URL
+    redis: {
+        url: process.env.REDIS_URL
+    },
+    session: {
+        secret: process.env.SESSION_SECRET
     }
 };
