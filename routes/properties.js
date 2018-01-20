@@ -1,7 +1,7 @@
 var express = require('express'),
     router = express.Router(),
     Property = require('../models/property'),
-    User = require('../models/owners')
+    User = require('../models/user')
 ;
 
 router.get('/all', function (req, res, next) {

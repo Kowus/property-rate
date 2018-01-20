@@ -15,4 +15,4 @@ let propSchema  = new mongoose.Schema({
     },
     owner: mongoose.Schema.Types.ObjectId
 });
-module.exports = mongoose.model('property', propSchema);
+module.exports = mongoose.model('Property', propSchema);
