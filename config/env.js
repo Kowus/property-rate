@@ -10,5 +10,8 @@ module.exports = {
     node_mailer:{
         user:process.env.NODE_MAILER_AUTH_EMAIL,
         pass:process.env.NODE_MAILER_AUTH_PASSWORD
+    },
+    redis:{
+        url:process.env.REDIS_URL
     }
 };

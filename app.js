@@ -1,12 +1,19 @@
 require('dotenv').config();
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var env = require('./config/env');
-var mongoose = require('mongoose');
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    passport = require('passport'),
+    env = require('./config/env'),
+    session = require('express-session'),
+    flash = require('connect-flash'),
+    mongoose = require('mongoose'),
+    redis = require('redis').createClient(config.redis.url, {no_ready_check: true}),
+    RedisStore = require('connect-redis')(session),
+    helmet =require('helmet')
+;
 mongoose.connect(env.database.url, {useMongoClient: true});
 
 var index = require('./routes/index');
@@ -14,18 +21,31 @@ var users = require('./routes/users');
 var properties = require('./routes/properties');
 
 var app = express();
-
+app.use(helmet());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+require('./config/passport')(passport)
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    resave: false,
+    saveUninitialized:true,
+    store:new RedisStore({client:redis})
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
 
 app.use('/', index);
 app.use('/users', users);
@@ -51,13 +71,13 @@ app.use(function (err, req, res, next) {
 
 
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose default connection connected')
+    console.log('Mongoose default connection connected');
 });
 mongoose.connection.on('error', function (err) {
-    console.log('Mongoose default connection error:' + err)
+    console.log('Mongoose default connection error:' + err);
 });
 mongoose.connection.on('disconnected', function () {
-    console.log('Mongoose default connection disconnected')
+    console.log('Mongoose default connection disconnected');
 });
 
 process.on('SIGINT', function () {
