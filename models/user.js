@@ -26,7 +26,8 @@ let userSchema = new Schema({
     properties: [
         {type: Schema.Types.ObjectId, ref: 'Property'}
         ],
-    password: {type: Buffer, required: true}
+    password: {type: Buffer, required: true},
+    gender: {type:String}
 });
 userSchema.pre('save', function (next) {
     let user = this;

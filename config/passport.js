@@ -31,13 +31,18 @@ module.exports = function (passport) {
                 User.findOne({email:email}, function (err, user) {
                     if (err) return done(err);
                     if (user){
-                        return done (null, false, req.flash('signupMessage','That email has already been used with an account.'))
+                        return done (null, false, req.flash('signupMessage','That email has already been used with an account.'));
                     } else {
+                        if(req.body.password!==req.body.cpassword){
+                            return done(null, false, req.flash('signupMessage', 'Passwords do not match'));
+
+                        }
                         let newUser = new User({
-                            given_name: req.body.given_name,
-                            family_name: req.body.family_name,
+                            givenName: req.body.givenName,
+                            familyName: req.body.familyName,
                             email: req.body.email,
-                            password: req.body.password
+                            password: req.body.password,
+                            gender: req.body.gender
                         });
 
                         newUser.save(function (err, user) {
