@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 let propSchema  = new mongoose.Schema({
     num: String,
-    area: mongoose.Schema.Types.ObjectId,
+    area: {type:mongoose.Schema.Types.ObjectId,ref:'Area'},
     rate_val: {
         type:Number,
         default: 33
@@ -13,6 +13,6 @@ let propSchema  = new mongoose.Schema({
         y: Number,
         description: String
     },
-    owner: mongoose.Schema.Types.ObjectId
+    owner: {type:mongoose.Schema.Types.ObjectId,ref:'User'}
 });
 module.exports = mongoose.model('Property', propSchema);

@@ -1,6 +1,8 @@
 var express = require('express'),
     router = express.Router(),
-    passport = require('passport')
+    passport = require('passport'),
+    use_code = require('../models/use-code'),
+    sanitation =require('../models/sanitation')
 ;
 
 /* GET home page. */
@@ -21,7 +23,9 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
     let next_page = req.session.next || '/';
     res.redirect(next_page);
 });
-
+router.get('/create-property', isLoggedIn, function (req, res, next) {
+    res.render('create-property', {use_code:use_code, sanitation:sanitation})
+});
 router.get('/logout', function (req, res, next) {
     req.logout();
     res.redirect('/login');

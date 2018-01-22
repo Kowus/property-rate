@@ -10,4 +10,4 @@ var areaSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('area', areaSchema);
+module.exports = mongoose.model('Area', areaSchema);
