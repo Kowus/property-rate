@@ -24,7 +24,7 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
 
 router.get('/logout', function (req, res, next) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/login');
 });
 
 router.post('/login', isNotLoggedIn, passport.authenticate('local-login', {
