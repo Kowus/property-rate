@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 let propSchema  = new mongoose.Schema({
-    num: String,
+    prop_num: String,
     area: {type:mongoose.Schema.Types.ObjectId,ref:'Area'},
     rate_val: {
         type:Number,
