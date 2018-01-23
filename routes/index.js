@@ -3,7 +3,8 @@ var express = require('express'),
     passport = require('passport'),
     use_code = require('../models/use-code'),
     sanitation =require('../models/sanitation'),
-    Area = require('../models/area')
+    Area = require('../models/area'),
+    User = require('../models/user')
 ;
 
 /* GET home page. */
@@ -59,6 +60,33 @@ router.post('/area',function (req, res, next) {
         else res.json(area);
     });
 });
+
+
+
+
+router.get('/search_user', function (req, res) {
+    var regex = new RegExp(req.query["term"], 'i');
+    var query = User.find(
+        {
+            $or: [
+                {givenName: regex},
+                {familyName: regex}
+            ]
+        });
+
+    query.exec(function (err, users) {
+        if (!err) {
+
+            res.render('users', {users:users})
+        } else {
+
+            res.render('error',{error:{stack:"Couldn't find user", status:err.status||500}, message:err.message});
+        }
+    });
+});
+
+
+
 
 
 module.exports = router;

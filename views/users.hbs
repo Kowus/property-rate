@@ -1,0 +1,13 @@
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="title1">Blank Page</h2>
+        <div class="blank-page widget-shadow scroll" id="style-2 div1">
+            <ul class="list-group">
+                {{#each users as |user|}}
+
+                    <li class="list-group-item"><a href="/users/{{user._id}}">{{user.displayName}} <span class="pull-right">{{user.email}}</span></a></li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
