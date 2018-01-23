@@ -2,11 +2,12 @@ var express = require('express'),
     router = express.Router(),
     passport = require('passport'),
     use_code = require('../models/use-code'),
-    sanitation =require('../models/sanitation')
+    sanitation =require('../models/sanitation'),
+    Area = require('../models/area')
 ;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/',isLoggedIn, function(req, res, next) {
     if(req.user){
         console.log(req.user)
     }
@@ -44,9 +45,20 @@ router.post('/signup', isNotLoggedIn, passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
+router.get('/area',function (req, res, next) {
+    res.render('add-area');
+});
 
-
-
+router.post('/area',function (req, res, next) {
+    let newArea = new Area({
+        code: req.body.code,
+        name: req.body.name
+    });
+    newArea.save((err, area)=>{
+        if (err)return res.json(err);
+        else res.json(area);
+    });
+});
 
 
 module.exports = router;

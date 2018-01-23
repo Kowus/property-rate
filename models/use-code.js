@@ -23,8 +23,7 @@ module.exports = [
     {
         code: 'AR5',
         name: "Assessed Third Class Commercial Building",
-        rate:
-            0.0025
+        rate: 0.0025
     },
     {
         code: 'AR6',

@@ -1,6 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/user');
+var express = require('express'),
+    router = express.Router(),
+    User = require('../models/user'),
+    Area = require('../models/area')
+;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -17,8 +19,10 @@ router.post('/create',function (req, res, next) {
     newUser.save((err, user)=>{
       if (err) return res.json(err);
       else res.json(user)
-    })
+    });
 
 });
+
+
 
 module.exports = router;

@@ -27,11 +27,12 @@ let userSchema = new Schema({
         {type: Schema.Types.ObjectId, ref: 'Property'}
         ],
     password: {type: Buffer, required: true},
-    gender: {type:String}
+    gender: {type:String},
+    bill:[{type:Schema.Types.ObjectId,ref:'Bill'}]
 });
 userSchema.pre('save', function (next) {
     let user = this;
-    this.displayName = `${user.given_name} ${user.family_name}`;
+    this.displayName = `${user.givenName} ${user.familyName}`;
     /*if(this.isNew){
         user.account_stat.confirmation_str = gib();
     }*/
