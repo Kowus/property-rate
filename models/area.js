@@ -7,7 +7,8 @@ var areaSchema = new mongoose.Schema({
     name: {
         type: String,
         unique: true
-    }
+    },
+    properties:[{type:mongoose.Schema.Types.ObjectId, ref:'Property'}]
 });
 
 module.exports = mongoose.model('Area', areaSchema);

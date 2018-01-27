@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <div id="page-wrapper">
     <div class="main-page">
         <h2 class="title1">Widgets</h2>
@@ -476,7 +480,7 @@
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form name="prop_form" id="prop_form">
                     <fieldset class="form-group">
                         <label><h4>Use Code</h4></label>
                         <select class="form-control" name="use_code" title="Use Code" required>
@@ -499,7 +503,8 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Area</h4></label>
-                        <input class="form-control" name="area" placeholder="Use JQuery autocomplete" required>
+                        <input class="form-control" id="area_bar">
+                        <input class="form-control" name="area" placeholder="Use JQuery autocomplete" required readonly id="are_a">
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Location</h4></label>
@@ -515,7 +520,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="add_prop">Save changes</button>
             </div>
         </div>
     </div>

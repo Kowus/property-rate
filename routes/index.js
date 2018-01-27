@@ -2,31 +2,32 @@ var express = require('express'),
     router = express.Router(),
     passport = require('passport'),
     use_code = require('../models/use-code'),
-    sanitation =require('../models/sanitation'),
+    sanitation = require('../models/sanitation'),
     Area = require('../models/area'),
     User = require('../models/user')
 ;
 
+
 /* GET home page. */
-router.get('/',isLoggedIn, function(req, res, next) {
-    if(req.user){
-        console.log(req.user)
+router.get('/', isLoggedIn, function (req, res, next) {
+    if (req.user) {
+        console.log(req.user);
     }
-  res.render('index', { title: 'Property Rate' });
-  //   res.redirect('/login')
+    res.render('index', {title: 'Property Rate'});
+    //   res.redirect('/login')
 });
-router.get('/login',isNotLoggedIn, function (req, res, next) {
-    res.render('login', {title:'Property Rate Login.', message:req.flash('loginMessage')})
+router.get('/login', isNotLoggedIn, function (req, res, next) {
+    res.render('login', {title: 'Property Rate Login.', message: req.flash('loginMessage')});
 });
-router.get('/signup', isNotLoggedIn,function (req, res, next) {
-    res.render('signup', {title:'Property Rate Signup.', message:req.flash('signupMessage')})
+router.get('/signup', isNotLoggedIn, function (req, res, next) {
+    res.render('signup', {title: 'Property Rate Signup.', message: req.flash('signupMessage')});
 });
 router.get('/profile', isLoggedIn, function (req, res, next) {
     let next_page = req.session.next || '/';
     res.redirect(next_page);
 });
 router.get('/create-property', isLoggedIn, function (req, res, next) {
-    res.render('create-property', {use_code:use_code, sanitation:sanitation})
+    res.render('create-property', {use_code: use_code, sanitation: sanitation});
 });
 router.get('/logout', function (req, res, next) {
     req.logout();
@@ -46,22 +47,20 @@ router.post('/signup', isNotLoggedIn, passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
-router.get('/area',function (req, res, next) {
+router.get('/area', function (req, res, next) {
     res.render('add-area');
 });
 
-router.post('/area',function (req, res, next) {
+router.post('/area', function (req, res, next) {
     let newArea = new Area({
         code: req.body.code,
         name: req.body.name
     });
-    newArea.save((err, area)=>{
-        if (err)return res.json(err);
+    newArea.save((err, area) => {
+        if (err) return res.json(err);
         else res.json(area);
     });
 });
-
-
 
 
 router.get('/search_user', function (req, res) {
@@ -77,16 +76,47 @@ router.get('/search_user', function (req, res) {
     query.exec(function (err, users) {
         if (!err) {
 
-            res.render('users', {users:users})
+            res.render('users', {users: users});
         } else {
 
-            res.render('error',{error:{stack:"Couldn't find user", status:err.status||500}, message:err.message});
+            res.render('error', {
+                error: {stack: "Couldn't find user", status: err.status || 500},
+                message: err.message
+            });
         }
     });
 });
 
 
+router.get('/search_area', function (req, res) {
+    console.log(req.query)
+    var regex = new RegExp(req.query.term, 'i');
+    console.log(regex)
+    var query = Area.find(
+        {
+            $or: [
+                {code: regex},
+                {name: regex}
+            ]
+        },{
+            properties:0
+        }
+    );
 
+    // Execute query in a callback and return users list
+    query.exec(function (err, areas) {
+        if(err){
+            res.send(JSON.stringify(err), {
+                'Content-Type': 'application/json'
+            }, 404);
+        }
+        if (!err) {
+            // Method to construct the json result set
+            console.log(areas)
+            res.json(areas);
+        }
+    });
+});
 
 
 module.exports = router;
