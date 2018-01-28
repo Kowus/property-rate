@@ -22,6 +22,8 @@ var properties = require('./routes/properties');
 
 var app = express();
 app.use(helmet());
+
+app.locals.title='P R M A';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

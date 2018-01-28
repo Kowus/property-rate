@@ -7,12 +7,29 @@ var express = require('express'),
     Property = require('../models/property'),
     async = require('async')
 ;
-/* GET users listing. */
+router.get('/', function (req, res, next) {
+    res.render('s-create-user')
+});
+
+router.get('/create', function (req, res, next) {
+    res.render('create-user')
+});
+
 router.get('/:_id', function (req, res, next) {
-    User.findOne({_id: req.params._id}).exec(function (err, user) {
+    User.findOne({_id: req.params._id}).populate({
+        path:'properties',
+        populate:[
+            {
+                path: 'area', select:'code name'
+            }
+        ]
+    }).exec(function (err, user) {
+        if(err) console.error(err);
+        console.log(user);
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
     });
 });
+
 router.post('/add_prop', function (req, res, next) {
     let newProp = new Property({
         prop_num: req.body.prop_num,

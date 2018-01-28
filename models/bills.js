@@ -7,7 +7,7 @@ const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 ;
 
-let Bill = new Schema({
+let billSchema = new Schema({
     owner:{
         type:Schema.Types.ObjectId,
         ref:'User'
@@ -19,4 +19,4 @@ let Bill = new Schema({
     total:Number
 });
 
-module.exports = mongoose.model('Bill', Bill);
+module.exports = mongoose.model('Bill', billSchema);

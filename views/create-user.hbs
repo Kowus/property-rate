@@ -1,0 +1,57 @@
+<div id="page-wrapper">
+    <div class="main-page signup-page">
+        <h2 class="title1">Create a New User</h2>
+        <div class="sign-up-row widget-shadow">
+            {{#if message}}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> {{message}}
+                </div>
+            {{/if}}
+            <h5>Personal Information :</h5>
+            <form action="/signup" method="post">
+                <div class="sign-u">
+                    <input type="text" name="givenName" placeholder="First Name" required="">
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="sign-u">
+                    <input type="text" placeholder="Last Name" required="" name="familyName">
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="sign-u">
+                    <input type="email" placeholder="Email Address" required="" name="email">
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="sign-u">
+                    <div class="sign-up1">
+                        <h4>Gender* :</h4>
+                    </div>
+                    <div class="sign-up2">
+                        <label>
+                            <input type="radio" name="gender" required="" value="male">
+                            Male
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" required="" value="female">
+                            Female
+                        </label>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+                <h6>Login Information :</h6>
+                <div class="sign-u">
+                    <input type="password" placeholder="Password" required="" name="password">
+                    <div class="clearfix"> </div>
+                </div>
+                <div class="sign-u">
+                    <input type="password" placeholder="Confirm Password" required="" name="cpassword">
+                </div>
+                <div class="clearfix"> </div>
+                <div class="sub_home">
+                    <input type="submit" value="Submit">
+                    <div class="clearfix"> </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

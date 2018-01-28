@@ -1,0 +1,25 @@
+
+
+<div id="page-wrapper">
+    <div class="main-page">
+        <h3 class="title1">Search User and Update</h3>
+        <div class="error-page" style="height: 79vh">
+            <div class="">
+            </div>
+            <div class="">
+                <h3><i class="fa fa-search text-yellow"></i> {{message}}</h3>
+                <form action="/search_user" method="get" class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="term" class="form-control" placeholder="Search" required="">
+
+                        <div class="input-group-btn">
+                            <button type="submit" name="submit" class="btn btn-warning btn-flat"><i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.input-group -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
