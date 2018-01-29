@@ -8,8 +8,15 @@
                     <strong>Warning!</strong> {{message}}
                 </div>
             {{/if}}
+
+            {{#if success_message}}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> {{success_message}}
+                </div>
+            {{/if}}
             <h5>Personal Information :</h5>
-            <form action="/signup" method="post">
+            <form action="/users/create" method="post">
                 <div class="sign-u">
                     <input type="text" name="givenName" placeholder="First Name" required="">
                     <div class="clearfix"> </div>

@@ -14,6 +14,37 @@ router.get('/', function (req, res, next) {
 router.get('/create', function (req, res, next) {
     res.render('create-user')
 });
+router.post('/create', function (req, res, next) {
+    // res.send(req.body)
+    User.findOne({email:req.body.email}, function (err, user) {
+        if (err) return done(err);
+        if (user){
+            res.render('create-user',{message:'That email has already been used with an account.'})
+        } else {
+            if(req.body.password!==req.body.cpassword){
+                res.render('create-user',{message:'Passwords do not match.'})
+            }
+            let newUser = new User({
+                givenName: req.body.givenName,
+                familyName: req.body.familyName,
+                email: req.body.email,
+                password: req.body.password,
+                gender: req.body.gender
+            });
+
+            newUser.save(function (err, user) {
+                if(err){
+                    console.log(err);
+                    // return done(null, false, req.flash('signupMessage', "Couldn't create your account."));
+                    res.render('create-user',{message:"Couldn't create the account."})
+                }
+                // return done(null,user);
+                res.render('create-user',{success_message:`Successfully created user with _id: ${user._id} and email: ${user.email}.`});
+
+            })
+        }
+    })
+})
 
 router.get('/:_id', function (req, res, next) {
     User.findOne({_id: req.params._id}).populate({
