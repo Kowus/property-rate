@@ -5,24 +5,25 @@ var express = require('express'),
     use_code = require('../models/use-code'),
     sanitation = require('../models/sanitation'),
     Property = require('../models/property'),
-    async = require('async')
+    async = require('async'),
+    mail = require('../config/sendmail')
 ;
 router.get('/', function (req, res, next) {
-    res.render('s-create-user')
+    res.render('s-create-user');
 });
 
 router.get('/create', function (req, res, next) {
-    res.render('create-user')
+    res.render('create-user');
 });
 router.post('/create', function (req, res, next) {
     // res.send(req.body)
-    User.findOne({email:req.body.email}, function (err, user) {
+    User.findOne({email: req.body.email}, function (err, user) {
         if (err) return done(err);
-        if (user){
-            res.render('create-user',{message:'That email has already been used with an account.'})
+        if (user) {
+            res.render('create-user', {message: 'That email has already been used with an account.'});
         } else {
-            if(req.body.password!==req.body.cpassword){
-                res.render('create-user',{message:'Passwords do not match.'})
+            if (req.body.password !== req.body.cpassword) {
+                res.render('create-user', {message: 'Passwords do not match.'});
             }
             let newUser = new User({
                 givenName: req.body.givenName,
@@ -33,29 +34,30 @@ router.post('/create', function (req, res, next) {
             });
 
             newUser.save(function (err, user) {
-                if(err){
+                if (err) {
                     console.log(err);
                     // return done(null, false, req.flash('signupMessage', "Couldn't create your account."));
-                    res.render('create-user',{message:"Couldn't create the account."})
+                    res.render('create-user', {message: "Couldn't create the account."});
                 }
                 // return done(null,user);
-                res.render('create-user',{success_message:`Successfully created user with _id: ${user._id} and email: ${user.email}.`});
+                mail.sendWelcome(user);
+                res.render('create-user', {success_message: `Successfully created user with _id: ${user._id} and email: ${user.email}.`});
 
-            })
+            });
         }
-    })
-})
+    });
+});
 
 router.get('/:_id', function (req, res, next) {
     User.findOne({_id: req.params._id}).populate({
-        path:'properties',
-        populate:[
+        path: 'properties',
+        populate: [
             {
-                path: 'area', select:'code name'
+                path: 'area', select: 'code name'
             }
         ]
     }).exec(function (err, user) {
-        if(err) console.error(err);
+        if (err) console.error(err);
         console.log(user);
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
     });

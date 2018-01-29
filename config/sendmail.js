@@ -20,7 +20,7 @@ let transporter = nodemailer.createTransport({
 });
 const email = new Email({
     message: {
-        from: 'Barnabas Nomo <barnabasnomo@gmail.com>'
+        from: 'The Property Rate Mobilization Team <eveharrison4real@gmail.com>'
     },
     // send:true,
     transport: transporter, views: {
@@ -32,16 +32,16 @@ const email = new Email({
 
 
 module.exports = {
-    sendWelcome: function (user, token) {
+    sendWelcome: function (user) {
         email.send({
-            template: path.normalize('../../views/email/confirm_account'),
+            template: path.normalize('confirm_account'),
             message: {
                 to: `${user.displayName} <${user.email}>`
             },
             locals: {
                 user: {
                     displayName: user.displayName
-                }, token: token
+                }
             }
         }).then(console.log).catch(console.error);
     },
