@@ -3,7 +3,20 @@
  * Created By barnabasnomo on 1/22/18 at 5:48 PM
  * @soundtrack Otis - Kanye West/Jay-Z/Otis Redding
 */
-module.exports=[
+const mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
+let SanSchema = new Schema({
+    code: String,
+    name: String,
+    rate: Number
+});
+
+
+module.exports = mongoose.model('San', SanSchema);
+
+
+/*
+
     {
         code:'S-NORM',
         name:'Normal',
@@ -21,4 +34,4 @@ module.exports=[
         name:'Fast Food',
         rate: 60
     }
-];
+*/

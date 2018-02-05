@@ -6,7 +6,8 @@ var express = require('express'),
     sanitation = require('../models/sanitation'),
     Property = require('../models/property'),
     async = require('async'),
-    mail = require('../config/sendmail')
+    mail = require('../config/sendmail'),
+    Bill = require('../lib/bill')
 ;
 router.get('/', function (req, res, next) {
     res.render('s-create-user');
@@ -48,20 +49,6 @@ router.post('/create', function (req, res, next) {
     });
 });
 
-router.get('/:_id', function (req, res, next) {
-    User.findOne({_id: req.params._id}).populate({
-        path: 'properties',
-        populate: [
-            {
-                path: 'area', select: 'code name'
-            }
-        ]
-    }).exec(function (err, user) {
-        if (err) console.error(err);
-        console.log(user);
-        res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
-    });
-});
 
 router.post('/add_prop', function (req, res, next) {
     let newProp = new Property({
@@ -134,4 +121,29 @@ router.post('/add_prop', function (req, res, next) {
 });
 
 
+router.get('/generate-bills', function (req, res, next) {
+    Bill.generateBills()
+        .then(response => {
+            res.json(response);
+        }).catch(err => {
+        res.json(err);
+    });
+});
+
+router.get('/:_id', function (req, res, next) {
+    User.findOne({_id: req.params._id}).populate({
+        path: 'properties',
+        populate: [
+            {
+                path: 'area', select: 'code name'
+            },{
+                path: 'use_code', select: 'code name'
+            }
+        ]
+    }).exec(function (err, user) {
+        if (err) console.error(err);
+        console.log(user);
+        res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
+    });
+});
 module.exports = router;

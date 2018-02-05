@@ -2,13 +2,13 @@ var express = require('express'),
     router = express.Router(),
     passport = require('passport'),
     use_code = require('../models/use-code'),
-    sanitation = require('../models/sanitation'),
+    Sanitation = require('../models/sanitation'),
     Area = require('../models/area'),
     User = require('../models/user'),
     async = require('async'),
-    Property = require('../models/property')
+    Property = require('../models/property'),
+    UseCode=require('../models/use')
 ;
-
 
 /* GET home page. */
 router.get('/', isLoggedIn, function (req, res, next) {
@@ -28,6 +28,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
                     callback(null, count);
                 });
             },
+            /*
             function (callback) {
                 Property.count({
                     $or:[
@@ -60,12 +61,13 @@ router.get('/', isLoggedIn, function (req, res, next) {
                     callback(null, count);
                 });
             },
+
             function (callback) {
                 Property.count({use_code:'UR6'}, function (err, count) {
                     if (err) return callback(err);
                     callback(null, count);
                 });
-            }
+            }*/
 
         ], (err, results) => {
             if (err) {
@@ -73,9 +75,10 @@ router.get('/', isLoggedIn, function (req, res, next) {
                 return res.send(err);
             }
             console.log(results);
-            res.render('index', {title: 'Property Rate', no_users: results[0], no_props: results[1], no_ass:results[2], no_unass:results[3], no_unc:results[4]});
+            res.render('index', {title: 'Property Rate', no_users: results[0], no_props: results[1], /*no_ass:results[2], no_unass:results[3], no_unc:results[4]*/});
         }
     );
+
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
     res.render('login', {title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true});
@@ -154,6 +157,64 @@ router.get('/search_area', function (req, res) {
     var regex = new RegExp(req.query.term, 'i');
     console.log(regex);
     var query = Area.find(
+        {
+            $or: [
+                {code: regex},
+                {name: regex}
+            ]
+        }, {
+            properties: 0
+        }
+    );
+
+    // Execute query in a callback and return users list
+    query.exec(function (err, areas) {
+        if (err) {
+            res.send(JSON.stringify(err), {
+                'Content-Type': 'application/json'
+            }, 404);
+        }
+        if (!err) {
+            // Method to construct the json result set
+            console.log(areas);
+            res.json(areas);
+        }
+    });
+});
+router.get('/search_use', function (req, res) {
+    console.log(req.query);
+    var regex = new RegExp(req.query.term, 'i');
+    console.log(regex);
+    var query = UseCode.find(
+        {
+            $or: [
+                {code: regex},
+                {name: regex}
+            ]
+        }, {
+            properties: 0
+        }
+    );
+
+    // Execute query in a callback and return users list
+    query.exec(function (err, areas) {
+        if (err) {
+            res.send(JSON.stringify(err), {
+                'Content-Type': 'application/json'
+            }, 404);
+        }
+        if (!err) {
+            // Method to construct the json result set
+            console.log(areas);
+            res.json(areas);
+        }
+    });
+});
+router.get('/search_san', function (req, res) {
+    console.log(req.query);
+    var regex = new RegExp(req.query.term, 'i');
+    console.log(regex);
+    var query = Sanitation.find(
         {
             $or: [
                 {code: regex},

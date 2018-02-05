@@ -1,8 +1,10 @@
 var express = require('express'),
     router = express.Router(),
     Property = require('../models/property'),
-    User = require('../models/user')
+    User = require('../models/user'),
+    mail =require('../config/sendmail')
 ;
+
 
 router.get('/all', function (req, res, next) {
     var all = Property.find();

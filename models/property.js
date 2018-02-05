@@ -8,8 +8,14 @@ let propSchema = new mongoose.Schema({
         type: Number,
         default: 33
     },
-    use_code: String,
-    sanitation_code: String,
+    use_code: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Use_code'
+    },
+    sanitation_code: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'San'
+    },
     location: {
         x: Number,
         y: Number,
@@ -17,24 +23,16 @@ let propSchema = new mongoose.Schema({
     },
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
-module.exports = mongoose.model('Property', propSchema);
 
 /*
 propSchema.pre('save', function (next) {
     let prop = this;
-    if (this.isModified('area') || this.isNew) {
-        Area.findOneAndUpdate({_id: prop.area}, {_id: 0, code: 1},{
-            $push: {
-                properties: {
-                    $each:[prop._id],
-                    $position:0
-                }
-            }
-        }, (err, areaCode) => {
+    if (this.isModified('area')||this.isModified('prop_num') || this.isNew) {
+        Area.findOne({_id: prop.area}, {_id: 0, code: 1}, (err, area) => {
             if (err) {
                 return next(new Error(err));
             }
-            prop.prop_num = areaCode.code + prop.prop_num;
+            prop.prop_num = area.code + prop.prop_num;
             next();
         });
 
@@ -42,6 +40,10 @@ propSchema.pre('save', function (next) {
         return next();
     }
 });
+*/
+module.exports = mongoose.model('Property', propSchema);
+
+/*
 
 propSchema.post('save', function (doc) {
     Area.findOneAndUpdate({_id: doc.area}, {

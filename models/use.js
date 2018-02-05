@@ -11,3 +11,15 @@ let useCodeSchema  = new mongoose.Schema({
     rate:Number
 });
 module.exports = mongoose.model('Use_code', useCodeSchema);
+
+/*
+let use = require('./use-code');
+
+use.forEach(item=>{
+    console.log(`
+        ${item.code}:{
+            name: "${item.name}",
+            rate: ${item.rate}
+        },
+    `)
+})*/
