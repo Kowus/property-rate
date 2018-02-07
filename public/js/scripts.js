@@ -181,6 +181,17 @@
         })
     })
 
+$('.createdAt').each(function () {
+    $(this).text(' ' + moment(new Date($(this).attr('data-createdAt')).toUTCString()).format('MMM/DD/YYYY'));
+});
+    $('.calcs').each(function () {
+        let san = Number($(this).attr('data-san')),
+            use =Number($(this).attr('data-use')),
+            rate_val =Number($(this).attr('data-rate_val'))
+        ;
+        $(this).text(san+(use*rate_val));
+    })
+
 })(jQuery);
 
                      

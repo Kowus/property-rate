@@ -28,7 +28,7 @@ let userSchema = new Schema({
         ],
     password: {type: Buffer, required: true},
     gender: {type:String},
-    bill:[{type:Schema.Types.ObjectId,ref:'Bill'}]
+    bill:[{type:Schema.Types.ObjectId, ref:'Bill'}]
 });
 userSchema.pre('save', function (next) {
     let user = this;

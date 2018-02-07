@@ -132,12 +132,22 @@ router.get('/generate-bills', function (req, res, next) {
 
 router.get('/:_id', function (req, res, next) {
     User.findOne({_id: req.params._id}).populate({
-        path: 'properties',
+        path: 'properties bill',
         populate: [
             {
                 path: 'area', select: 'code name'
-            },{
+            }, {
                 path: 'use_code', select: 'code name'
+            },{
+                path: 'properties', populate:[
+                    {
+                        path: 'area', select: 'code name'
+                    }, {
+                        path: 'use_code', select: 'code name rate'
+                    }, {
+                    path:'sanitation_code'
+                    }
+                ]
             }
         ]
     }).exec(function (err, user) {

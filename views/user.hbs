@@ -34,11 +34,11 @@
                                     <tbody>
                                     {{#each owner.properties as |property|}}
 
-                                    <tr>
-                                        <td>#{{property._id}}</td>
-                                        <td>{{property.area.code}}{{property.prop_num}}</td>
-                                        <td>{{property.use_code.code}}</td>
-                                    </tr>
+                                        <tr>
+                                            <td>#{{property._id}}</td>
+                                            <td>{{property.area.code}}{{property.prop_num}}</td>
+                                            <td>{{property.use_code.code}}</td>
+                                        </tr>
                                     {{/each}}
                                     </tbody>
                                 </table>
@@ -54,24 +54,63 @@
                     <div class="agileinfo-cdr">
                         <div class="card-header">
                             <h3>Bills</h3>
+                            <br>
+                            <small class="pull-left">Date</small>
+                            <small class="pull-right">Amount</small>
+                            <div class="clearfix"></div>
                         </div>
                         <hr class="widget-separator">
                         <div class="card-body p-b-20">
-                            <div class="list-group">
-                                <a class="list-group-item media" href="">
+                            <div class="list-group" style="height: 280px;overflow: scroll">
+                                <!--<a class="list-group-item media" href="">
                                     <div class="pull-left">
-                                        <!--<img class="lg-item-img" src="/images/4.jpg" alt="">-->
+                                        &lt;!&ndash;<img class="lg-item-img" src="/images/4.jpg" alt="">&ndash;&gt;
                                     </div>
                                     <div class="media-body">
                                         <div class="pull-left">
-                                            <div class="lg-item-heading">Sorry</div>
-                                            <small class="lg-item-text">No Outstanding Bills for This User</small>
+
+                                            <small class="lg-item-text">Date</small>
                                         </div>
                                         <div class="pull-right">
-                                            <div class="lg-item-heading"><i class="fa fa-warning"></i></div>
+                                            <div class="lg-item-heading">&lt;!&ndash;<i class="fa fa-warning"></i>&ndash;&gt;Amount
+                                            </div>
                                         </div>
                                     </div>
-                                </a>
+                                </a>-->
+                                {{#each owner.bill}}
+                                    <a class="list-group-item media" href="">
+                                        <div class="pull-left">
+                                            <!--<img class="lg-item-img" src="/images/4.jpg" alt="">-->
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="pull-left">
+                                                <div class="lg-item-heading createdAt" data-createdAt="{{createdAt}}">Date</div>
+                                                <!--<small class="lg-item-text createdAt"
+                                                       data-createdAt="{{createdAt}}"></small>-->
+                                            </div>
+                                            <div class="pull-right">
+                                                <div class="lg-item-heading">
+                                                    <!--<i class="fa fa-warning"></i>-->{{total}}</div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <hr>
+                                            <div style="margin:auto 10px;">
+
+                                            {{#each properties as |prop|}}
+
+                                                <div class="pull-left"><small><strong>{{prop.area.code}}{{prop.prop_num}}</strong></small></div>
+                                                <div class="pull-right">
+
+                                                    <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-use="{{prop.use_code.rate}}" data-rate_val="{{prop.rate_val}}"></small>
+                                                </div>
+                                            <div class="clearfix"></div>
+                                            <small>type: {{prop.sanitation_code.name}}--{{prop.use_code.name}}</small>
+                                                <hr class="small">
+                                            {{/each}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                {{/each}}
                             </div>
                         </div>
                     </div>
@@ -321,7 +360,8 @@
                     <fieldset class="form-group">
                         <label><h4>Use Code</h4></label>
                         <input class="form-control" id="use_bar">
-                        <input class="form-control" name="use_code" placeholder="Use JQuery autocomplete" required readonly id="use_code">
+                        <input class="form-control" name="use_code" placeholder="Use JQuery autocomplete" required
+                               readonly id="use_code">
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Sanitation Code</h4></label>
@@ -335,7 +375,8 @@
                     <fieldset class="form-group">
                         <label><h4>Area</h4></label>
                         <input class="form-control" id="area_bar">
-                        <input class="form-control" name="area" placeholder="Use JQuery autocomplete" required readonly id="are_a">
+                        <input class="form-control" name="area" placeholder="Use JQuery autocomplete" required readonly
+                               id="are_a">
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Location</h4></label>
