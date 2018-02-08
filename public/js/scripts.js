@@ -162,7 +162,10 @@
     });
 
     $('#add_prop').click(function () {
-        var $form = $('#prop_form');
+        var $form = $('#prop_form'),
+            arb=$('#area_bar').val().split('('),
+            usb=$('#use_bar').val().split('(')
+        ;
         var add_prop = $.post('/users/add_prop', {
             use_code: $form.find('[name="use_code"]').val(),
             sanitation_code: $form.find('[name="sanitation_code"]').val(),
@@ -181,9 +184,9 @@
                 '                </div>');
             $('#prop-list').prepend(
                 '<tr>'
-                + '<td>' + data._id + '</td>'
-                + '<td>Num</td>'
-                + '<td>Use Code</td>'
+                + '<td>#' + data._id + '</td>'
+                + '<td>'+arb[arb.length-1].split(')')[0]+ $form.find('[name="prop_num"]').val() +'</td>'
+                + '<td>'+usb[usb.length-1].split(')')[0]+'</td>'
                 + '</tr>'
             );
             $form.find('[name="use_code"]').val("");
