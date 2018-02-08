@@ -40,5 +40,8 @@
       "restart": "osascript -e 'display notification \"App restarted due to changes\" with title \"Property Rate Mobilization App\"'"
     },
     "delay": "100"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.12"
   }
 }
