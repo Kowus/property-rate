@@ -28,5 +28,17 @@
     "redis": "^2.8.0",
     "secure-password": "^3.0.0",
     "serve-favicon": "~2.4.5"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "public/*",
+      ".gtm/*",
+      "scratch/",
+      "test/"
+    ],
+    "events": {
+      "restart": "osascript -e 'display notification \"App restarted due to changes\" with title \"Property Rate Mobilization App\"'"
+    },
+    "delay": "100"
   }
 }

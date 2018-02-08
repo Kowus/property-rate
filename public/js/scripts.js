@@ -163,8 +163,8 @@
 
     $('#add_prop').click(function () {
         var $form = $('#prop_form'),
-            arb=$('#area_bar').val().split('('),
-            usb=$('#use_bar').val().split('(')
+            arb = $('#area_bar').val().split('('),
+            usb = $('#use_bar').val().split('(')
         ;
         var add_prop = $.post('/users/add_prop', {
             use_code: $form.find('[name="use_code"]').val(),
@@ -183,11 +183,19 @@
                 '                    Inserted new property: <strong>' + data._id + '</strong>\n' +
                 '                </div>');
             $('#prop-list').prepend(
-                '<tr>'
-                + '<td>#' + data._id + '</td>'
-                + '<td>'+arb[arb.length-1].split(')')[0]+ $form.find('[name="prop_num"]').val() +'</td>'
-                + '<td>'+usb[usb.length-1].split(')')[0]+'</td>'
-                + '</tr>'
+
+                '<a class="list-group-item media" href="">\n' +
+                '                                        <div class="media-body">\n' +
+                '                                            <div class="pull-left">\n' +
+                '                                                <div class="lg-item-heading">' + arb[arb.length - 1].split(')')[0] + $form.find('[name="prop_num"]').val() + '</div>\n' +
+                '                                            </div>\n' +
+                '                                            <div class="pull-right">\n' +
+                '                                                <div class="lg-item-heading">\n' + usb[usb.length - 1].split(')')[0] + ' </div>\n' +
+                '                                            </div>\n' +
+                '                                            <div class="clearfix"></div>\n' +
+                '\n' +
+                '                                            </div>\n' +
+                '                                    </a>'
             );
             $form.find('[name="use_code"]').val("");
             $form.find('[name="sanitation_code"]').val("");
