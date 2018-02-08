@@ -26,17 +26,17 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Property Number</th>
+                                        <th>Property Num.</th>
+                                        <th>San. Code</th>
                                         <th>Use Code</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="prop-list">
                                     {{#each owner.properties as |property|}}
 
                                         <tr>
-                                            <td>#{{property._id}}</td>
                                             <td>{{property.area.code}}{{property.prop_num}}</td>
+                                            <td>{{property.sanitation_code.code}}</td>
                                             <td>{{property.use_code.code}}</td>
                                         </tr>
                                     {{/each}}
@@ -353,9 +353,12 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">Add a Property</h4>
             </div>
             <div class="modal-body">
+                <div id="add_prop_mess">
+
+                </div>
                 <form name="prop_form" id="prop_form">
                     <fieldset class="form-group">
                         <label><h4>Use Code</h4></label>

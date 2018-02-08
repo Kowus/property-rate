@@ -138,7 +138,11 @@ router.get('/:_id', function (req, res, next) {
                 path: 'area', select: 'code name'
             }, {
                 path: 'use_code', select: 'code name'
-            },{
+            },
+            {
+                path:'sanitation_code'
+            },
+            {
                 path: 'properties', populate:[
                     {
                         path: 'area', select: 'code name'

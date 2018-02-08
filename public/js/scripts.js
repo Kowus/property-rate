@@ -163,34 +163,54 @@
 
     $('#add_prop').click(function () {
         var $form = $('#prop_form');
-        var add_prop = $.post('/users/add_prop',{
+        var add_prop = $.post('/users/add_prop', {
             use_code: $form.find('[name="use_code"]').val(),
-            sanitation_code:$form.find('[name="sanitation_code"]').val(),
-            prop_num:$form.find('[name="prop_num"]').val(),
-            area:$form.find('[name="area"]').val(),
-            x:$form.find('[name="x"]').val(),
-            y:$form.find('[name="y"]').val(),
-            loc_des:$form.find('[name="loc_des"]').val(),
-            owner:$form.find('[name="owner"]').val()
+            sanitation_code: $form.find('[name="sanitation_code"]').val(),
+            prop_num: $form.find('[name="prop_num"]').val(),
+            area: $form.find('[name="area"]').val(),
+            x: $form.find('[name="x"]').val(),
+            y: $form.find('[name="y"]').val(),
+            loc_des: $form.find('[name="loc_des"]').val(),
+            owner: $form.find('[name="owner"]').val()
         });
         add_prop.done(function (data) {
             console.log(data);
-            alert(data)
+            $('#add_prop_mess').html(' <div class="alert alert-success alert-dismissible" role="alert">\n' +
+                '                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n' +
+                '                    Inserted new property: <strong>' + data._id + '</strong>\n' +
+                '                </div>');
+            $('#prop-list').prepend(
+                '<tr>'
+                + '<td>' + data._id + '</td>'
+                + '<td>Num</td>'
+                + '<td>Use Code</td>'
+                + '</tr>'
+            );
+            $form.find('[name="use_code"]').val("");
+            $form.find('[name="sanitation_code"]').val("");
+            $form.find('[name="prop_num"]').val('');
+            $form.find('[name="area"]').val('');
+            $('#area_bar').val('');
+            $('#san_bar').val('');
+            $('#use_bar').val('');
+            $form.find('[name="x"]').val('');
+            $form.find('[name="y"]').val('');
+            $form.find('[name="loc_des"]').val('');
         }).fail(function (err) {
-            alert(err)
-        })
-    })
+            alert(err);
+        });
+    });
 
-$('.createdAt').each(function () {
-    $(this).text(' ' + moment(new Date($(this).attr('data-createdAt')).toUTCString()).format('MMM/DD/YYYY'));
-});
+    $('.createdAt').each(function () {
+        $(this).text(' ' + moment(new Date($(this).attr('data-createdAt')).toUTCString()).format('MMM/DD/YYYY'));
+    });
     $('.calcs').each(function () {
         let san = Number($(this).attr('data-san')),
-            use =Number($(this).attr('data-use')),
-            rate_val =Number($(this).attr('data-rate_val'))
+            use = Number($(this).attr('data-use')),
+            rate_val = Number($(this).attr('data-rate_val'))
         ;
-        $(this).text(san+(use*rate_val));
-    })
+        $(this).text(san + (use * rate_val));
+    });
 
 })(jQuery);
 
