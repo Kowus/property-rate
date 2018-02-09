@@ -156,7 +156,6 @@ router.get('/:_id', function (req, res, next) {
         ]
     }).exec(function (err, user) {
         if (err) console.error(err);
-        console.log(user);
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
     });
 });

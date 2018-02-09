@@ -176,7 +176,6 @@ router.get('/search_area', function (req, res) {
         }
         if (!err) {
             // Method to construct the json result set
-            console.log(areas);
             res.json(areas);
         }
     });
@@ -197,7 +196,7 @@ router.get('/search_use', function (req, res) {
     );
 
     // Execute query in a callback and return users list
-    query.exec(function (err, areas) {
+    query.exec(function (err, use_code) {
         if (err) {
             res.send(JSON.stringify(err), {
                 'Content-Type': 'application/json'
@@ -205,8 +204,7 @@ router.get('/search_use', function (req, res) {
         }
         if (!err) {
             // Method to construct the json result set
-            console.log(areas);
-            res.json(areas);
+            res.json(use_code);
         }
     });
 });
@@ -226,7 +224,7 @@ router.get('/search_san', function (req, res) {
     );
 
     // Execute query in a callback and return users list
-    query.exec(function (err, areas) {
+    query.exec(function (err, san) {
         if (err) {
             res.send(JSON.stringify(err), {
                 'Content-Type': 'application/json'
@@ -234,8 +232,7 @@ router.get('/search_san', function (req, res) {
         }
         if (!err) {
             // Method to construct the json result set
-            console.log(areas);
-            res.json(areas);
+            res.json(san);
         }
     });
 });

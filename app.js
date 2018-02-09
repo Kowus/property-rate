@@ -14,7 +14,10 @@ var express = require('express'),
     RedisStore = require('connect-redis')(session),
     helmet =require('helmet')
 ;
-mongoose.connect(env.database.url, {useMongoClient: true});
+mongoose.connect(env.database.url, {
+    useMongoClient: true,
+    promiseLibrary: require('bluebird')
+});
 
 var index = require('./routes/index');
 var users = require('./routes/users');
