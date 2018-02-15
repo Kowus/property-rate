@@ -2,7 +2,10 @@ const mongoose = require('mongoose'),
     Area = require('./area')
 ;
 let propSchema = new mongoose.Schema({
-    prop_num: String,
+    prop_num: {
+        type:String,
+        unique:true
+    },
     area: {type: mongoose.Schema.Types.ObjectId, ref: 'Area'},
     rate_val: {
         type: Number,
@@ -14,6 +17,8 @@ let propSchema = new mongoose.Schema({
     },
     len:Number,
     wid:Number,
+    rcn:Number,
+    dep:Number,
     use_code: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Use_code'
@@ -30,7 +35,6 @@ let propSchema = new mongoose.Schema({
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 });
 
-/*
 propSchema.pre('save', function (next) {
     let prop = this;
     if (this.isModified('area')||this.isModified('prop_num') || this.isNew) {
@@ -46,7 +50,6 @@ propSchema.pre('save', function (next) {
         return next();
     }
 });
-*/
 module.exports = mongoose.model('Property', propSchema);
 
 /*

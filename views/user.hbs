@@ -29,7 +29,7 @@
                                     <a class="list-group-item media" href="">
                                         <div class="media-body">
                                             <div class="pull-left">
-                                                <div class="lg-item-heading">{{property.area.code}}{{property.prop_num}}</div>
+                                                <div class="lg-item-heading">{{property.prop_num}}</div>
                                             </div>
                                             <div class="pull-right">
                                                 <div class="lg-item-heading">
@@ -73,7 +73,7 @@
                                             </div>
                                             <div class="pull-right">
                                                 <div class="lg-item-heading">
-                                                    <!--<i class="fa fa-warning"></i>-->{{total}}</div>
+                                                    <!--<i class="fa fa-warning"></i>-->¢ {{total}}</div>
                                             </div>
                                             <div class="clearfix"></div>
                                             <hr>
@@ -81,10 +81,10 @@
 
                                             {{#each properties as |prop|}}
 
-                                                <div class="pull-left"><small><strong>{{prop.area.code}}{{prop.prop_num}}</strong></small></div>
+                                                <div class="pull-left"><small><strong>{{prop.prop_num}}</strong></small></div>
                                                 <div class="pull-right">
 
-                                                    <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-use="{{prop.use_code.rate}}" data-rate_val="{{prop.rate_val}}"></small>
+                                                    <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-impost="{{prop.rate_impost}}" data-rate_val="{{prop.rate_val}}"></small>
                                                 </div>
                                             <div class="clearfix"></div>
                                             <small>type: {{prop.sanitation_code.name}}--{{prop.use_code.name}}</small>

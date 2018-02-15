@@ -56,7 +56,7 @@ module.exports = {
             }
         }).then(console.log).catch(console.error);
     },
-    sendBill: function (user, bill, date) {
+    sendBill: function (user, bill, props) {
         email.send({
             template: 'bill',
             message: {
@@ -65,7 +65,9 @@ module.exports = {
             locals: {
                 user: user,
                 bill: bill,
-                date: moment(date).format('Do MMM. YYYY')
+                date: moment(bill.createdAt).format('Do MMM. YYYY'),
+                props:props
+
             }
         }).then(console.log).catch(console.error);
     }

@@ -134,7 +134,7 @@
                             label: el.name,
                             code: el.code,
                             value: el._id,
-                            rate:el.rate
+                            rate: el.rate
                         };
                     }));
                 }
@@ -218,10 +218,10 @@
             sanitation_code: $form.find('[name="sanitation_code"]').val(),
             prop_num: $form.find('[name="prop_num"]').val(),
             area: $form.find('[name="area"]').val(),
-            x: $form.find('[name="x"]').val(),
             len: $form.find('[name="len"]').val(),
             wid: $form.find('[name="wid"]').val(),
             use_rate: $form.find('[name="use_rate"]').val(),
+            x: $form.find('[name="x"]').val(),
             y: $form.find('[name="y"]').val(),
             loc_des: $form.find('[name="loc_des"]').val(),
             owner: $form.find('[name="owner"]').val()
@@ -233,7 +233,6 @@
                 '                    Inserted new property: <strong>' + data._id + '</strong>\n' +
                 '                </div>');
             $('#prop-list').prepend(
-
                 '<a class="list-group-item media" href="">\n' +
                 '                                        <div class="media-body">\n' +
                 '                                            <div class="pull-left">\n' +
@@ -254,6 +253,9 @@
             $('#area_bar').val('');
             $('#san_bar').val('');
             $('#use_bar').val('');
+            $form.find('[name="len"]').val('');
+            $form.find('[name="wid"]').val('');
+            $form.find('[name="use_rate"]').val('');
             $form.find('[name="x"]').val('');
             $form.find('[name="y"]').val('');
             $form.find('[name="loc_des"]').val('');
@@ -269,14 +271,21 @@
 
     $('.calcs').each(function () {
         let san = Number($(this).attr('data-san')),
-            use = Number($(this).attr('data-use')),
+            impost = Number($(this).attr('data-impost')),
             rate_val = Number($(this).attr('data-rate_val'))
         ;
-        $(this).text(san + (use * rate_val));
+        $(this).text('¢ '+round_number(san + (impost * rate_val)));
     });
 
 })(jQuery);
 
                      
      
-  
+  function round_number(value, places) {
+      if(places){
+          var pow = Math.pow(10, places);
+          return Math.round(value, pow) / pow;
+      }else {
+          return Math.round(value * 100)/100
+      }
+  }

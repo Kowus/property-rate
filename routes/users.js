@@ -50,11 +50,16 @@ router.post('/create', function (req, res, next) {
 
 
 router.post('/add_prop', function (req, res, next) {
+    let rcn = req.body.use_rate < 10 ? 9 : 0,
+        dep = req.body.use_rate < 10 ? 6 : 0
+    ;
     let newProp = new Property({
         prop_num: req.body.prop_num,
-        len:req.body.len,
-        wid:req.body.len,
-        rate_val: req.body.len * req.body.wid * req.body.use_rate,
+        len: req.body.len,
+        wid: req.body.wid,
+        rate_val: (req.body.len * req.body.wid * req.body.use_rate) + (rcn - dep),
+        rcn: rcn,
+        dep: dep,
         area: req.body.area,
         use_code: req.body.use_code,
         sanitation_code: req.body.sanitation_code,
