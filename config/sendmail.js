@@ -32,6 +32,17 @@ const email = new Email({
 
 
 module.exports = {
+    newUser:function (user, pwd) {
+        email.send({
+            template: 'new_user',
+            message:{
+                to: `${user.displayName} <${user.email}>`
+            }, locals:{
+                user:user,
+                createdPassword:pwd
+            }
+        }).then(console.log).catch(console.error)
+    },
     sendWelcome: function (user) {
         email.send({
             template: path.normalize('confirm_account'),

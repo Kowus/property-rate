@@ -31,6 +31,50 @@
         $(".scrollbar1").getNiceScroll().hide();
     }
 
+    $('#sby_area').autocomplete({
+        classes: {
+            "ui-autocomplete": "highlight"
+        },
+        source: function (request, response) {
+            $.ajax({
+                url: "/search_area",
+                type: "GET",
+                data: request,  // request is the value of search input
+                success: function (data) {
+                    // Map response values to fiedl label and value
+                    response($.map(data, function (el) {
+                        return {
+                            label: el.name,
+                            code: el.code,
+                            value: el._id
+                        };
+                    }));
+                }
+            });
+        },
+        minLength: 1,
+        // set an onFocus event to show the result on input field when result is focused
+        focus: function (event, ui) {
+            this.label = ui.item.label + ' (' + ui.item.code + ')';
+            this.value = this.label;
+            $(this).next("input").val(ui.item.value);
+            /*$('#are_a').label = ui.item.code+' :: '+ui.item.label;
+            $('#are_a').value = ui.item.value;*/
+            // Prevent other event from not being execute
+            event.preventDefault();
+        },
+        select: function (event, ui) {
+            // Prevent value from being put in the input:
+            this.label = ui.item.label + ' (' + ui.item.code + ')';
+            this.value = label;
+            // Set the id to the next input hidden field
+            $(this).next("input").val(ui.item.value);
+            // Prevent other event from not being execute
+            event.preventDefault();
+            // optionnal: submit the form after field has been filled up
+            // $('#quicksearch').submit();
+        }
+    });
     $('#area_bar').autocomplete({
         classes: {
             "ui-autocomplete": "highlight"
@@ -215,6 +259,8 @@
     $('.createdAt').each(function () {
         $(this).text(' ' + moment(new Date($(this).attr('data-createdAt')).toUTCString()).format('MMM/DD/YYYY'));
     });
+
+
     $('.calcs').each(function () {
         let san = Number($(this).attr('data-san')),
             use = Number($(this).attr('data-use')),

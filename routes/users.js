@@ -23,14 +23,13 @@ router.post('/create', function (req, res, next) {
         if (user) {
             res.render('create-user', {message: 'That email has already been used with an account.'});
         } else {
-            if (req.body.password !== req.body.cpassword) {
-                res.render('create-user', {message: 'Passwords do not match.'});
-            }
+            let gib = require('../lib/gibberish');
+            let pwd = gib();
             let newUser = new User({
                 givenName: req.body.givenName,
                 familyName: req.body.familyName,
                 email: req.body.email,
-                password: req.body.password,
+                password: pwd,
                 gender: req.body.gender
             });
 
@@ -41,7 +40,7 @@ router.post('/create', function (req, res, next) {
                     res.render('create-user', {message: "Couldn't create the account."});
                 }
                 // return done(null,user);
-                mail.sendWelcome(user);
+                mail.newUser(user, pwd);
                 res.render('create-user', {success_message: `Successfully created user with _id: ${user._id} and email: ${user.email}.`});
 
             });
@@ -130,8 +129,9 @@ router.get('/generate-bills', function (req, res, next) {
     });
 });
 
-router.get('/:_id', function (req, res, next) {
-    User.findOne({_id: req.params._id}).populate({
+router.get('/:user_id', function (req, res, next) {
+    // console.log(req.params)
+    User.findOne({_id: req.params.user_id}).populate({
         path: 'properties bill',
         populate: [
             {
@@ -140,16 +140,17 @@ router.get('/:_id', function (req, res, next) {
                 path: 'use_code', select: 'code name'
             },
             {
-                path:'sanitation_code'
+                path: 'sanitation_code'
             },
             {
-                path: 'properties', populate:[
+                path: 'properties',
+                populate: [
                     {
                         path: 'area', select: 'code name'
                     }, {
                         path: 'use_code', select: 'code name rate'
                     }, {
-                    path:'sanitation_code'
+                        path: 'sanitation_code'
                     }
                 ]
             }

@@ -1,0 +1,57 @@
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="title1">Property Results for <i>'{{term}}'</i></h2>
+        <div class="blank-page widget-shadow scroll" id="style-2 div1">
+            <p class="pull-right btn btn-dark btn-sm prussy" id="print_it" onclick="window.print()"><i class="fa fa-print" style="color: #fff"></i> Print</p>
+            <p class="pull-left btn btn-dark btn-sm prussy" onclick="window.location.reload()"><i class="fa fa-refresh" style="color: #fff"></i></p>
+            <div class="clearfix"></div>
+            <ul class="list-group" id="areass" data-area_code="{{area.code}}">
+                {{#each area.properties as |prop|}}
+                    <li class="list-group-item">
+                        <a href="#" style="color:
+                            {{#if prop.owner.bill.0.paid}}
+                            #00a78e
+                            {{else}}
+                            #f1332d
+                            {{/if}};"
+                        >
+                            <span class="ariall">{{prop.prop_num}}</span>
+                            <span class="pull-right">{{prop.owner.displayName}}</span>
+                            <div class="clearfix"></div>
+                        </a>
+                        <p>Bill Status: {{#if prop.owner.bill.0.paid}}
+                            paid
+                        {{else}}
+                            owing
+                        {{/if}}
+                        </p>
+                        <p class="pull-left">
+                            Location: <small>{{prop.location.description}}</small>
+                        </p>
+                        <p class="pull-right">prop cost:
+                            <small class="calcs" data-san="{{prop.sanitation_code.rate}}"
+                                   data-use="{{prop.use_code.rate}}" data-rate_val="{{prop.rate_val}}"></small>
+                        </p>
+                        <div class="clearfix"></div>
+                        <hr style="clear: both">
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.ariall').each(function () {
+            console.log($(this));
+            $(this).text($('#areass').attr('data-area_code') + $(this).text());
+        });
+        $('.calcs').each(function () {
+            let san = Number($(this).attr('data-san')),
+                    use = Number($(this).attr('data-use')),
+                    rate_val = Number($(this).attr('data-rate_val'))
+            ;
+            $(this).text('¢ '+san + (use * rate_val));
+        });
+    });
+</script>
