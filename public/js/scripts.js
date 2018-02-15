@@ -133,7 +133,8 @@
                         return {
                             label: el.name,
                             code: el.code,
-                            value: el._id
+                            value: el._id,
+                            rate:el.rate
                         };
                     }));
                 }
@@ -145,6 +146,7 @@
             this.label = ui.item.label + ' (' + ui.item.code + ')';
             this.value = this.label;
             $(this).next("input").val(ui.item.value);
+            $('#use_rate').val(ui.item.rate);
             /*$('#are_a').label = ui.item.code+' :: '+ui.item.label;
             $('#are_a').value = ui.item.value;*/
             // Prevent other event from not being execute
@@ -155,6 +157,7 @@
             this.value = ui.item.label + ' (' + ui.item.code + ')';
             // Set the id to the next input hidden field
             $(this).next("input").val(ui.item.value);
+            $('#use_rate').val(ui.item.rate);
             // Prevent other event from not being execute
             event.preventDefault();
             // optionnal: submit the form after field has been filled up
@@ -216,6 +219,9 @@
             prop_num: $form.find('[name="prop_num"]').val(),
             area: $form.find('[name="area"]').val(),
             x: $form.find('[name="x"]').val(),
+            len: $form.find('[name="len"]').val(),
+            wid: $form.find('[name="wid"]').val(),
+            use_rate: $form.find('[name="use_rate"]').val(),
             y: $form.find('[name="y"]').val(),
             loc_des: $form.find('[name="loc_des"]').val(),
             owner: $form.find('[name="owner"]').val()

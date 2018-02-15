@@ -20,6 +20,7 @@ module.exports = {
     hubtel:{
         clientid:process.env.HUBTEL_CLIENT_ID,
         secretid:process.env.HUBTEL_SECRET_ID,
-        merchantaccnumber: process.env.HUBTEL_MERCHANT
+        merchantaccnumber: process.env.HUBTEL_MERCHANT,
+        callbackurl:process.env.HUBTEL_CALLBACKURL
     }
 };

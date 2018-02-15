@@ -8,6 +8,12 @@ let propSchema = new mongoose.Schema({
         type: Number,
         default: 33
     },
+    rate_impost:{
+        type:Number,
+        default:.5
+    },
+    len:Number,
+    wid:Number,
     use_code: {
         type:mongoose.Schema.Types.ObjectId,
         ref:'Use_code'
