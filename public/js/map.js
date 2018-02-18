@@ -112,16 +112,17 @@ function sanitizeHTML(strings) {
 }
 
 function initMap() {
+let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-props');
 
     // Create the map.
     const map = new google.maps.Map(document.getElementsByClassName('mapuzzy')[0], {
-        zoom: 7,
-        center: {lat: 52.632469, lng: -1.689423},
+        zoom: 13,
+        center: {lat: 6.083333, lng: -0.250000},
         styles: mapStyle
     });
 
     // Load the stores GeoJSON onto the map.
-    map.data.loadGeoJson('/getJson');
+    map.data.loadGeoJson('/geoJson?user='+document.getElementById('mapuzzy').getAttribute('data-user-id'));
 
     // Define the custom marker icons, using the store's "category".
     map.data.setStyle(feature => {
@@ -144,14 +145,17 @@ function initMap() {
         const category = event.feature.getProperty('category');
         const name = event.feature.getProperty('name');
         const description = event.feature.getProperty('description');
-        const hours = event.feature.getProperty('hours');
-        const phone = event.feature.getProperty('phone');
+        const area = event.feature.getProperty('area');
+        const san_code= event.feature.getProperty('sanitation_code');
+        const use_code= event.feature.getProperty('use_code');
         const position = event.feature.getGeometry().get();
         const content = sanitizeHTML`
       <img style="float:left; width:200px; margin-top:30px" src="/images/logo_${category}.png">
       <div style="margin-left:220px; margin-bottom:20px;">
         <h2>${name}</h2><p>${description}</p>
-        <p><b>Open:</b> ${hours}<br/><b>Phone:</b> ${phone}</p>
+        <p><b>Area: </b>${area}</p>
+        <p><b>Use Code Class: </b>${use_code}</p>
+        <p><b>Sanitation Class: </b>${san_code}</p>
         <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
       </div>
     `;

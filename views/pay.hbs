@@ -1,0 +1,42 @@
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="title1">Pay bill <i>'ID empty'</i></h2>
+        <div class="blank-page widget-shadow scroll" id="style-2 div1">
+            <form action="/pay" method="post">
+                <fieldset class="form-group">
+                    <label><h5>Bill ID</h5></label>
+                    <input class="form-control" name="bill" value="{{bill._id}}" readonly>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label><h5>Name</h5></label>
+                    <input class="form-control" name="name" value="{{bill.owner.displayName}}" readonly>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label><h5>Email</h5></label>
+                    <input class="form-control" name="email" type="email" value="{{bill.owner.email}}" readonly>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label><h5>Transaction</h5></label>
+                    <hr>
+                    <div class="input-group">
+                        <span class="input-group-addon">+233</span>
+                        <input class="form-control" id="phone" name="phone">
+                    </div>
+                    <label><h5>Amount</h5></label>
+                    <input class="form-control" name="amount" type="number" step=".05">
+                </fieldset>
+                <fieldset class="form-group">
+                    <label><h5>Channel</h5></label>
+                    <select name="channel" class="form-control">
+                        <option value="mtn-gh">MTN Ghana</option>
+                        <option value="vodafone-gh">Vodafone Ghana</option>
+                        <option value="tigo-gh">Tigo Ghana</option>
+                        <option value="airtel-gh">Airtel Ghana</option>
+                    </select>
+                </fieldset>
+                <button>Submit</button>
+
+            </form>
+        </div>
+    </div>
+</div>

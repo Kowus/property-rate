@@ -7,7 +7,10 @@ var express = require('express'),
     User = require('../models/user'),
     async = require('async'),
     Property = require('../models/property'),
-    UseCode=require('../models/use')
+    UseCode = require('../models/use'),
+    Bill = require('../models/bills'),
+    momo = require('../lib/pay'),
+    Trans = require('../models/transactions')
 ;
 
 /* GET home page. */
@@ -28,54 +31,45 @@ router.get('/', isLoggedIn, function (req, res, next) {
                     callback(null, count);
                 });
             },
-            /*
             function (callback) {
-                Property.count({
-                    $or:[
-                        {use_code:'AR1'},
-                        {use_code:'AR2'},
-                        {use_code:'AR3'},
-                        {use_code:'AR4'},
-                        {use_code:'AR5'},
-                        {use_code:'AR6'}
-                    ]
-                }, function (err, count) {
+                Bill.aggregate(
+                    {
+                        $group: {
+                            _id: null,
+                            total_expected: {$sum: '$total'}
+                        }
+                    }
+                ).exec(function (err, bill) {
                     if (err) return callback(err);
-                    callback(null, count);
+                    callback(null, bill[0].total_expected);
                 });
             },
             function (callback) {
-                Property.count({
-                    $or:[
-                        {use_code:'UR1'},
-                        {use_code:'UR2'},
-                        {use_code:'UR3'},
-                        {use_code:'UR4'},
-                        {use_code:'UR5'},
-                        {use_code:'UR7'},
-                        {use_code:'UR8'},
-                        {use_code:'UR9'}
-                    ]
-                }, function (err, count) {
+                Trans.aggregate(
+                    {
+                        $group: {
+                            _id: null,
+                            total: {$sum: '$paid'}
+                        }
+                    }
+                ).exec(function (err, trans) {
                     if (err) return callback(err);
-                    callback(null, count);
+                    callback(null, trans[0]);
                 });
-            },
-
-            function (callback) {
-                Property.count({use_code:'UR6'}, function (err, count) {
-                    if (err) return callback(err);
-                    callback(null, count);
-                });
-            }*/
-
+            }
         ], (err, results) => {
             if (err) {
                 console.error(err);
                 return res.send(err);
             }
             console.log(results);
-            res.render('index', {title: 'Property Rate', no_users: results[0], no_props: results[1], /*no_ass:results[2], no_unass:results[3], no_unc:results[4]*/});
+            res.render('index', {
+                title: 'Property Rate',
+                no_users: results[0],
+                no_props: results[1],
+                tot_bill: results[2],
+                tot_trans: results[3] !== undefined ? results[3].total : '0.00'
+            });
         }
     );
 
@@ -126,29 +120,29 @@ router.post('/area', function (req, res, next) {
     });
 });
 
-router.get('/area_search',function (req, res, next) {
-   res.render('search-area');
+router.get('/area_search', function (req, res, next) {
+    res.render('search-area');
 });
 router.get('/search_by_area', function (req, res, next) {
-    Area.findOne({_id:req.query.term}).populate({
+    Area.findOne({_id: req.query.term}).populate({
         path: 'properties',
-        populate:[
+        populate: [
             {
-                path:'use_code'
+                path: 'use_code'
             }, {
-            path: 'sanitation_code'
+                path: 'sanitation_code'
             }, {
-            path: 'owner', select:'displayName email',
-                populate:[
-                    {path:'bill'}
+                path: 'owner', select: 'displayName email',
+                populate: [
+                    {path: 'bill'}
                 ]
             }
         ]
     }).exec(function (err, area) {
-        if(err)return res.send(err);
-        res.render('areas', {term:area.name, area:area})
+        if (err) return res.send(err);
+        res.render('areas', {term: area.name, area: area});
         // res.json(area)
-    })
+    });
 });
 router.get('/search_user', function (req, res) {
     var regex = new RegExp(req.query["term"], 'i');
@@ -172,6 +166,41 @@ router.get('/search_user', function (req, res) {
             });
         }
     });
+});
+router.get('/pay', function (req, res, next) {
+    let query = req.query.bill;
+    Bill.findOne({_id: query})
+        .populate('owner')
+        .exec(function (err, bill) {
+            if (err) res.send(err);
+            res.render('pay', {bill: bill});
+        });
+});
+
+router.post('/pay', function (req, res, next) {
+    let num = req.body.phone;
+    if (num[0] == '0') {
+        let newNum = num.split('');
+        newNum.shift();
+        num = newNum.join('');
+    }
+    let customer = {
+        amount: Number(req.body.amount),
+        channel: req.body.channel,
+        email: req.body.email,
+        phone: '233' + num,
+        displayName: req.body.name,
+        bill: req.body.bill
+    };
+    console.log('customer');
+    momo.receive(customer).then(function (data) {
+        console.log(data);
+        res.send(data);
+    }).catch(function (err) {
+        console.log(err);
+        res.send(err);
+    })
+    ;
 });
 
 
@@ -260,9 +289,44 @@ router.get('/search_san', function (req, res) {
     });
 });
 
-router.get('/getJson', function (req, res, next) {
-    console.log('JSON result')
-    res.json({
+router.get('/geoJson', function (req, res, next) {
+    console.log(req.query)
+    let user_id = req.query.user;
+    Property.find({owner: user_id})
+        .populate('sanitation_code use_code area')
+        .exec(
+        function (err, props) {
+            if (err) return res.json(err);
+            // console.log(props)
+            let feats = {
+                type:'FeatureCollection',
+                features:[]
+            };
+            props.forEach(function (item) {
+                feats.features.push({
+                    geometry:{
+                        type:'Point',
+                        coordinates:[
+                            item.location.x,
+                            item.location.y
+                        ]
+                    },
+                    type:'Feature',
+                    properties:{
+                        category:'patisserie',
+                        name:item.prop_num,
+                        area:item.area.name,
+                        description:item.location.description,
+                        use_code:item.use_code.name,
+                        sanitation_code:item.sanitation_code.name
+                    }
+                });
+            });
+            console.log(feats)
+            res.json(feats)
+        }
+    );
+    /*res.json({
         "type": "FeatureCollection",
         "features": [
             {
@@ -270,7 +334,7 @@ router.get('/getJson', function (req, res, next) {
                     "type": "Point",
                     "coordinates": [
                         -0.145365,
-                        51.506182
+                        6.0806182
                     ]
                 },
                 "type": "Feature",
@@ -487,8 +551,8 @@ router.get('/getJson', function (req, res, next) {
                 }
             }
         ]
-    })
-})
+    });*/
+});
 
 
 module.exports = router;
