@@ -60,7 +60,6 @@ router.get('/', isLoggedIn, function (req, res, next) {
                     }
                 ).exec(function (err, props) {
                     if (err) return callback(err);
-                    console.log(props)
                     callback(null, props);
                 });
             }

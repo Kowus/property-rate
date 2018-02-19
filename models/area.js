@@ -8,7 +8,17 @@ var areaSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    properties:[{type:mongoose.Schema.Types.ObjectId, ref:'Property'}]
+    properties: [{type: mongoose.Schema.Types.ObjectId, ref: 'Property'}],
+    loc: {
+        x: {
+            min: Number,
+            max: Number
+        },
+        y: {
+            min: Number,
+            max: Number
+        }
+    }
 });
 
 module.exports = mongoose.model('Area', areaSchema);
