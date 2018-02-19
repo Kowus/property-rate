@@ -50,8 +50,8 @@ router.post('/create', function (req, res, next) {
 
 
 router.post('/add_prop', function (req, res, next) {
-    let rcn = req.body.use_rate < 10 ? 9 : 0,
-        dep = req.body.use_rate < 10 ? 6 : 0
+    let rcn = req.body.use_rate < 10 ? Math.random() * 9 : 0,
+        dep = req.body.use_rate < 10 ? Math.random()*6 : 0
     ;
     let newProp = new Property({
         prop_num: req.body.prop_num,
