@@ -35,26 +35,33 @@ router.get('/', isLoggedIn, function (req, res, next) {
                 Bill.aggregate(
                     {
                         $group: {
-                            _id: null,
-                            total_expected: {$sum: '$total'}
+                            _id: {year: {$year: '$createdAt'}},
+                            total_expected: {$sum: '$total'},
+                            total_paid: {$sum: '$paid'}
                         }
                     }
                 ).exec(function (err, bill) {
                     if (err) return callback(err);
-                    callback(null, bill[0].total_expected);
+                    callback(null, bill);
                 });
             },
             function (callback) {
-                Trans.aggregate(
+                Property.aggregate(
                     {
-                        $group: {
-                            _id: null,
-                            total: {$sum: '$paid'}
+                        $group:{
+                            _id:{
+                                month:{
+                                    $month: '$createdAt'
+                                }, year:{
+                                    $year:'$createdAt'
+                                }
+                            }, count:{$sum: 1}
                         }
                     }
-                ).exec(function (err, trans) {
+                ).exec(function (err, props) {
                     if (err) return callback(err);
-                    callback(null, trans[0]);
+                    console.log(props)
+                    callback(null, props);
                 });
             }
         ], (err, results) => {
@@ -68,7 +75,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
                 no_users: results[0],
                 no_props: results[1],
                 tot_bill: results[2],
-                tot_trans: results[3] !== undefined ? results[3].total : '0.00'
+                prop_trend: results[3]
             });
         }
     );
@@ -290,42 +297,42 @@ router.get('/search_san', function (req, res) {
 });
 
 router.get('/geoJson', function (req, res, next) {
-    console.log(req.query)
+    console.log(req.query);
     let user_id = req.query.user;
     Property.find({owner: user_id})
         .populate('sanitation_code use_code area')
         .exec(
-        function (err, props) {
-            if (err) return res.json(err);
-            // console.log(props)
-            let feats = {
-                type:'FeatureCollection',
-                features:[]
-            };
-            props.forEach(function (item) {
-                feats.features.push({
-                    geometry:{
-                        type:'Point',
-                        coordinates:[
-                            item.location.x,
-                            item.location.y
-                        ]
-                    },
-                    type:'Feature',
-                    properties:{
-                        category:'patisserie',
-                        name:item.prop_num,
-                        area:item.area.name,
-                        description:item.location.description,
-                        use_code:item.use_code.name,
-                        sanitation_code:item.sanitation_code.name
-                    }
+            function (err, props) {
+                if (err) return res.json(err);
+                // console.log(props)
+                let feats = {
+                    type: 'FeatureCollection',
+                    features: []
+                };
+                props.forEach(function (item) {
+                    feats.features.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [
+                                item.location.x,
+                                item.location.y
+                            ]
+                        },
+                        type: 'Feature',
+                        properties: {
+                            category: 'patisserie',
+                            name: item.prop_num,
+                            area: item.area.name,
+                            description: item.location.description,
+                            use_code: item.use_code.name,
+                            sanitation_code: item.sanitation_code.name
+                        }
+                    });
                 });
-            });
-            console.log(feats)
-            res.json(feats)
-        }
-    );
+                // console.log(feats)
+                res.json(feats);
+            }
+        );
     /*res.json({
         "type": "FeatureCollection",
         "features": [

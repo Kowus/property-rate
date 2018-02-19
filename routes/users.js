@@ -7,8 +7,7 @@ var express = require('express'),
     Property = require('../models/property'),
     async = require('async'),
     mail = require('../config/sendmail'),
-    Bill = require('../lib/bill'),
-    async = require('async')
+    Bill = require('../lib/bill')
 ;
 router.get('/', function (req, res, next) {
     res.render('s-create-user');
@@ -171,34 +170,6 @@ router.get('/:user_id', function (req, res, next) {
             features:[]
         };
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
-        /*
-        async.forEachOf(user.properties, function (value, key, callback) {
-            try{
-                feats.features[key]={
-                    geometry:{
-                        type:'Point',
-                        coordinates:[
-                            value.location.x,
-                            value.location.y
-                        ]
-                    },
-                    type:'Feature',
-                    properties:{
-                        category:'patisserie',
-                        name:value.prop_num,
-                        description:`${value.location.description} ${value.use_code.name} with a ${value.sanitation_code.name} sanitation code.`
-                    }
-                }
-            } catch (e){
-                return callback(e);
-            }
-            callback();
-        }, function (err) {
-            if (err) res.send(err)
-            console.log(JSON.stringify(feats));
-        res.render('user', {owner: user, use_code: use_code, sanitation: sanitation, props:JSON.stringify(feats)});
-        });
-        */
     });
 });
 module.exports = router;

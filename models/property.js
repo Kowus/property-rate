@@ -16,6 +16,10 @@ let propSchema = new mongoose.Schema({
         default:.5
     },
     len:Number,
+    createdAt:{
+        type:Date,
+        default:Date.now
+    },
     wid:Number,
     rcn:Number,
     dep:Number,

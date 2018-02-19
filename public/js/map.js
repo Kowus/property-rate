@@ -98,7 +98,8 @@ const mapStyle = [
 ];
 
 // Escapes HTML characters in a template literal string, to prevent XSS.
-// See https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
+// See
+// https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
 function sanitizeHTML(strings) {
     const entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'};
     let result = strings[0];
@@ -112,7 +113,7 @@ function sanitizeHTML(strings) {
 }
 
 function initMap() {
-let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-props');
+    let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-props');
 
     // Create the map.
     const map = new google.maps.Map(document.getElementsByClassName('mapuzzy')[0], {
@@ -122,7 +123,7 @@ let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-pr
     });
 
     // Load the stores GeoJSON onto the map.
-    map.data.loadGeoJson('/geoJson?user='+document.getElementById('mapuzzy').getAttribute('data-user-id'));
+    map.data.loadGeoJson('/geoJson?user=' + document.getElementById('mapuzzy').getAttribute('data-user-id'));
 
     // Define the custom marker icons, using the store's "category".
     map.data.setStyle(feature => {
@@ -142,14 +143,14 @@ let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-pr
     // Show the information for a store when its marker is clicked.
     map.data.addListener('click', event => {
 
-        const category = event.feature.getProperty('category');
-        const name = event.feature.getProperty('name');
-        const description = event.feature.getProperty('description');
-        const area = event.feature.getProperty('area');
-        const san_code= event.feature.getProperty('sanitation_code');
-        const use_code= event.feature.getProperty('use_code');
-        const position = event.feature.getGeometry().get();
-        const content = sanitizeHTML`
+        const category = event.feature.getProperty('category'),
+            name = event.feature.getProperty('name'),
+            description = event.feature.getProperty('description'),
+            area = event.feature.getProperty('area'),
+            san_code = event.feature.getProperty('sanitation_code'),
+            use_code = event.feature.getProperty('use_code'),
+            position = event.feature.getGeometry().get(),
+            content = sanitizeHTML`
       <img style="float:left; width:200px; margin-top:30px" src="/images/logo_${category}.png">
       <div style="margin-left:220px; margin-bottom:20px;">
         <h2>${name}</h2><p>${description}</p>
