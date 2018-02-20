@@ -76,6 +76,13 @@
                                                     <!--<i class="fa fa-warning"></i>-->¢ {{total}}</div>
                                             </div>
                                             <div class="clearfix"></div>
+                                            <div class="text-center">
+                                                {{#if paid}}
+                                                <small class=" btn btn-sm btn-success">Paid</small>
+                                                {{else}}
+                                                <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
+                                                {{/if}}
+                                            </div>
                                             <hr>
                                             <div style="margin:auto 10px;">
 
