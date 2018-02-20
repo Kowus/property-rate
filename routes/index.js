@@ -66,7 +66,14 @@ router.get('/', isLoggedIn, function (req, res, next) {
         ], (err, results) => {
             if (err) {
                 console.error(err);
-                return res.send(err);
+                res.render('index', {
+                    title: 'Property Rate',
+                    no_users: results[0],
+                    no_props: results[1],
+                    tot_bill: results[2],
+                    prop_trend: results[3],
+                    message:'Error Occurred:' +err
+                });
             }
             console.log(results);
             res.render('index', {
@@ -78,7 +85,6 @@ router.get('/', isLoggedIn, function (req, res, next) {
             });
         }
     );
-
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
     res.render('login', {title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true});
@@ -209,6 +215,10 @@ router.post('/pay', function (req, res, next) {
     ;
 });
 
+router.post('/pay/mobilemoney', function (req, res, next) {
+    console.log(req.body);
+    res.status(200).end();
+});
 
 router.get('/search_area', function (req, res) {
     console.log(req.query);
