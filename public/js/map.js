@@ -113,7 +113,7 @@ function sanitizeHTML(strings) {
 }
 
 function initMap() {
-    let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-props');
+    // let json_payload = document.getElementById('mapuzzy').getAttribute('data-user-props');
 
     // Create the map.
     const map = new google.maps.Map(document.getElementsByClassName('mapuzzy')[0], {
@@ -151,13 +151,12 @@ function initMap() {
             use_code = event.feature.getProperty('use_code'),
             position = event.feature.getGeometry().get(),
             content = sanitizeHTML`
-      <img style="float:left; width:200px; margin-top:30px" src="/images/logo_${category}.png">
+      <img style="float:left; width:200px; margin-top:30px" src="/images/bidiiin.png">
       <div style="margin-left:220px; margin-bottom:20px;">
         <h2>${name}</h2><p>${description}</p>
         <p><b>Area: </b>${area}</p>
         <p><b>Use Code Class: </b>${use_code}</p>
         <p><b>Sanitation Class: </b>${san_code}</p>
-        <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
       </div>
     `;
 
