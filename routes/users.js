@@ -37,7 +37,7 @@ router.post('/create', function (req, res, next) {
                 if (err) {
                     console.log(err);
                     // return done(null, false, req.flash('signupMessage', "Couldn't create your account."));
-                    res.render('create-user', {message: "Couldn't create the account."});
+                    return res.render('create-user', {message: "Couldn't create the account."});
                 }
                 // return done(null,user);
                 mail.newUser(user, pwd);
@@ -161,6 +161,9 @@ router.get('/:user_id', function (req, res, next) {
                         path: 'sanitation_code'
                     }
                 ]
+            },
+            {
+                path:'transactions'
             }
         ]
     }).exec(function (err, user) {

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    securePassword = require('secure-password');
+    securePassword = require('secure-password'),
+    Ticket = require('./ticket')
+;
 let pwd = securePassword();
 
 let userSchema = new Schema({
@@ -25,11 +27,30 @@ let userSchema = new Schema({
     address: String,
     properties: [
         {type: Schema.Types.ObjectId, ref: 'Property'}
-        ],
+    ],
     password: {type: Buffer, required: true},
-    gender: {type:String},
-    bill:[{type:Schema.Types.ObjectId, ref:'Bill'}]
+    gender: {type: String},
+    bill: [{type: Schema.Types.ObjectId, ref: 'Bill'}],
+    ticket: {type: Schema.Types.ObjectId, ref: 'Ticket', required: true}
 });
+
+userSchema.pre('validate', function (next) {
+    if(this.isNew) {
+        let user = this,
+            newTicket = new Ticket({
+                owner: user._id,
+                balance: 0
+            });
+        newTicket.save(function (err, ticket) {
+            if (err) return next(err);
+            return next()
+        })
+    }else {
+        return next();
+    }
+});
+
+
 userSchema.pre('save', function (next) {
     let user = this;
     this.displayName = `${user.givenName} ${user.familyName}`;
@@ -66,7 +87,7 @@ userSchema.pre('save', function (next) {
                     });
                 }
             });
-        })
+        });
     }
     else {
         return next();
