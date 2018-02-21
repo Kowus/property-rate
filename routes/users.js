@@ -51,7 +51,7 @@ router.post('/create', function (req, res, next) {
 
 router.post('/add_prop', function (req, res, next) {
     let rcn = req.body.use_rate < 10 ? Math.random() * 9 : 0,
-        dep = req.body.use_rate < 10 ? Math.random()*6 : 0
+        dep = req.body.use_rate < 10 ? Math.random() * 6 : 0
     ;
     let newProp = new Property({
         prop_num: req.body.prop_num,
@@ -163,14 +163,14 @@ router.get('/:user_id', function (req, res, next) {
                 ]
             },
             {
-                path:'transactions'
+                path: 'transactions'
             }
         ]
     }).exec(function (err, user) {
         if (err) console.error(err);
         let feats = {
-            type:'FeatureCollection',
-            features:[]
+            type: 'FeatureCollection',
+            features: []
         };
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
     });
