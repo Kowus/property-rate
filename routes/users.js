@@ -128,14 +128,7 @@ router.post('/add_prop', function (req, res, next) {
 });
 
 
-router.get('/generate-bills', function (req, res, next) {
-    Bill.generateBills()
-        .then(response => {
-            res.json(response);
-        }).catch(err => {
-        res.json(err);
-    });
-});
+
 
 router.get('/:user_id', function (req, res, next) {
     // console.log(req.params)
@@ -168,10 +161,6 @@ router.get('/:user_id', function (req, res, next) {
         ]
     }).exec(function (err, user) {
         if (err) console.error(err);
-        let feats = {
-            type: 'FeatureCollection',
-            features: []
-        };
         res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
     });
 });

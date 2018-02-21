@@ -1,42 +1,66 @@
 <div id="page-wrapper">
     <div class="main-page">
-        <h2 class="title1">Pay bill <small>{{bill._id}} for {{bill.owner.displayName}}</small></h2>
+        <h2 class="title1">Pay bill
+            <small>{{bill._id}} for {{bill.owner.displayName}}</small>
+        </h2>
         <div class="blank-page widget-shadow scroll" id="style-2 div1">
-            <form action="/pay" method="post">
-                <fieldset class="form-group">
-                    <label><h5>Bill ID</h5></label>
-                    <input class="form-control" name="bill" value="{{bill._id}}" readonly>
-                </fieldset>
-                <fieldset class="form-group">
-                    <label><h5>Name</h5></label>
-                    <input class="form-control" name="name" value="{{bill.owner.displayName}}" readonly>
-                </fieldset>
-                <fieldset class="form-group">
-                    <label><h5>Email</h5></label>
-                    <input class="form-control" name="email" type="email" value="{{bill.owner.email}}" readonly>
-                </fieldset>
-                <fieldset class="form-group">
-                    <label><h5>Transaction</h5></label>
-                    <hr>
-                    <div class="input-group">
-                        <span class="input-group-addon">+233</span>
-                        <input class="form-control" id="phone" name="phone">
-                    </div>
-                    <label><h5>Amount</h5></label>
-                    <input class="form-control" name="amount" type="number" step=".05">
-                </fieldset>
-                <fieldset class="form-group">
-                    <label><h5>Channel</h5></label>
-                    <select name="channel" class="form-control">
-                        <option value="mtn-gh">MTN Ghana</option>
-                        <option value="vodafone-gh">Vodafone Ghana</option>
-                        <option value="tigo-gh">Tigo Ghana</option>
-                        <option value="airtel-gh">Airtel Ghana</option>
-                    </select>
-                </fieldset>
-                <button>Submit</button>
+            <div>
 
-            </form>
+                <div class="pull-left btn btn-warning">Pay With Mobile Money</div>
+                <div class="pull-right btn btn-info">Pay With Ticket</div>
+                <div class="clearfix"></div>
+            </div>
+            <br><br>
+            <hr>
+
+
+
+            {{#if success_message}}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong><i class="fa fa-thumbs-o-up"></i></strong> {{success_message}}
+                </div>
+            {{/if}}
+
+            <div>
+                <div class="pull-right text-right">
+                    <h2 class="text-left">Ticket Details</h2>
+                    <p class="lead">{{bill.owner.ticket._id}}</p>
+                    <h1>¢ {{bill.owner.ticket.balance}}</h1>
+                </div>
+                <div class="pull-left text-left">
+                    <h2 class="text-left">Bill Details</h2>
+                    <p class="lead">{{bill._id}}</p>
+                    <h1>¢ {{bill.total}}</h1>
+                </div>
+                <div class="clearfix"></div>
+                <hr>
+                <form method="post" action="/pay/ticket">
+                    <fieldset class="form-group" style="width:50%; margin: 0 auto;">
+                        {{#if message}}
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Warning!</strong> {{message}}
+                            </div>
+                            <br>
+                        {{/if}}
+                        <input value="{{bill._id}}" hidden readonly name="bill">
+                        <input value="{{bill.owner.ticket._id}}" hidden readonly name="ticket">
+                        <input class="form-control text-right" required name="amount" type="number" step=".01" style="height: 100px; font-size: xx-large;" placeholder="Amount to pay" min="1" {{#if inAm}}value="{{inAm}}"{{/if}}>
+                        <hr>
+                        <div class="text-right">
+
+                        <button class="btn btn-success">
+                            <i class="fa fa-money">  |  Pay</i>
+                        </button>
+                        </div>
+                    </fieldset>
+                    <hr>
+                    <br><br>
+                </form>
+            </div>
+
+            <!--{{>momo}}-->
         </div>
     </div>
 </div>

@@ -12,7 +12,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     redis = require('redis').createClient(env.redis.url, {no_ready_check: true}),
     RedisStore = require('connect-redis')(session),
-    helmet =require('helmet')
+    helmet =require('helmet'),
+    hbs = require('hbs')
 ;
 mongoose.connect(env.database.url, {
     useMongoClient: true,
@@ -25,7 +26,7 @@ var properties = require('./routes/properties');
 
 var app = express();
 app.use(helmet());
-
+hbs.registerPartials('./views/partials');
 app.locals.title='P R M A';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

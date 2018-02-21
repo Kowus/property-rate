@@ -8,7 +8,19 @@ const mongoose = require('mongoose'),
     Schema = mongoose.Schema
 ;
 let ticketSchema = Schema({
-    balance:Number,
+    balance: {
+        type:Number,
+        default:round_number(Math.random()*10000)
+    },
     owner:{type:Schema.Types.ObjectId,ref:'User', required:true}
 });
 module.exports= mongoose.model('Ticket', ticketSchema);
+
+function round_number(value, places) {
+    if (places) {
+        var pow = Math.pow(10, places);
+        return Math.round(value, pow) / pow;
+    } else {
+        return Math.round(value * 100) / 100;
+    }
+}

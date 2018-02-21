@@ -129,7 +129,7 @@ function initMap() {
     map.data.setStyle(feature => {
         return {
             icon: {
-                url: `/images/icon_${feature.getProperty('category')}.png`,
+                url: `/images/icon_patisserie.png`,
                 // url: '/images/1.jpg',
                 scaledSize: new google.maps.Size(64, 64)
             }

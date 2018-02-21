@@ -38,8 +38,7 @@ userSchema.pre('validate', function (next) {
     if(this.isNew) {
         let user = this,
             newTicket = new Ticket({
-                owner: user._id,
-                balance: 0
+                owner: user._id
             });
         newTicket.save(function (err, ticket) {
             if (err) return next(err);

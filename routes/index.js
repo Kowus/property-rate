@@ -10,7 +10,9 @@ var express = require('express'),
     UseCode = require('../models/use'),
     Bill = require('../models/bills'),
     momo = require('../lib/pay'),
-    Trans = require('../models/transactions')
+    Trans = require('../models/transactions'),
+    Ticket =require('../models/ticket'),
+    Billy = require('../lib/bill')
 ;
 
 /* GET home page. */
@@ -48,14 +50,14 @@ router.get('/', isLoggedIn, function (req, res, next) {
             function (callback) {
                 Property.aggregate(
                     {
-                        $group:{
-                            _id:{
-                                month:{
+                        $group: {
+                            _id: {
+                                month: {
                                     $month: '$createdAt'
-                                }, year:{
-                                    $year:'$createdAt'
+                                }, year: {
+                                    $year: '$createdAt'
                                 }
-                            }, count:{$sum: 1}
+                            }, count: {$sum: 1}
                         }
                     }
                 ).exec(function (err, props) {
@@ -72,7 +74,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
                     no_props: results[1],
                     tot_bill: results[2],
                     prop_trend: results[3],
-                    message:'Error Occurred:' +err
+                    message: 'Error Occurred:' + err
                 });
             }
             console.log(results);
@@ -85,6 +87,14 @@ router.get('/', isLoggedIn, function (req, res, next) {
             });
         }
     );
+});
+router.get('/generate-bills', function (req, res, next) {
+    Billy.generateBills()
+        .then(response => {
+            res.render('bills', {count:response.length})
+        }).catch(err => {
+        res.json(err);
+    });
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
     res.render('login', {title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true});
@@ -180,12 +190,27 @@ router.get('/search_user', function (req, res) {
     });
 });
 router.get('/pay', function (req, res, next) {
-    let query = req.query.bill;
+    let query = req.query.bill,
+        err_mess = req.query.err||null,
+        inAm = req.query.inAm ||null
+    ;
+
     Bill.findOne({_id: query})
-        .populate('owner')
+        .populate({
+            path: 'owner',
+            populate: [
+                {
+                    path: 'ticket'
+                }
+            ]
+
+        })
         .exec(function (err, bill) {
-            if (err) res.send(err);
-            res.render('pay', {bill: bill});
+            if (err) {
+                console.error(err);
+                return res.send(err);
+            }
+            res.render('pay', {bill: bill, message:err_mess, inAm:inAm});
         });
 });
 
@@ -218,6 +243,10 @@ router.post('/pay', function (req, res, next) {
 router.post('/pay/mobilemoney', function (req, res, next) {
     console.log(req.body);
     res.status(200).end();
+});
+
+router.post('/pay/ticket', isUserTicket, function (req, res, next) {
+    res.json(req.body)
 });
 
 router.get('/search_area', function (req, res) {
@@ -329,7 +358,7 @@ router.get('/geoJson', function (req, res, next) {
                         },
                         type: 'Feature',
                         properties: {
-                            category: 'patisserie',
+                            category: item.use_code.code,
                             name: item.prop_num,
                             area: item.area.name,
                             description: item.location.description,
@@ -342,232 +371,6 @@ router.get('/geoJson', function (req, res, next) {
                 res.json(feats);
             }
         );
-    /*res.json({
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -0.145365,
-                        6.0806182
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Modern twists on classic pastries. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Mayfair",
-                    "phone": "+44 20 1234 5678"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -2.579623,
-                        51.452251
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Come and try our award-winning cakes and pastries. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Bristol",
-                    "phone": "+44 117 121 2121"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        1.273459,
-                        52.638072
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Whatever the occasion, whether it's a birthday or a wedding, Josie's Patisserie has the perfect treat for you. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Norwich",
-                    "phone": "+44 1603 123456"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -1.882509,
-                        50.848831
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "A gourmet patisserie that will delight your senses. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Wimborne",
-                    "phone": "+44 1202 343434"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -2.985933,
-                        53.408899
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Spoil yourself or someone special with our classic pastries. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Liverpool",
-                    "phone": "+44 151 444 4444"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -1.689423,
-                        52.632469
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Come and feast your eyes and tastebuds on our delicious pastries and cakes. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Tamworth",
-                    "phone": "+44 5555 55555"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -3.155305,
-                        51.479756
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "patisserie",
-                    "hours": "10am - 6pm",
-                    "description": "Josie's Patisserie is family-owned, and our delectable pastries, cakes, and great coffee are renowed. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Patisserie Cardiff",
-                    "phone": "+44 29 6666 6666"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -0.725019,
-                        52.668891
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "Oakham's favorite spot for fresh coffee and delicious cakes. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Oakham",
-                    "phone": "+44 7777 777777"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -2.477653,
-                        53.735405
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "Enjoy freshly brewed coffe, and home baked cakes in our homely cafe. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Blackburn",
-                    "phone": "+44 8888 88888"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -0.211363,
-                        51.108966
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "A delicious array of pastries with many flavours, and fresh coffee in an snug cafe. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Crawley",
-                    "phone": "+44 1010 101010"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -0.123559,
-                        50.832679
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "Grab a freshly brewed coffee, a decadent cake and relax in our idyllic cafe. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Brighton",
-                    "phone": "+44 1313 131313"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        -3.319575,
-                        52.517827
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "Come in and unwind at this idyllic cafe with fresh coffee and home made cakes. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Newtown",
-                    "phone": "+44 1414 141414"
-                }
-            },
-            {
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        1.158167,
-                        52.071634
-                    ]
-                },
-                "type": "Feature",
-                "properties": {
-                    "category": "cafe",
-                    "hours": "8am - 9:30pm",
-                    "description": "Fresh coffee and delicious cakes in an snug cafe. We're part of a larger chain of patisseries and cafes.",
-                    "name": "Josie's Cafe Ipswich",
-                    "phone": "+44 1717 17171"
-                }
-            }
-        ]
-    });*/
 });
 
 
@@ -593,6 +396,41 @@ function isNotLoggedIn(req, res, next) {
         return next();
 }
 
+function isUserTicket(req, res, next) {
+    if (req.body.amount&&req.body.amount<1)return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Amount must be ¢ 1.00 or greater ...`)
+    Bill.findOne({_id: req.body.bill})
+        .populate({
+            path: 'owner',
+            populate: [
+                {
+                    path: 'ticket'
+                }
+            ]
+        }).exec((err, bill) => {
+        if (err){
+            console.error(err);
+            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`)
+        }
+        if (bill.owner.ticket._id == req.body.ticket) {
+            Ticket.findOne({
+                _id:req.body.ticket
+            }).exec((err, ticket)=>{
+                if(err) {
+                    console.error(err);
+                    return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                }
+                if (ticket.balance >= req.body.amount){
+                    return next();
+                }
+                else  return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Sorry, you don't have enough funds for this operation.`);
+            });
+
+        }
+        else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Ticket doesn't belong to this user. I'll call the cops on you!`);
+    });
+}
+
+
 function needsGroup(group) {
     return function (req, res, next) {
         if (req.user && req.user.group === group) {
@@ -604,4 +442,13 @@ function needsGroup(group) {
             res.status(401).redirect(`/login?next=${req.originalUrl}`);
         }
     };
+}
+
+function round_number(value, places) {
+    if (places) {
+        var pow = Math.pow(10, places);
+        return Math.round(value, pow) / pow;
+    } else {
+        return Math.round(value * 100) / 100;
+    }
 }

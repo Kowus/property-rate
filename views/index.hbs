@@ -39,7 +39,8 @@
                 <div class="content-top-1">
                     <div class="col-md-6 top-content">
                         <h5>Expected income</h5>
-                        <label>¢ {{tot_bill.0.total_expected}}</label>
+                        <label data-amt="{{tot_bill.0.total_expected}}"
+                               id="amt_ex">¢ {{tot_bill.0.total_expected}}</label>
                     </div>
                     <div class="col-md-6 top-content1">
                         <div id="demo-pie-1" class="pie-title-center" data-percent="45"><span class="pie-value"></span>
@@ -50,7 +51,7 @@
                 <div class="content-top-1">
                     <div class="col-md-6 top-content">
                         <h5>Actual income</h5>
-                        <label>¢ {{tot_bill.0.total_paid}}</label>
+                        <label data-amt="{{tot_bill.0.total_paid}}" id="amt_paid">¢ {{tot_bill.0.total_paid}}</label>
                     </div>
                     <div class="col-md-6 top-content1">
                         <div id="demo-pie-2" class="pie-title-center" data-percent="75"><span class="pie-value"></span>
@@ -61,7 +62,8 @@
                 <div class="content-top-1">
                     <div class="col-md-6 top-content">
                         <h5>Margin</h5>
-                        <label id="marg" data-expected="{{tot_bill.0.total_expected}}" data-paid="{{tot_bill.0.total_paid}}"></label>
+                        <label id="marg" data-expected="{{tot_bill.0.total_expected}}"
+                               data-paid="{{tot_bill.0.total_paid}}"></label>
                     </div>
                     <div class="col-md-6 top-content1">
                         <div id="demo-pie-3" class="pie-title-center" data-percent="90"><span class="pie-value"></span>
@@ -114,8 +116,6 @@
 </div>
 
 
-
-
 <!-- new added graphs chart js-->
 
 <script src="/js/Chart.bundle.js"></script>
@@ -155,8 +155,12 @@
 
     window.onload = function () {
         var exp = document.getElementById('marg').getAttribute('data-expected');
+        let amtpd = document.getElementById('amt_paid').getAttribute('data-amt');
+        document.getElementById('amt_paid').innerText = '¢ ' + round_number(Number(amtpd));
+        let amtex = document.getElementById('amt_ex').getAttribute('data-amt');
+        document.getElementById('amt_ex').innerText = '¢ ' + round_number(Number(amtex));
         var pd = document.getElementById('marg').getAttribute('data-paid');
-        document.getElementById('marg').innerText = `¢ ${Number(pd-exp)}`;
+        document.getElementById('marg').innerText = `¢ ${round_number(Number(pd - exp))}`;
 
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myBar = new Chart(ctx, {
@@ -175,6 +179,15 @@
         });
 
     };
+
+    function round_number(value, places) {
+        if (places) {
+            var pow = Math.pow(10, places);
+            return Math.round(value, pow) / pow;
+        } else {
+            return Math.round(value * 100) / 100;
+        }
+    }
 
 </script>
 <!-- new added graphs chart js-->
@@ -222,7 +235,7 @@
         title: "Properties Added",
         values: [
             {{#each prop_trend}}
-                {X:"{{_id.month}}/{{_id.year}}",Y:Number({{count}})},
+                {X: "{{_id.month}}/{{_id.year}}", Y: Number({{count}})}
             {{/each}}
         ]
     };
@@ -236,7 +249,7 @@
             axiscolor: "#E6E6E6",
             textcolor: "#6E6E6E",
             showlegends: false,
-            data: [ graphdata1],
+            data: [graphdata1],
             legendsize: "140",
             legendposition: 'bottom',
             xaxislabel: 'Month',
