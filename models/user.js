@@ -43,6 +43,7 @@ userSchema.pre('validate', function (next) {
             });
         newTicket.save(function (err, ticket) {
             if (err) return next(err);
+            user.ticket = ticket._id;
             return next()
         })
     }else {
