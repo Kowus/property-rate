@@ -12,7 +12,17 @@ let ticketSchema = Schema({
         type:Number,
         default:round_number(Math.random()*10000)
     },
-    owner:{type:Schema.Types.ObjectId,ref:'User', required:true}
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+    transactions:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:'Transaction'
+        }
+    ]
 });
 module.exports= mongoose.model('Ticket', ticketSchema);
 

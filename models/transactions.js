@@ -13,16 +13,19 @@ let Transaction = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Bill'
     },
-    expected: Number,
-    paid: Number,
+    amount: Number,
     date: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     owner:{
         type: Schema.Types.ObjectId,
         ref:'User'
+    }, approved:{
+        type: Boolean,
+        default:false
     }
 });
+
 
 module.exports = mongoose.model('Transaction', Transaction);

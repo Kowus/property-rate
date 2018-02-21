@@ -1,4 +1,3 @@
-
 <script src="/js/jquery-1.12.4.js"></script>
 <script src="/js/jquery-ui.js"></script>
 
@@ -6,7 +5,15 @@
     <div class="main-page">
         <h2 class="title1">{{owner.displayName}}</h2>
         <div class="elements">
-
+            {{#if transtat}}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <strong><i class="fa fa-thumbs-o-up"></i>
+                        <small>{{transid}} </small>
+                    </strong> Transaction Success
+                </div>
+            {{/if}}
             <div class="col-sm-4 wthree-crd widgettable">
                 <div class="card card-contact-list">
                     <div class="agileinfo-cdr">
@@ -38,7 +45,7 @@
                                             </div>
                                             <div class="clearfix"></div>
 
-                                            </div>
+                                        </div>
                                     </a>
                                 {{/each}}
                             </div>
@@ -67,7 +74,9 @@
                                         </div>
                                         <div class="media-body">
                                             <div class="pull-left">
-                                                <div class="lg-item-heading createdAt" data-createdAt="{{createdAt}}">Date</div>
+                                                <div class="lg-item-heading createdAt" data-createdAt="{{createdAt}}">
+                                                    Date
+                                                </div>
                                                 <!--<small class="lg-item-text createdAt"
                                                        data-createdAt="{{createdAt}}"></small>-->
                                             </div>
@@ -78,25 +87,30 @@
                                             <div class="clearfix"></div>
                                             <div class="text-center">
                                                 {{#if paid}}
-                                                <small class=" btn btn-sm btn-success">Paid</small>
+                                                    <small class=" btn btn-sm btn-success">Paid</small>
                                                 {{else}}
-                                                <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
+                                                    <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
                                                 {{/if}}
                                             </div>
                                             <hr>
                                             <div style="margin:auto 10px;">
 
-                                            {{#each properties as |prop|}}
+                                                {{#each properties as |prop|}}
 
-                                                <div class="pull-left"><small><strong>{{prop.prop_num}}</strong></small></div>
-                                                <div class="pull-right">
+                                                    <div class="pull-left">
+                                                        <small><strong>{{prop.prop_num}}</strong></small>
+                                                    </div>
+                                                    <div class="pull-right">
 
-                                                    <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-impost="{{prop.rate_impost}}" data-rate_val="{{prop.rate_val}}"></small>
-                                                </div>
-                                            <div class="clearfix"></div>
-                                            <small>type: {{prop.sanitation_code.name}}--{{prop.use_code.name}}</small>
-                                                <hr class="small">
-                                            {{/each}}
+                                                        <small class="calcs" data-san="{{prop.sanitation_code.rate}}"
+                                                               data-impost="{{prop.rate_impost}}"
+                                                               data-rate_val="{{prop.rate_val}}"></small>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <small>type: {{prop.sanitation_code.name}}
+                                                        --{{prop.use_code.name}}</small>
+                                                    <hr class="small">
+                                                {{/each}}
                                             </div>
                                         </div>
                                     </a>
@@ -116,12 +130,31 @@
                             <hr class="widget-separator">
                             <div class="widget-body">
                                 <div class="streamline">
-                                    <div class="sl-item sl-primary">
-                                        <div class="sl-content">
-                                            <small class="text-muted">Sorry</small>
-                                            <p>Sorry, no transactions available right now.</p>
+                                    {{#each owner.transactions as |transaction|}}
+
+                                        <div
+                                                class="sl-item
+                                        {{#if transaction.approved}}
+                                            sl-success
+                                        {{else}}
+                                            sl-primary
+                                        {{/if}}">
+                                            <div class="sl-content">
+                                                <small class="text-muted">{{transaction.amount}}</small>
+
+
+                                                    {{#if transaction.approved}}
+                                                        <p class="text-warning lead">
+                                                            APPROVED <small CLASS="text-muted">{{transaction._id}}</small>
+                                                        </p>
+                                                    {{else}}
+                                                        <p class="text-danger lead">
+                                                            UNSUCCESSFUL <small class="text-muted">{{transaction._id}}</small>
+                                                        </p>
+                                                    {{/if}}
+                                            </div>
                                         </div>
-                                    </div>
+                                    {{/each}}
                                 </div>
                             </div>
 
@@ -139,7 +172,8 @@
                             </header>
                             <hr class="widget-separator">
                             <div class="widget-body">
-                                <div class="mapuzzy" id="mapuzzy" style="width: 100%; height:500px;" data-user-props="{{props}}" data-user-id="{{owner._id}}"></div>
+                                <div class="mapuzzy" id="mapuzzy" style="width: 100%; height:500px;"
+                                     data-user-props="{{props}}" data-user-id="{{owner._id}}"></div>
                             </div>
 
                         </div>
@@ -370,8 +404,10 @@
                     <fieldset class="form-group">
                         <label><h4>Use Code</h4></label>
                         <input class="form-control" id="use_bar">
-                        <input class="form-control" name="use_code" placeholder="Use JQuery autocomplete" required readonly id="use_code">
-                        <input class="form-control hidden" name="use_rate" placeholder="Use JQuery autocomplete" id="use_rate" required hidden>
+                        <input class="form-control" name="use_code" placeholder="Use JQuery autocomplete" required
+                               readonly id="use_code">
+                        <input class="form-control hidden" name="use_rate" placeholder="Use JQuery autocomplete"
+                               id="use_rate" required hidden>
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Sanitation Code</h4></label>

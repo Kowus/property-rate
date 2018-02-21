@@ -11,7 +11,7 @@ var express = require('express'),
     Bill = require('../models/bills'),
     momo = require('../lib/pay'),
     Trans = require('../models/transactions'),
-    Ticket =require('../models/ticket'),
+    Ticket = require('../models/ticket'),
     Billy = require('../lib/bill')
 ;
 
@@ -39,7 +39,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
                         $group: {
                             _id: {year: {$year: '$createdAt'}},
                             total_expected: {$sum: '$total'},
-                            total_paid: {$sum: '$paid'}
+                            total_paid: {$sum: '$settled'}
                         }
                     }
                 ).exec(function (err, bill) {
@@ -91,7 +91,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
 router.get('/generate-bills', function (req, res, next) {
     Billy.generateBills()
         .then(response => {
-            res.render('bills', {count:response.length})
+            res.render('bills', {count: response.length});
         }).catch(err => {
         res.json(err);
     });
@@ -191,8 +191,8 @@ router.get('/search_user', function (req, res) {
 });
 router.get('/pay', function (req, res, next) {
     let query = req.query.bill,
-        err_mess = req.query.err||null,
-        inAm = req.query.inAm ||null
+        err_mess = req.query.err || null,
+        inAm = req.query.inAm || null
     ;
 
     Bill.findOne({_id: query})
@@ -210,7 +210,7 @@ router.get('/pay', function (req, res, next) {
                 console.error(err);
                 return res.send(err);
             }
-            res.render('pay', {bill: bill, message:err_mess, inAm:inAm});
+            res.render('pay', {bill: bill, message: err_mess, inAm: inAm});
         });
 });
 
@@ -246,7 +246,97 @@ router.post('/pay/mobilemoney', function (req, res, next) {
 });
 
 router.post('/pay/ticket', isUserTicket, function (req, res, next) {
-    res.json(req.body)
+    /*
+     ==================================================================
+     * Create Transaction first
+     * Find Bill by id
+     * Check how much has already been paid
+     * make payment( subtract amount from ticket ) and
+     * add how much has been paid to settled
+     * store data in transactions collection
+     * push transaction id into bill
+     ===================================================================
+     */
+    let newTrans = new Trans({
+        bill: req.body.bill,
+        amount: req.body.amount,
+        owner: req.body.owner
+    });
+    newTrans.save(function (err, transaction) {
+        if (err) {
+            console.error(err);
+            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+        }
+        User.findOneAndUpdate({_id: req.body.owner}, {
+            $push: {
+                transactions: {
+                    $position: 0,
+                    $each: [transaction._id]
+                }
+            }
+        }, err => {
+            if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+            Bill.findOneAndUpdate({_id: req.body.bill},
+                {
+                    $push: {
+                        transactions: {
+                            $position: 0,
+                            $each: [transaction._id]
+                        }
+                    },
+                    $inc: {
+                        settled: req.body.amount
+                    }
+                },
+                function (err, bill) {
+                    if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                    Ticket.findOneAndUpdate({
+                            _id: req.body.ticket
+                        },
+                        {
+                            $inc: {
+                                balance: -req.body.amount
+                            }
+                        }, function (err) {
+                            if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                            transaction.approved = true;
+                            transaction.save(function (err) {
+                                if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                                if ((Number(bill.settled) + Number(req.body.amount)) >= Number(bill.total)) {
+                                    console.log('Here we are');
+
+                                    Bill.findOneAndUpdate({_id: req.body.bill}, {
+                                        $set: {
+                                            paid: true
+                                        }
+                                    }, function (err) {
+                                        console.log('and here');
+                                        if (err) {
+                                            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                                        } else {
+                                            req.session.transtat = true;
+                                            req.session.transid = transaction._id;
+                                        }
+                                        res.redirect('/users/' + req.body.owner);
+                                    });
+
+                                }
+                                else {
+                                    console.log('elsecuted');
+                                    req.session.transtat = true;
+                                    req.session.transid = transaction._id;
+                                    res.redirect('/users/' + req.body.owner);
+                                }
+                            });
+                        });
+
+                }
+            );
+        });
+
+
+    }); // Closes newTrans.save(...)
+
 });
 
 router.get('/search_area', function (req, res) {
@@ -397,7 +487,7 @@ function isNotLoggedIn(req, res, next) {
 }
 
 function isUserTicket(req, res, next) {
-    if (req.body.amount&&req.body.amount<1)return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Amount must be ¢ 1.00 or greater ...`)
+    if (req.body.amount && req.body.amount < 1) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Amount must be ¢ 1.00 or greater ...`);
     Bill.findOne({_id: req.body.bill})
         .populate({
             path: 'owner',
@@ -407,22 +497,22 @@ function isUserTicket(req, res, next) {
                 }
             ]
         }).exec((err, bill) => {
-        if (err){
+        if (err) {
             console.error(err);
-            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`)
+            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
         }
         if (bill.owner.ticket._id == req.body.ticket) {
             Ticket.findOne({
-                _id:req.body.ticket
-            }).exec((err, ticket)=>{
-                if(err) {
+                _id: req.body.ticket
+            }).exec((err, ticket) => {
+                if (err) {
                     console.error(err);
                     return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
                 }
-                if (ticket.balance >= req.body.amount){
+                if (ticket.balance >= req.body.amount) {
                     return next();
                 }
-                else  return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Sorry, you don't have enough funds for this operation.`);
+                else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Sorry, you don't have enough funds for this operation.`);
             });
 
         }

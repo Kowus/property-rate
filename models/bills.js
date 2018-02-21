@@ -9,36 +9,40 @@ const mongoose = require('mongoose'),
 ;
 
 let billSchema = new Schema({
-    owner:{
-        type:Schema.Types.ObjectId,
-        ref:'User'
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
-    properties:[{
-        type:Schema.Types.ObjectId,
-        ref:"Property"
+    properties: [{
+        type: Schema.Types.ObjectId,
+        ref: "Property"
     }],
-    total:Number,
-    createdAt:{type: Date, default:Date.now},
-    transactions:[{type:Schema.Types.ObjectId,ref:'Transaction'}],
-    paid: {type:Boolean,default:false}
+    settled: {
+        type: Number,
+        default: 0
+    },
+    total: Number,
+    createdAt: {type: Date, default: Date.now},
+    transactions: [{type: Schema.Types.ObjectId, ref: 'Transaction'}],
+    paid: {type: Boolean, default: false}
 });
 
 
 billSchema.pre('save', function (next) {
-   let bill = this;
-   if(this.isNew || this.isModified('owner')){
-       User.findOneAndUpdate({_id:bill.owner},{
-           $push:{
-               bill:{
-                   $position:0,
-                   $each:[bill._id]
-               }
-           }
-       }).exec(err=>{
-           if (err) return next(err);
-           return next()
-       })
-   }
+    let bill = this;
+    if (this.isNew || this.isModified('owner')) {
+        User.findOneAndUpdate({_id: bill.owner}, {
+            $push: {
+                bill: {
+                    $position: 0,
+                    $each: [bill._id]
+                }
+            }
+        }).exec(err => {
+            if (err) return next(err);
+            return next();
+        });
+    }
 });
 
 module.exports = mongoose.model('Bill', billSchema);

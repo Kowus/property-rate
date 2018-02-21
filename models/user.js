@@ -31,13 +31,14 @@ let userSchema = new Schema({
     password: {type: Buffer, required: true},
     gender: {type: String},
     bill: [{type: Schema.Types.ObjectId, ref: 'Bill'}],
-    ticket: {type: Schema.Types.ObjectId, ref: 'Ticket', required: true}
+    ticket: {type: Schema.Types.ObjectId, ref: 'Ticket', required: true},
+    transactions:[{type:Schema.Types.ObjectId, ref: 'Transaction'}]
 });
 
 userSchema.pre('validate', function (next) {
+        let user = this;
     if(this.isNew) {
-        let user = this,
-            newTicket = new Ticket({
+        let newTicket = new Ticket({
                 owner: user._id
             });
         newTicket.save(function (err, ticket) {

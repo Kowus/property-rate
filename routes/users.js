@@ -108,22 +108,7 @@ router.post('/add_prop', function (req, res, next) {
                 res.json(prop);
             }
         );
-        /*
-        User.findOneAndUpdate({_id: req.body.owner}, {
-            $push:{
-                properties:{
-                // how to do push on Update
-                    $each:[prop._id],
-                    $position:0
-                }
-            }
-        }).exec(function (err) {
-            if (err) return res.send(err);
-            console.log(prop);
-            res.json(prop)
-        })
 
-         */
     });
 });
 
@@ -133,7 +118,7 @@ router.post('/add_prop', function (req, res, next) {
 router.get('/:user_id', function (req, res, next) {
     // console.log(req.params)
     User.findOne({_id: req.params.user_id}).populate({
-        path: 'properties bill',
+        path: 'properties bill transactions',
         populate: [
             {
                 path: 'area', select: 'code name'
@@ -154,14 +139,16 @@ router.get('/:user_id', function (req, res, next) {
                         path: 'sanitation_code'
                     }
                 ]
-            },
-            {
-                path: 'transactions'
             }
         ]
     }).exec(function (err, user) {
         if (err) console.error(err);
-        res.render('user', {owner: user, use_code: use_code, sanitation: sanitation});
+        let transid = req.session.transid || null,
+            transtat = req.session.transtat || null
+        ;
+        req.session.transid=undefined;
+        req.session.transtat=undefined;
+        res.render('user', {owner: user, use_code: use_code, sanitation: sanitation, transid:transid, transtat});
     });
 });
 module.exports = router;
