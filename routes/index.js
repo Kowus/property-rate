@@ -145,10 +145,10 @@ router.post('/area', function (req, res, next) {
     });
 });
 
-router.get('/area_search', function (req, res, next) {
+router.get('/area_search',needsGroup('admin'), function (req, res, next) {
     res.render('search-area');
 });
-router.get('/search_by_area', function (req, res, next) {
+router.get('/search_by_area',needsGroup('admin'), function (req, res, next) {
     Area.findOne({_id: req.query.term}).populate({
         path: 'properties',
         populate: [
@@ -169,7 +169,7 @@ router.get('/search_by_area', function (req, res, next) {
         // res.json(area)
     });
 });
-router.get('/search_user', function (req, res) {
+router.get('/search_user', needsGroup('admin'),function (req, res) {
     var regex = new RegExp(req.query["term"], 'i');
     var query = User.find(
         {
@@ -217,7 +217,7 @@ router.get('/pay', function (req, res, next) {
         });
 });
 
-router.post('/pay', function (req, res, next) {
+router.post('/pay', isNotLoggedIn,function (req, res, next) {
     let num = req.body.phone;
     if (num[0] == '0') {
         let newNum = num.split('');
@@ -496,7 +496,7 @@ function isUserTicket(req, res, next) {
             console.error(err);
             return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
         }
-        if (bill.owner.ticket._id == req.body.ticket) {
+        if (bill.owner.ticket._id == req.body.ticket&&(bill.owner._id == req.user._id || req.user.group == 'admin')) {
             Ticket.findOne({
                 _id: req.body.ticket
             }).exec((err, ticket) => {
