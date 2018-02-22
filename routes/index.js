@@ -192,7 +192,7 @@ router.get('/search_user', needsGroup('admin'),function (req, res) {
         }
     });
 });
-router.get('/pay', function (req, res, next) {
+router.get('/pay',isLoggedIn, function (req, res, next) {
     let query = req.query.bill,
         err_mess = req.query.err || null,
         inAm = req.query.inAm || null
