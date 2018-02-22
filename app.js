@@ -51,7 +51,7 @@ app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.user = req.user || null;
-    if (req.user &&req.user.group&& req.user.group == 'user') res.locals.acc_zone=true;
+    if (req.user &&req.user.group&& req.user.group == 'user') res.locals.acc_zonee=true;
     next();
 });
 
