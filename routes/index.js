@@ -246,17 +246,6 @@ router.post('/pay/mobilemoney', function (req, res, next) {
 });
 
 router.post('/pay/ticket', isUserTicket, function (req, res, next) {
-    /*
-     ==================================================================
-     * Create Transaction first
-     * Find Bill by id
-     * Check how much has already been paid
-     * make payment( subtract amount from ticket ) and
-     * add how much has been paid to settled
-     * store data in transactions collection
-     * push transaction id into bill
-     ===================================================================
-     */
     let newTrans = new Trans({
         bill: req.body.bill,
         amount: req.body.amount,
@@ -303,14 +292,11 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
                             transaction.save(function (err) {
                                 if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
                                 if ((Number(bill.settled) + Number(req.body.amount)) >= Number(bill.total)) {
-                                    console.log('Here we are');
-
                                     Bill.findOneAndUpdate({_id: req.body.bill}, {
                                         $set: {
                                             paid: true
                                         }
                                     }, function (err) {
-                                        console.log('and here');
                                         if (err) {
                                             return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
                                         } else {
@@ -322,7 +308,6 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
 
                                 }
                                 else {
-                                    console.log('elsecuted');
                                     req.session.transtat = true;
                                     req.session.transid = transaction._id;
                                     res.redirect('/users/' + req.body.owner);

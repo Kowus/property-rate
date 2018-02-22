@@ -129,7 +129,7 @@
                             </header>
                             <hr class="widget-separator">
                             <div class="widget-body">
-                                <div class="streamline">
+                                <div class="streamline" style="height: 300px; overflow-y: scroll;">
                                     {{#each owner.transactions as |transaction|}}
 
                                         <div
@@ -431,6 +431,7 @@
                     </fieldset>
                     <fieldset class="form-group">
                         <label><h4>Location</h4></label>
+                        <small>x_min: <i id="xmin"></i>, x_max<i id="xmax"></i>, y_min<i id="ymin"></i>, y_max<i id="ymax"></i></small>
                         <input class="form-control" name="x" placeholder="x" type="number" step="0.0000001" required>
                         <input class="form-control" name="y" placeholder="y" type="number" step="0.0000001" required>
                         <input class="form-control" name="loc_des" placeholder="location description" required>

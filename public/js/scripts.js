@@ -90,7 +90,11 @@
                         return {
                             label: el.name,
                             code: el.code,
-                            value: el._id
+                            value: el._id,
+                            x_min: el.location.x.min,
+                            x_max: el.location.x.max,
+                            y_min: el.location.y.min,
+                            y_max:el.location.y.max
                         };
                     }));
                 }
@@ -102,6 +106,7 @@
             this.label = ui.item.label + ' (' + ui.item.code + ')';
             this.value = this.label;
             $(this).next("input").val(ui.item.value);
+            $('#xmax').html(ui.item.x_maxg)
             /*$('#are_a').label = ui.item.code+' :: '+ui.item.label;
             $('#are_a').value = ui.item.value;*/
             // Prevent other event from not being execute
