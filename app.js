@@ -55,8 +55,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/property', properties);
+app.use('/users',isLoggedIn, users);
+app.use('/property',isLoggedIn, properties);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -96,3 +96,37 @@ process.on('SIGINT', function () {
 
 
 module.exports = app;
+function needsGroup(group) {
+    return function (req, res, next) {
+        if (req.user && req.user.group === group) {
+            res.locals.user = req.user;
+            next();
+        }
+        else {
+            req.session.message = "Unauthorized Access";
+            res.status(401).redirect(`/login?next=${req.originalUrl}`);
+        }
+    };
+}
+
+function round_number(value, places) {
+    if (places) {
+        var pow = Math.pow(10, places);
+        return Math.round(value, pow) / pow;
+    } else {
+        return Math.round(value * 100) / 100;
+    }
+}
+
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        res.locals.user = {
+            displayName: req.user.displayName,
+            email: req.user.email
+
+        };
+        return next();
+    }
+    res.redirect('/login');
+}

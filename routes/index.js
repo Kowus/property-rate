@@ -17,6 +17,8 @@ var express = require('express'),
 
 /* GET home page. */
 router.get('/', isLoggedIn, function (req, res, next) {
+    if(req.user.group === 'user') return res.redirect('/users/'+req.user._id);
+
     async.parallel(
         [
 
@@ -88,7 +90,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
         }
     );
 });
-router.get('/generate-bills', function (req, res, next) {
+router.get('/generate-bills',needsGroup('admin'), function (req, res, next) {
     Billy.generateBills()
         .then(response => {
             // res.render('bills', {count: response.length});
