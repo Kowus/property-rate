@@ -327,7 +327,7 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
 
 });
 
-router.get('/defaulters', function (req, res) {
+router.get('/defaulters',needsGroup('admin'), function (req, res) {
     Bill.find({paid:false}).populate('owner').exec(function (err, bill) {
         if (err) return res.send('an error occured')
         res.render('deff',{defaulters:bill})

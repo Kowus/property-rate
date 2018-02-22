@@ -24,6 +24,10 @@ let userSchema = new Schema({
     phone: {
         type: String
     },
+    group:{
+      type:String,
+      default:'user'
+    },
     address: String,
     properties: [
         {type: Schema.Types.ObjectId, ref: 'Property'}
