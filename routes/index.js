@@ -91,9 +91,10 @@ router.get('/', isLoggedIn, function (req, res, next) {
 router.get('/generate-bills', function (req, res, next) {
     Billy.generateBills()
         .then(response => {
-            res.render('bills', {count: response.length});
+            // res.render('bills', {count: response.length});
+            res.redirect('/')
         }).catch(err => {
-        res.json(err);
+        res.redirect('/')
     });
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
@@ -322,6 +323,13 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
 
     }); // Closes newTrans.save(...)
 
+});
+
+router.get('/defaulters', function (req, res) {
+    Bill.find({paid:false}).populate('owner').exec(function (err, bill) {
+        if (err) return res.send('an error occured')
+        res.render('deff',{defaulters:bill})
+    })
 });
 
 router.get('/search_area', function (req, res) {
