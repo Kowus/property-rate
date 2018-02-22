@@ -106,7 +106,10 @@
             this.label = ui.item.label + ' (' + ui.item.code + ')';
             this.value = this.label;
             $(this).next("input").val(ui.item.value);
-            $('#xmax').html(ui.item.x_maxg)
+            $('#xmax').html(ui.item.x_max);
+            $('#xmin').html(ui.item.x_min);
+            $('#ymax').html(ui.item.y_max);
+            $('#ymin').html(ui.item.y_min);
             /*$('#are_a').label = ui.item.code+' :: '+ui.item.label;
             $('#are_a').value = ui.item.value;*/
             // Prevent other event from not being execute
@@ -117,6 +120,10 @@
             this.value = ui.item.label + ' (' + ui.item.code + ')';
             // Set the id to the next input hidden field
             $(this).next("input").val(ui.item.value);
+            $('#xmax').html(ui.item.x_max);
+            $('#xmin').html(ui.item.x_min);
+            $('#ymax').html(ui.item.y_max);
+            $('#ymin').html(ui.item.y_min);
             // Prevent other event from not being execute
             event.preventDefault();
             // optionnal: submit the form after field has been filled up
