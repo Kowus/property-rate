@@ -114,12 +114,49 @@ router.post('/reset-password', isNotLoggedIn, function (req, res, next) {
         }
     })
 })
+router.get('/reset', isNotLoggedIn, function (req, res, next) {
+    User.findOne({ _id: req.query.id }, function (err, user) {
+        if (err) return res.status(403).send('Unauthorized');
+        if (!user) return res.status(403).send('Unauthorized');
+        else {
+            res.render('new_password', { forg: user })
+        }
+    }
+    )
+});
+router.post('/reset', isNotLoggedIn, function (req, res, next) {
+    User.findOne({ _id: req.body._id }, function (err, user) {
+        if (err) {
+            console.error(err);
+            return res.render('new_password', { message: "Sorry, we couldn't change your password", forg: { _id: req.body._id } })
+        }
+        if (user) {
+            if (req.body.password != req.body.cpassword) return res.render('new_password', { message: 'Password do not match', forg: { _id: req.body._id } })
+            user.password = req.body.password;
+            console.log(user);
+            user.save(function (err, us) {
+                if (err) {
+                    console.error(err);
+                    return res.render('new_password', { message: "Sorry, we couldn't change your password", forg: { _id: req.body._id } })
+                }
+                mailer.password(us)
+                console.log(us);
+                req.session.sucmess = 'Password successfully reset.'
+                res.redirect('/logout');
+            })
+        }
+    });
+});
 router.get('/change-password', isLoggedIn, function (req, res, next) {
     res.render('password', { acc_zone: true });
 });
 router.post('/change-password', isLoggedIn, function (req, res, next) {
 
     User.findOne({ email: req.body.email }, function (err, user) {
+        if (err) {
+            console.error(err);
+            return res.render('password', { message: "Sorry, we couldn't change your password" })
+        }
         if (user) {
             user.comparePassword(req.body.opassword, function (err, isMatch) {
                 if (err) {

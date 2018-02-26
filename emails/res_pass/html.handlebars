@@ -158,7 +158,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                            <h1 style="font-size: 48px; font-weight: 400; margin: 0;">Welcome {{user.displayName}}!</h1>
+                            <h1 style="font-size: 48px; font-weight: 400; margin: 0;">Dear {{user.displayName}}!</h1>
                         </td>
                     </tr>
                 </table>
@@ -181,9 +181,7 @@
                     <!-- COPY -->
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">Akwaaba.</p>
-                            <p style="margin: 0;">We are thrilled to have you here! Get ready to dive into your new account. To have you get started,
-                                first, you need to confirm your account. Just press the button below.</p>
+                            <p style="margin: 0;">You recently requested to change your password. Please click the button below to proceed.</p>
                         </td>
                     </tr>
                     <!-- BULLETPROOF BUTTON -->
@@ -195,7 +193,7 @@
                                         <table border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td align="center" style="border-radius: 3px;" bgcolor="#FFA73B">
-                                                    <a href="https://property-rate.herokuapp.com" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Confirm Account</a>
+                                                    <a href="https://property-rate.herokuapp.com/reset/?id={{user._id}}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">Reset</a>
                                                 </td>
                                             </tr>
                                         </table>
@@ -214,7 +212,7 @@
                     <tr>
                         <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                             <p style="margin: 0;">
-                                <a href="https://property-rate.herokuapp.com" style="color: #FFA73B;">https://property-rate.herokuapp.com.</a>
+                                <a href="https://property-rate.herokuapp.com/reset/?id={{user._id}}" style="color: #FFA73B;">https://property-rate.herokuapp.com/reset?id={{user._id}}</a>
                             </p>
                         </td>
                     </tr>
