@@ -32,6 +32,15 @@ const email = new Email({
 
 
 module.exports = {
+    reset: function (user) {
+        email.send({
+            template: 'change_pass',
+            message: {
+                to: `${user.displayName} <${user.email}>`
+            },
+            locals: { user: user }
+        }).then(console.log).catch(console.error)
+    },
     password: function (user) {
         email.send({
             template: 'change_pass',

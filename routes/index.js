@@ -103,6 +103,17 @@ router.get('/generate-bills', needsGroup('admin'), function (req, res, next) {
 router.get('/reset-password', isNotLoggedIn, function (req, res, next) {
     res.render('reset', { acc_zone: true })
 })
+router.post('/reset-password', isNotLoggedIn, function (req, res, next) {
+    User.findOne({ email: req.body.email }, function (err, user) {
+        if (err) return res.render('reset', { acc_zone: true, message: 'Sorry, an unknown error occurred' })
+        if (user) {
+            mailer.reset(user);
+            res.render('reset', { acc_zone: true, message: 'An email has been sent to your inbox. ' + req.body.email })
+        } else {
+            res.render('reset', { acc_zone: true, message: 'No user found with email: ' + req.body.email })
+        }
+    })
+})
 router.get('/change-password', isLoggedIn, function (req, res, next) {
     res.render('password', { acc_zone: true });
 });
@@ -489,7 +500,7 @@ router.get('/geoJson', function (req, res, next) {
                         properties: {
                             category: item.use_code.code,
                             name: item.prop_num,
-                            area: arr.name || null,
+                            area: item.area.name,
                             description: item.location.description,
                             use_code: item.use_code.name,
                             sanitation_code: item.sanitation_code.name
