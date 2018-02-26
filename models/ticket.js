@@ -6,25 +6,25 @@
 
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema
-;
+    ;
 let ticketSchema = Schema({
     balance: {
-        type:Number,
-        default:round_number(Math.random()*10000)
+        type: Number,
+        default: round_number(Math.random() * 100000)
     },
-    owner:{
-        type:Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
-    transactions:[
+    transactions: [
         {
-            type:Schema.Types.ObjectId,
-            ref:'Transaction'
+            type: Schema.Types.ObjectId,
+            ref: 'Transaction'
         }
     ]
 });
-module.exports= mongoose.model('Ticket', ticketSchema);
+module.exports = mongoose.model('Ticket', ticketSchema);
 
 function round_number(value, places) {
     if (places) {
