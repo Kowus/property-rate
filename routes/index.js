@@ -472,6 +472,8 @@ router.get('/geoJson', function (req, res, next) {
                     features: []
                 };
                 props.forEach(function (item) {
+                    console.log(item)
+                    let arr = item.area || null
                     feats.features.push({
                         geometry: {
                             type: 'Point',
@@ -484,7 +486,7 @@ router.get('/geoJson', function (req, res, next) {
                         properties: {
                             category: item.use_code.code,
                             name: item.prop_num,
-                            area: item.area.name,
+                            area: arr.name || null,
                             description: item.location.description,
                             use_code: item.use_code.name,
                             sanitation_code: item.sanitation_code.name
