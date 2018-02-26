@@ -100,6 +100,9 @@ router.get('/generate-bills', needsGroup('admin'), function (req, res, next) {
             res.redirect('/')
         });
 });
+router.get('/reset-password', isNotLoggedIn, function (req, res, next) {
+    res.render('reset', { acc_zone: true })
+})
 router.get('/change-password', isLoggedIn, function (req, res, next) {
     res.render('password', { acc_zone: true });
 });
