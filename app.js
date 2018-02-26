@@ -10,11 +10,11 @@ var express = require('express'),
     session = require('express-session'),
     flash = require('connect-flash'),
     mongoose = require('mongoose'),
-    redis = require('redis').createClient(env.redis.url, {no_ready_check: true}),
+    redis = require('redis').createClient(env.redis.url, { no_ready_check: true }),
     RedisStore = require('connect-redis')(session),
-    helmet =require('helmet'),
+    helmet = require('helmet'),
     hbs = require('hbs')
-;
+    ;
 mongoose.connect(env.database.url, {
     useMongoClient: true,
     promiseLibrary: require('bluebird')
@@ -27,7 +27,7 @@ var properties = require('./routes/properties');
 var app = express();
 app.use(helmet());
 hbs.registerPartials('./views/partials');
-app.locals.title='P R M A';
+app.locals.title = 'P R M A';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -37,27 +37,27 @@ app.set('view engine', 'hbs');
 require('./config/passport')(passport);
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     resave: false,
-    saveUninitialized:true,
+    saveUninitialized: true,
     secret: env.session.secret,
-    store:new RedisStore({client:redis})
+    store: new RedisStore({ client: redis })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.user = req.user || null;
-    if (req.user &&req.user.group&& req.user.group == 'user') res.locals.acc_zonee=true;
+    if (req.user && req.user.group && req.user.group == 'user') res.locals.acc_zonee = true;
     next();
 });
 
 app.use('/', index);
-app.use('/users',isLoggedIn, users);
-app.use('/property',isLoggedIn, properties);
+app.use('/users', isLoggedIn, users);
+app.use('/property', isLoggedIn, properties);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -70,7 +70,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {status:err.status||500, stack:"Couldn't find the requested resource."};
+    res.locals.error = req.app.get('env') === 'development' ? err : { status: err.status || 500, stack: "Couldn't find the requested resource." };
 
     // render the error page
     res.status(err.status || 500);
