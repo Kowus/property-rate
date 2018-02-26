@@ -13,11 +13,11 @@ var express = require('express'),
     Trans = require('../models/transactions'),
     Ticket = require('../models/ticket'),
     Billy = require('../lib/bill')
-;
+    ;
 
 /* GET home page. */
 router.get('/', isLoggedIn, function (req, res, next) {
-    if(req.user.group === 'user') return res.redirect('/users/'+req.user._id);
+    if (req.user.group === 'user') return res.redirect('/users/' + req.user._id);
 
     async.parallel(
         [
@@ -39,9 +39,9 @@ router.get('/', isLoggedIn, function (req, res, next) {
                 Bill.aggregate(
                     {
                         $group: {
-                            _id: {year: {$year: '$createdAt'}},
-                            total_expected: {$sum: '$total'},
-                            total_paid: {$sum: '$settled'}
+                            _id: { year: { $year: '$createdAt' } },
+                            total_expected: { $sum: '$total' },
+                            total_paid: { $sum: '$settled' }
                         }
                     }
                 ).exec(function (err, bill) {
@@ -59,7 +59,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
                                 }, year: {
                                     $year: '$createdAt'
                                 }
-                            }, count: {$sum: 1}
+                            }, count: { $sum: 1 }
                         }
                     }
                 ).exec(function (err, props) {
@@ -90,20 +90,58 @@ router.get('/', isLoggedIn, function (req, res, next) {
         }
     );
 });
-router.get('/generate-bills',needsGroup('admin'), function (req, res, next) {
+router.get('/generate-bills', needsGroup('admin'), function (req, res, next) {
     Billy.generateBills()
         .then(response => {
             // res.render('bills', {count: response.length});
             res.redirect('/')
         }).catch(err => {
-        res.redirect('/')
-    });
+            res.redirect('/')
+        });
+});
+router.get('/change-password', isLoggedIn, function (req, res, next) {
+    res.render('password', { acc_zone: true });
+});
+router.post('/change-password', isLoggedIn, function (req, res, next) {
+
+    User.findOne({ email: req.body.email }, function (err, user) {
+        if (user) {
+            user.comparePassword(req.body.opassword, function (err, isMatch) {
+                if (err) {
+                    console.error(err);
+                    return res.render('password', { message: "Sorry, we couldn't change your password" })
+                }
+                if (isMatch) {
+                    console.log(isMatch);
+                    if (req.body.password != req.body.cpassword) return res.render('password', { message: 'Password do not match' })
+                    user.password = req.body.password;
+                    console.log(user);
+                    user.save(function (err, us) {
+                        if (err) {
+                            console.error(err);
+                            return res.render('password', { message: "Sorry, we couldn't change your password" })
+                        }
+
+                        console.log(us);
+                        req.session.sucmess = 'Password changed successfully'
+                        res.redirect('/logout');
+                    })
+
+                } else {
+                    return res.render('password', { message: "Sorry, wrong old password." })
+                }
+
+            })
+        }
+    })
+
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
-    res.render('login', {title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true});
+    res.render('login', { title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true, success_message: req.session.sucmess || null });
+    req.session.sucmess = null;
 });
 router.get('/signup', isNotLoggedIn, function (req, res, next) {
-    res.render('signup', {title: 'Property Rate Signup.', message: req.flash('signupMessage'), acc_zone: true});
+    res.render('signup', { title: 'Property Rate Signup.', message: req.flash('signupMessage'), acc_zone: true });
 });
 router.get('/profile', isLoggedIn, function (req, res, next) {
     let next_page = req.session.next || '/';
@@ -145,11 +183,11 @@ router.post('/area', function (req, res, next) {
     });
 });
 
-router.get('/area_search',needsGroup('admin'), function (req, res, next) {
+router.get('/area_search', needsGroup('admin'), function (req, res, next) {
     res.render('search-area');
 });
-router.get('/search_by_area',needsGroup('admin'), function (req, res, next) {
-    Area.findOne({_id: req.query.term}).populate({
+router.get('/search_by_area', needsGroup('admin'), function (req, res, next) {
+    Area.findOne({ _id: req.query.term }).populate({
         path: 'properties',
         populate: [
             {
@@ -159,46 +197,46 @@ router.get('/search_by_area',needsGroup('admin'), function (req, res, next) {
             }, {
                 path: 'owner', select: 'displayName email',
                 populate: [
-                    {path: 'bill'}
+                    { path: 'bill' }
                 ]
             }
         ]
     }).exec(function (err, area) {
         if (err) return res.send(err);
-        res.render('areas', {term: area.name, area: area});
+        res.render('areas', { term: area.name, area: area });
         // res.json(area)
     });
 });
-router.get('/search_user', needsGroup('admin'),function (req, res) {
+router.get('/search_user', needsGroup('admin'), function (req, res) {
     var regex = new RegExp(req.query["term"], 'i');
     var query = User.find(
         {
             $or: [
-                {givenName: regex},
-                {familyName: regex}
+                { givenName: regex },
+                { familyName: regex }
             ]
         });
 
     query.exec(function (err, users) {
         if (!err) {
 
-            res.render('users', {users: users, term: req.query.term});
+            res.render('users', { users: users, term: req.query.term });
         } else {
 
             res.render('error', {
-                error: {stack: "Couldn't find user", status: err.status || 500},
+                error: { stack: "Couldn't find user", status: err.status || 500 },
                 message: err.message
             });
         }
     });
 });
-router.get('/pay',isLoggedIn, function (req, res, next) {
+router.get('/pay', isLoggedIn, function (req, res, next) {
     let query = req.query.bill,
         err_mess = req.query.err || null,
         inAm = req.query.inAm || null
-    ;
+        ;
 
-    Bill.findOne({_id: query})
+    Bill.findOne({ _id: query })
         .populate({
             path: 'owner',
             populate: [
@@ -213,11 +251,11 @@ router.get('/pay',isLoggedIn, function (req, res, next) {
                 console.error(err);
                 return res.send(err);
             }
-            res.render('pay', {bill: bill, message: err_mess, inAm: inAm});
+            res.render('pay', { bill: bill, message: err_mess, inAm: inAm });
         });
 });
 
-router.post('/pay', isNotLoggedIn,function (req, res, next) {
+router.post('/pay', isNotLoggedIn, function (req, res, next) {
     let num = req.body.phone;
     if (num[0] == '0') {
         let newNum = num.split('');
@@ -240,7 +278,7 @@ router.post('/pay', isNotLoggedIn,function (req, res, next) {
         console.log(err);
         res.send(err);
     })
-    ;
+        ;
 });
 
 router.post('/pay/mobilemoney', function (req, res, next) {
@@ -259,7 +297,7 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
             console.error(err);
             return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
         }
-        User.findOneAndUpdate({_id: req.body.owner}, {
+        User.findOneAndUpdate({ _id: req.body.owner }, {
             $push: {
                 transactions: {
                     $position: 0,
@@ -268,7 +306,7 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
             }
         }, err => {
             if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
-            Bill.findOneAndUpdate({_id: req.body.bill},
+            Bill.findOneAndUpdate({ _id: req.body.bill },
                 {
                     $push: {
                         transactions: {
@@ -283,8 +321,8 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
                 function (err, bill) {
                     if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
                     Ticket.findOneAndUpdate({
-                            _id: req.body.ticket
-                        },
+                        _id: req.body.ticket
+                    },
                         {
                             $inc: {
                                 balance: -req.body.amount
@@ -295,7 +333,7 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
                             transaction.save(function (err) {
                                 if (err) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
                                 if ((Number(bill.settled) + Number(req.body.amount)) >= Number(bill.total)) {
-                                    Bill.findOneAndUpdate({_id: req.body.bill}, {
+                                    Bill.findOneAndUpdate({ _id: req.body.bill }, {
                                         $set: {
                                             paid: true
                                         }
@@ -327,10 +365,10 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
 
 });
 
-router.get('/defaulters',needsGroup('admin'), function (req, res) {
-    Bill.find({paid:false}).populate('owner').exec(function (err, bill) {
+router.get('/defaulters', needsGroup('admin'), function (req, res) {
+    Bill.find({ paid: false }).populate('owner').exec(function (err, bill) {
         if (err) return res.send('an error occured')
-        res.render('deff',{defaulters:bill})
+        res.render('deff', { defaulters: bill })
     })
 });
 
@@ -341,8 +379,8 @@ router.get('/search_area', function (req, res) {
     var query = Area.find(
         {
             $or: [
-                {code: regex},
-                {name: regex}
+                { code: regex },
+                { name: regex }
             ]
         }, {
             properties: 0
@@ -369,8 +407,8 @@ router.get('/search_use', function (req, res) {
     var query = UseCode.find(
         {
             $or: [
-                {code: regex},
-                {name: regex}
+                { code: regex },
+                { name: regex }
             ]
         }, {
             properties: 0
@@ -397,8 +435,8 @@ router.get('/search_san', function (req, res) {
     var query = Sanitation.find(
         {
             $or: [
-                {code: regex},
-                {name: regex}
+                { code: regex },
+                { name: regex }
             ]
         }, {
             properties: 0
@@ -422,7 +460,7 @@ router.get('/search_san', function (req, res) {
 router.get('/geoJson', function (req, res, next) {
     console.log(req.query);
     let user_id = req.query.user;
-    Property.find({owner: user_id})
+    Property.find({ owner: user_id })
         .populate('sanitation_code use_code area')
         .exec(
             function (err, props) {
@@ -483,7 +521,7 @@ function isNotLoggedIn(req, res, next) {
 
 function isUserTicket(req, res, next) {
     if (req.body.amount && req.body.amount < 1) return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Amount must be ¢ 1.00 or greater ...`);
-    Bill.findOne({_id: req.body.bill})
+    Bill.findOne({ _id: req.body.bill })
         .populate({
             path: 'owner',
             populate: [
@@ -492,27 +530,27 @@ function isUserTicket(req, res, next) {
                 }
             ]
         }).exec((err, bill) => {
-        if (err) {
-            console.error(err);
-            return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
-        }
-        if (bill.owner.ticket._id == req.body.ticket&&(bill.owner._id == req.user._id || req.user.group == 'admin')) {
-            Ticket.findOne({
-                _id: req.body.ticket
-            }).exec((err, ticket) => {
-                if (err) {
-                    console.error(err);
-                    return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
-                }
-                if (ticket.balance >= req.body.amount) {
-                    return next();
-                }
-                else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Sorry, you don't have enough funds for this operation.`);
-            });
+            if (err) {
+                console.error(err);
+                return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+            }
+            if (bill.owner.ticket._id == req.body.ticket && (bill.owner._id == req.user._id || req.user.group == 'admin')) {
+                Ticket.findOne({
+                    _id: req.body.ticket
+                }).exec((err, ticket) => {
+                    if (err) {
+                        console.error(err);
+                        return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
+                    }
+                    if (ticket.balance >= req.body.amount) {
+                        return next();
+                    }
+                    else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Sorry, you don't have enough funds for this operation.`);
+                });
 
-        }
-        else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Ticket doesn't belong to this user. I'll call the cops on you!`);
-    });
+            }
+            else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Ticket doesn't belong to this user. I'll call the cops on you!`);
+        });
 }
 
 

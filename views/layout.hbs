@@ -1,6 +1,6 @@
-
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <title>{{{title}}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
     <!-- //font-awesome icons CSS-->
 
     <!-- side nav css file -->
-    <link href='/css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css'/>
+    <link href='/css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css' />
     <!-- side nav css file -->
 
     <!-- js-->
@@ -39,81 +39,96 @@
     <!--//Metis Menu -->
 
 </head>
+
 <body class="cbp-spmenu-push">
-<div class="main-content">
-{{#unless acc_zone}}
-    <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+    <div class="main-content">
+        {{#unless acc_zone}}
+        <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
 
-        <!--left-fixed -navigation-->
-        {{#unless acc_zonee}}
-        <aside class="sidebar-left">
-            <nav class="navbar navbar-inverse">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <h1><a class="navbar-brand" href="/"><span class="fa fa-area-chart"></span>Property<span class="dashboard_text">Rate Mobilization app</span></a></h1>
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="sidebar-menu">
-                        <li class="header">MAIN NAVIGATION</li>
-                        <li class="treeview">
-                            <a href="/">
-                                <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <!--left-fixed -navigation-->
+            {{#unless acc_zonee}}
+            <aside class="sidebar-left">
+                <nav class="navbar navbar-inverse">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <h1>
+                            <a class="navbar-brand" href="/">
+                                <span class="fa fa-area-chart"></span>Property
+                                <span class="dashboard_text">Rate Mobilization app</span>
                             </a>
-                        </li>
-                        <li class="header">Users</li>
-                        <li class="treeview">
-                            <a href="/users/create">
-                                <i class="fa fa-pencil-square"></i> <span>Create</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="/users">
-                                <i class="fa fa-search"></i> <span>Search and Update User</span>
-                            </a>
-                        </li>
+                        </h1>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="sidebar-menu">
+                            <li class="header">MAIN NAVIGATION</li>
+                            <li class="treeview">
+                                <a href="/">
+                                    <i class="fa fa-dashboard"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="header">Users</li>
+                            <li class="treeview">
+                                <a href="/users/create">
+                                    <i class="fa fa-pencil-square"></i>
+                                    <span>Create</span>
+                                </a>
+                            </li>
+                            <li class="treeview">
+                                <a href="/users">
+                                    <i class="fa fa-search"></i>
+                                    <span>Search and Update User</span>
+                                </a>
+                            </li>
 
-                        <li class="header">Reports</li>
-                        <li class="treeview">
+                            <li class="header">Reports</li>
+                            <li class="treeview">
 
-                            <a href="/area_search">
-                                <i class="fa fa-search"></i> <span>Search by Area</span>
-                            </a>
-                        </li>
+                                <a href="/area_search">
+                                    <i class="fa fa-search"></i>
+                                    <span>Search by Area</span>
+                                </a>
+                            </li>
 
-                        <li class="treeview">
-                            <a href="/defaulters">
-                                <i class="fa fa-bookmark-o"></i> <span>Defaulters</span>
-                            </a>
-                        </li>
-<li class="header">Billing</li>
-                        <li class="treeview">
-                            <a href="/generate-bills">
-                                <i class="fa fa-gears"></i> <span>Generate Bills</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </nav>
-        </aside>
-    </div>
+                            <li class="treeview">
+                                <a href="/defaulters">
+                                    <i class="fa fa-bookmark-o"></i>
+                                    <span>Defaulters</span>
+                                </a>
+                            </li>
+                            <li class="header">Billing</li>
+                            <li class="treeview">
+                                <a href="/generate-bills">
+                                    <i class="fa fa-gears"></i>
+                                    <span>Generate Bills</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </nav>
+            </aside>
+        </div>
 
         {{/unless}}
-    <!--left-fixed -navigation-->
-    <!-- header-starts -->
-    <div class="sticky-header header-section ">
-        <div class="header-left">
+        <!--left-fixed -navigation-->
+        <!-- header-starts -->
+        <div class="sticky-header header-section ">
+            <div class="header-left">
 
-            <!--toggle button start-->
-            <button id="showLeftPush"><i class="fa fa-bars"></i></button>
-            <!--toggle button end-->
-            <div class="profile_details_left"><!--notifications of menu start -->
-                <!--
+                <!--toggle button start-->
+                <button id="showLeftPush">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <!--toggle button end-->
+                <div class="profile_details_left">
+                    <!--notifications of menu start -->
+                    <!--
                 <ul class="nofitications-dropdown">
                     <li class="dropdown head-dpdn">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">4</span></a>
@@ -248,105 +263,124 @@
                         </ul>
                     </li>
                 </ul>-->
+                    <div class="clearfix"> </div>
+                </div>
+                <!--notification menu end -->
                 <div class="clearfix"> </div>
             </div>
-            <!--notification menu end -->
-            <div class="clearfix"> </div>
-        </div>
-        <div class="header-right">
+            <div class="header-right">
 
 
 
 
-            <div class="profile_details">
-                <ul>
-                    <li class="dropdown profile_details_drop">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <div class="profile_img">
-                                <span class="prfil-img"><img src="/images/2.jpg" alt=""> </span>
+                <div class="profile_details">
+                    <ul>
+                        <li class="dropdown profile_details_drop">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <div class="profile_img">
+                                    <span class="prfil-img">
+                                        <img src="/images/2.jpg" alt=""> </span>
 
-                                <div class="user-name">
-                                {{#if user}}
-                                    <p>{{user.displayName}}</p>
-                                    <span>Welcome</span>
-                                {{else}}
-                                    <a href="/login">Login</a>
-                                    <span>to access your account.</span>
-                                {{/if}}
+                                    <div class="user-name">
+                                        {{#if user}}
+                                        <p>{{user.displayName}}</p>
+                                        <span>Welcome</span>
+                                        {{else}}
+                                        <a href="/login">Login</a>
+                                        <span>to access your account.</span>
+                                        {{/if}}
+                                    </div>
+                                    <i class="fa fa-angle-down lnr"></i>
+                                    <i class="fa fa-angle-up lnr"></i>
+                                    <div class="clearfix"></div>
                                 </div>
-                                <i class="fa fa-angle-down lnr"></i>
-                                <i class="fa fa-angle-up lnr"></i>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu drp-mnu">
-                            <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>
-                            <li> <a href="#"><i class="fa fa-user"></i> My Account</a> </li>
-                            <li> <a href="#"><i class="fa fa-suitcase"></i> Profile</a> </li>
-                            {{#if user}}
+                            </a>
+                            <ul class="dropdown-menu drp-mnu">
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-cog"></i> Settings</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-user"></i> My Account</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-suitcase"></i> Profile</a>
+                                </li>
+                                {{#if user}}
 
-                            <li> <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a> </li>
-                            {{/if}}
-                        </ul>
-                    </li>
-                </ul>
+                                <li>
+                                    <a href="/change-password">
+                                        <i class="fa fa-lock"></i> Change Password</a>
+                                </li>
+                                <li>
+                                    <a href="/logout">
+                                        <i class="fa fa-sign-out"></i> Logout</a>
+                                </li>
+                                {{/if}}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
             </div>
             <div class="clearfix"> </div>
         </div>
-        <div class="clearfix"> </div>
+        {{/unless}}
+        <!-- //header-ends -->
+        <!-- main content start-->
+        {{{body}}}
+        <!--footer-->
+        <div class="footer">
+            <p>&copy; 2018 {{{title}}}. All Rights Reserved</p>
+        </div>
+        <!--//footer-->
     </div>
-{{/unless}}
-    <!-- //header-ends -->
-    <!-- main content start-->
-    {{{body}}}
-    <!--footer-->
-    <div class="footer">
-        <p>&copy; 2018 {{{title}}}. All Rights Reserved</p>
-    </div>
-    <!--//footer-->
-</div>
 
-<!-- side nav js -->
-<script src='/js/SidebarNav.min.js' type='text/javascript'></script>
-<script>
-    $('.sidebar-menu').SidebarNav()
-</script>
-<!-- //side nav js -->
+    <!-- side nav js -->
+    <script src='/js/SidebarNav.min.js' type='text/javascript'></script>
+    <script>
+        $('.sidebar-menu').SidebarNav()
+    </script>
+    <!-- //side nav js -->
 
-<!-- Classie --><!-- for toggle left push menu script -->
-<script src="/js/classie.js"></script>
-<script>
-    var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
-            showLeftPush = document.getElementById( 'showLeftPush' ),
+    <!-- Classie -->
+    <!-- for toggle left push menu script -->
+    <script src="/js/classie.js"></script>
+    <script>
+        var menuLeft = document.getElementById('cbp-spmenu-s1'),
+            showLeftPush = document.getElementById('showLeftPush'),
             body = document.body;
 
-    showLeftPush.onclick = function() {
-        classie.toggle( this, 'active' );
-        classie.toggle( body, 'cbp-spmenu-push-toright' );
-        classie.toggle( menuLeft, 'cbp-spmenu-open' );
-        disableOther( 'showLeftPush' );
-    };
+        showLeftPush.onclick = function () {
+            classie.toggle(this, 'active');
+            classie.toggle(body, 'cbp-spmenu-push-toright');
+            classie.toggle(menuLeft, 'cbp-spmenu-open');
+            disableOther('showLeftPush');
+        };
 
-    function disableOther( button ) {
-        if( button !== 'showLeftPush' ) {
-            classie.toggle( showLeftPush, 'disabled' );
+        function disableOther(button) {
+            if (button !== 'showLeftPush') {
+                classie.toggle(showLeftPush, 'disabled');
+            }
         }
-    }
-</script>
-<!-- //Classie --><!-- //for toggle left push menu script -->
+    </script>
+    <!-- //Classie -->
+    <!-- //for toggle left push menu script -->
 
-<!--scrolling js-->
-<script src="/js/map.js"></script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS8YsRX1ZDf6gJezMV0UQuCkHr7oc-UGw&callback=initMap">
-</script>
-<script src="/js/jquery.nicescroll.js"></script>
-<script src="/js/scripts.js"></script>
-<!--//scrolling js-->
+    <!--scrolling js-->
+    <script src="/js/map.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS8YsRX1ZDf6gJezMV0UQuCkHr7oc-UGw&callback=initMap">
+    </script>
+    <script src="/js/jquery.nicescroll.js"></script>
+    <script src="/js/scripts.js"></script>
+    <!--//scrolling js-->
 
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.js"> </script>
-<!-- //Bootstrap Core JavaScript -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.js"> </script>
+    <!-- //Bootstrap Core JavaScript -->
 
 </body>
+
 </html>

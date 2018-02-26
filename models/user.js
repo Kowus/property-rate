@@ -2,7 +2,7 @@ const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     securePassword = require('secure-password'),
     Ticket = require('./ticket')
-;
+    ;
 let pwd = securePassword();
 
 let userSchema = new Schema({
@@ -24,33 +24,33 @@ let userSchema = new Schema({
     phone: {
         type: String
     },
-    group:{
-      type:String,
-      default:'user'
+    group: {
+        type: String,
+        default: 'user'
     },
     address: String,
     properties: [
-        {type: Schema.Types.ObjectId, ref: 'Property'}
+        { type: Schema.Types.ObjectId, ref: 'Property' }
     ],
-    password: {type: Buffer, required: true},
-    gender: {type: String},
-    bill: [{type: Schema.Types.ObjectId, ref: 'Bill'}],
-    ticket: {type: Schema.Types.ObjectId, ref: 'Ticket', required: true},
-    transactions:[{type:Schema.Types.ObjectId, ref: 'Transaction'}]
+    password: { type: Buffer, required: true },
+    gender: { type: String },
+    bill: [{ type: Schema.Types.ObjectId, ref: 'Bill' }],
+    ticket: { type: Schema.Types.ObjectId, ref: 'Ticket', required: true },
+    transactions: [{ type: Schema.Types.ObjectId, ref: 'Transaction' }]
 });
 
 userSchema.pre('validate', function (next) {
-        let user = this;
-    if(this.isNew) {
+    let user = this;
+    if (this.isNew || !this.ticket) {
         let newTicket = new Ticket({
-                owner: user._id
-            });
+            owner: user._id
+        });
         newTicket.save(function (err, ticket) {
             if (err) return next(err);
             user.ticket = ticket._id;
             return next()
         })
-    }else {
+    } else {
         return next();
     }
 });
