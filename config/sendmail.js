@@ -7,7 +7,7 @@ const Email = require('email-templates'),
     nodemailer = require('nodemailer'),
     env = require('./env'),
     moment = require('moment')
-;
+    ;
 let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -32,14 +32,23 @@ const email = new Email({
 
 
 module.exports = {
-    newUser:function (user, pwd) {
+    password: function (user) {
+        email.send({
+            template: 'change_pass',
+            message: {
+                to: `${user.displayName} <${user.email}>`
+            },
+            locals: { user: user }
+        }).then(console.log).catch(console.error)
+    },
+    newUser: function (user, pwd) {
         email.send({
             template: 'new_user',
-            message:{
+            message: {
                 to: `${user.displayName} <${user.email}>`
-            }, locals:{
-                user:user,
-                createdPassword:pwd
+            }, locals: {
+                user: user,
+                createdPassword: pwd
             }
         }).then(console.log).catch(console.error)
     },
@@ -66,7 +75,7 @@ module.exports = {
                 user: user,
                 bill: bill,
                 date: moment(bill.createdAt).format('Do MMM. YYYY'),
-                props:props
+                props: props
 
             }
         }).then(console.log).catch(console.error);

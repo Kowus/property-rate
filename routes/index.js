@@ -12,7 +12,8 @@ var express = require('express'),
     momo = require('../lib/pay'),
     Trans = require('../models/transactions'),
     Ticket = require('../models/ticket'),
-    Billy = require('../lib/bill')
+    Billy = require('../lib/bill'),
+    mailer = require('../config/sendmail')
     ;
 
 /* GET home page. */
@@ -121,7 +122,7 @@ router.post('/change-password', isLoggedIn, function (req, res, next) {
                             console.error(err);
                             return res.render('password', { message: "Sorry, we couldn't change your password" })
                         }
-
+                        mailer.password(us)
                         console.log(us);
                         req.session.sucmess = 'Password changed successfully'
                         res.redirect('/logout');
