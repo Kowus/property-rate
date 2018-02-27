@@ -1,0 +1,14 @@
+<form method="POST" action='/users/update'>
+    <fieldset class="form-group">
+        <input name="_id" required value="{{owner._id}}" readonly hidden class="form-control hidden">
+        <input name="givenName" required value="{{owner.givenName}}" class="form-control">
+    </fieldset>
+    <fieldset class="form-group">
+        <input name="familyName" required value="{{owner.familyName}}" class="form-control">
+    </fieldset>
+    <fieldset class="form-group">
+        <input name="email" required value="{{owner.email}}" type="email" class="form-control">
+    </fieldset>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>

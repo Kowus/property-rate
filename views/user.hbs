@@ -182,7 +182,25 @@
                 </div>
             </div>
             <div class="clearfix"></div>
+            {{#unless acc_zonee}}
+            <div class="col w3-agile-crd widgettable">
+                <div class="card">
+                    <div class="card-body card-padding">
+                        <div class="">
+                            <header class="widget-header">
+                                <h4 class="widget-title">Update User Details</h4>
+                            </header>
+                            <hr class="widget-separator">
+                            <div class="widget-body">
+                                {{>edit_user}}
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            {{/unless}}
             <!--//photoday-section-->
 
 
