@@ -84,7 +84,7 @@
                                         </div>
                                         <div class="pull-right">
                                             <div class="lg-item-heading">
-                                                <!--<i class="fa fa-warning"></i>-->¢ {{total}}</div>
+                                                <!--<i class="fa fa-warning"></i>-->¢ {{math total "-" settled}}</div>
                                         </div>
                                         <div class="clearfix"></div>
                                         <div class="text-center">
@@ -140,7 +140,7 @@
                                             sl-primary
                                         {{/if}}">
                                         <div class="sl-content">
-                                            <small class="text-muted">{{transaction.amount}}</small>
+                                            <small class="text-muted">¢ {{transaction.amount}}</small>
 
 
                                             {{#if transaction.approved}}

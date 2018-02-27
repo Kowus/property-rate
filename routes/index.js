@@ -110,10 +110,10 @@ router.get('/generate-bills', needsGroup('admin'), function (req, res, next) {
 });
 router.get('/reset-password', isNotLoggedIn, function (req, res, next) {
     res.render('reset', { acc_zone: true })
-})
+});
 router.post('/reset-password', isNotLoggedIn, function (req, res, next) {
     User.findOne({ email: req.body.email }, function (err, user) {
-        if (err) return res.render('reset', { acc_zone: true, message: 'Sorry, an unknown error occurred' })
+        if (err) return res.render('reset', { acc_zone: true, message: 'Sorry, an unknown error occurred' });
         if (user) {
             mailer.reset(user);
             res.render('reset', { acc_zone: true, message: 'An email has been sent to your inbox. ' + req.body.email })
@@ -121,7 +121,7 @@ router.post('/reset-password', isNotLoggedIn, function (req, res, next) {
             res.render('reset', { acc_zone: true, message: 'No user found with email: ' + req.body.email })
         }
     })
-})
+});
 router.get('/reset', isNotLoggedIn, function (req, res, next) {
     User.findOne({ _id: req.query.id }, function (err, user) {
         if (err) return res.status(403).send('Unauthorized');

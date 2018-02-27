@@ -27,6 +27,25 @@ var properties = require('./routes/properties');
 var app = express();
 app.use(helmet());
 hbs.registerPartials('./views/partials');
+hbs.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    if (arguments.length < 4) {
+        // Operator omitted, assuming "+"
+        options = rvalue;
+        rvalue = operator;
+        operator = "+";
+    }
+
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+
+    return {
+        "+": lvalue + rvalue,
+        "-": lvalue - rvalue,
+        "*": lvalue * rvalue,
+        "/": lvalue / rvalue,
+        "%": lvalue % rvalue
+    }[operator];
+});
 app.locals.title = 'P R M A';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
