@@ -62,10 +62,17 @@ router.get('/', isLoggedIn, function (req, res, next) {
                                 }
                             }, count: { $sum: 1 }
                         }
+                    },{
+                        $sort:{
+                            _id:1
+                        }
                     }
                 ).exec(function (err, props) {
                     if (err) return callback(err);
                     callback(null, props);
+                    props.forEach(item=>{
+                        console.log(item._id)
+                    })
                 });
             }
         ], (err, results) => {
