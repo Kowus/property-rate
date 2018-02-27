@@ -243,13 +243,9 @@
         linecolor: "#CCA300",
         title: "Properties Added",
         values: [
-            {{ #each prop_trend }}
-            {
-                X: "{{_id.month}}/{{_id.year}}", Y: Number({{ count }})
-            }
-            {
-            {
-            /each}}
+            {{#each prop_trend}}
+            {X: "{{_id.month}}/{{_id.year}}", Y: Number({{count}})}
+            {{/each}}
         ]
     };
 
