@@ -5,7 +5,9 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-building-o icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>{{no_props}}</strong></h5>
+                        <h5>
+                            <strong>{{no_props}}</strong>
+                        </h5>
                         <span>Total Properties</span>
                     </div>
                 </div>
@@ -15,7 +17,9 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>{{no_users}}</strong></h5>
+                        <h5>
+                            <strong>{{no_users}}</strong>
+                        </h5>
                         <span>Total Users</span>
                     </div>
                 </div>
@@ -43,7 +47,8 @@
                                id="amt_ex">¢ {{tot_bill.0.total_expected}}</label>
                     </div>
                     <div class="col-md-6 top-content1">
-                        <div id="demo-pie-1" class="pie-title-center" data-percent="45"><span class="pie-value"></span>
+                        <div id="demo-pie-1" class="pie-title-center" data-percent="45">
+                            <span class="pie-value"></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -54,7 +59,8 @@
                         <label data-amt="{{tot_bill.0.total_paid}}" id="amt_paid">¢ {{tot_bill.0.total_paid}}</label>
                     </div>
                     <div class="col-md-6 top-content1">
-                        <div id="demo-pie-2" class="pie-title-center" data-percent="75"><span class="pie-value"></span>
+                        <div id="demo-pie-2" class="pie-title-center" data-percent="75">
+                            <span class="pie-value"></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -66,7 +72,8 @@
                                data-paid="{{tot_bill.0.total_paid}}"></label>
                     </div>
                     <div class="col-md-6 top-content1">
-                        <div id="demo-pie-3" class="pie-title-center" data-percent="90"><span class="pie-value"></span>
+                        <div id="demo-pie-3" class="pie-title-center" data-percent="90">
+                            <span class="pie-value"></span>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -192,7 +199,8 @@
 </script>
 <!-- new added graphs chart js-->
 
-<!-- Classie --><!-- for toggle left push menu script -->
+<!-- Classie -->
+<!-- for toggle left push menu script -->
 <script src="/js/classie.js"></script>
 <script>
     var menuLeft = document.getElementById('cbp-spmenu-s1'),
@@ -213,7 +221,8 @@
         }
     }
 </script>
-<!-- //Classie --><!-- //for toggle left push menu script -->
+<!-- //Classie -->
+<!-- //for toggle left push menu script -->
 
 <!--scrolling js-->
 <script src="/js/jquery.nicescroll.js"></script>
@@ -234,9 +243,13 @@
         linecolor: "#CCA300",
         title: "Properties Added",
         values: [
-            {{#each prop_trend}}
-                {X: "{{_id.month}}/{{_id.year}}", Y: Number({{count}})}
-            {{/each}}
+            {{ #each prop_trend }}
+            {
+                X: "{{_id.month}}/{{_id.year}}", Y: Number({{ count }})
+            }
+            {
+            {
+            /each}}
         ]
     };
 

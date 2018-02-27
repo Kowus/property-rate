@@ -71,6 +71,7 @@ router.get('/', isLoggedIn, function (req, res, next) {
         ], (err, results) => {
             if (err) {
                 console.error(err);
+                console.log(results[3])
                 res.render('index', {
                     title: 'Property Rate',
                     no_users: results[0],
