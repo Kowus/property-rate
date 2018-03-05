@@ -62,23 +62,23 @@ router.get('/', isLoggedIn, function (req, res, next) {
                                 }
                             }, count: { $sum: 1 }
                         }
-                    },{
-                        $sort:{
-                            _id:1
+                    }, {
+                        $sort: {
+                            _id: 1
                         }
                     }
                 ).exec(function (err, props) {
                     if (err) return callback(err);
                     callback(null, props);
-                    props.forEach(item=>{
-                        console.log(item._id)
-                    })
+                    props.forEach(item => {
+                        console.log(item._id);
+                    });
                 });
             }
         ], (err, results) => {
             if (err) {
                 console.error(err);
-                console.log(results[3])
+                console.log(results[3]);
                 res.render('index', {
                     title: 'Property Rate',
                     no_users: results[0],
@@ -103,55 +103,64 @@ router.get('/generate-bills', needsGroup('admin'), function (req, res, next) {
     Billy.generateBills()
         .then(response => {
             // res.render('bills', {count: response.length});
-            res.redirect('/')
+            res.redirect('/');
         }).catch(err => {
-            res.redirect('/')
+            res.redirect('/');
         });
 });
 router.get('/reset-password', isNotLoggedIn, function (req, res, next) {
-    res.render('reset', { acc_zone: true })
+    res.render('reset', { acc_zone: true });
 });
 router.post('/reset-password', isNotLoggedIn, function (req, res, next) {
     User.findOne({ email: req.body.email }, function (err, user) {
         if (err) return res.render('reset', { acc_zone: true, message: 'Sorry, an unknown error occurred' });
         if (user) {
             mailer.reset(user);
-            res.render('reset', { acc_zone: true, message: 'An email has been sent to your inbox. ' + req.body.email })
+            res.render('reset', { acc_zone: true, message: 'An email has been sent to your inbox. ' + req.body.email });
         } else {
-            res.render('reset', { acc_zone: true, message: 'No user found with email: ' + req.body.email })
+            res.render('reset', { acc_zone: true, message: 'No user found with email: ' + req.body.email });
         }
-    })
+    });
 });
 router.get('/reset', isNotLoggedIn, function (req, res, next) {
     User.findOne({ _id: req.query.id }, function (err, user) {
         if (err) return res.status(403).send('Unauthorized');
         if (!user) return res.status(403).send('Unauthorized');
         else {
-            res.render('new_password', { forg: user })
+            res.render('new_password', { forg: user });
         }
     }
-    )
+    );
 });
 router.post('/reset', isNotLoggedIn, function (req, res, next) {
     User.findOne({ _id: req.body._id }, function (err, user) {
         if (err) {
             console.error(err);
-            return res.render('new_password', { message: "Sorry, we couldn't change your password", forg: { _id: req.body._id } })
+            return res.render('new_password', {
+                message: "Sorry, we couldn't change your password",
+                forg: { _id: req.body._id }
+            });
         }
         if (user) {
-            if (req.body.password != req.body.cpassword) return res.render('new_password', { message: 'Password do not match', forg: { _id: req.body._id } })
+            if (req.body.password != req.body.cpassword) return res.render('new_password', {
+                message: 'Password do not match',
+                forg: { _id: req.body._id }
+            });
             user.password = req.body.password;
             console.log(user);
             user.save(function (err, us) {
                 if (err) {
                     console.error(err);
-                    return res.render('new_password', { message: "Sorry, we couldn't change your password", forg: { _id: req.body._id } })
+                    return res.render('new_password', {
+                        message: "Sorry, we couldn't change your password",
+                        forg: { _id: req.body._id }
+                    });
                 }
-                mailer.password(us)
+                mailer.password(us);
                 console.log(us);
-                req.session.sucmess = 'Password successfully reset.'
+                req.session.sucmess = 'Password successfully reset.';
                 res.redirect('/logout');
-            })
+            });
         }
     });
 });
@@ -163,41 +172,46 @@ router.post('/change-password', isLoggedIn, function (req, res, next) {
     User.findOne({ email: req.body.email }, function (err, user) {
         if (err) {
             console.error(err);
-            return res.render('password', { message: "Sorry, we couldn't change your password" })
+            return res.render('password', { message: "Sorry, we couldn't change your password" });
         }
         if (user) {
             user.comparePassword(req.body.opassword, function (err, isMatch) {
                 if (err) {
                     console.error(err);
-                    return res.render('password', { message: "Sorry, we couldn't change your password" })
+                    return res.render('password', { message: "Sorry, we couldn't change your password" });
                 }
                 if (isMatch) {
                     console.log(isMatch);
-                    if (req.body.password != req.body.cpassword) return res.render('password', { message: 'Password do not match' })
+                    if (req.body.password != req.body.cpassword) return res.render('password', { message: 'Password do not match' });
                     user.password = req.body.password;
                     console.log(user);
                     user.save(function (err, us) {
                         if (err) {
                             console.error(err);
-                            return res.render('password', { message: "Sorry, we couldn't change your password" })
+                            return res.render('password', { message: "Sorry, we couldn't change your password" });
                         }
-                        mailer.password(us)
+                        mailer.password(us);
                         console.log(us);
-                        req.session.sucmess = 'Password changed successfully'
+                        req.session.sucmess = 'Password changed successfully';
                         res.redirect('/logout');
-                    })
+                    });
 
                 } else {
-                    return res.render('password', { message: "Sorry, wrong old password." })
+                    return res.render('password', { message: "Sorry, wrong old password." });
                 }
 
-            })
+            });
         }
-    })
+    });
 
 });
 router.get('/login', isNotLoggedIn, function (req, res, next) {
-    res.render('login', { title: 'Property Rate Login.', message: req.flash('loginMessage'), acc_zone: true, success_message: req.session.sucmess || null });
+    res.render('login', {
+        title: 'Property Rate Login.',
+        message: req.flash('loginMessage'),
+        acc_zone: true,
+        success_message: req.session.sucmess || null
+    });
     req.session.sucmess = null;
 });
 router.get('/signup', isNotLoggedIn, function (req, res, next) {
@@ -425,11 +439,43 @@ router.post('/pay/ticket', isUserTicket, function (req, res, next) {
 
 });
 
+router.post('/getuser', needsGroup('admin'), function (req, res) {
+    User.findOne({ _id: req.body.user }, { displayName: 1 }, function (err, user) {
+        if (err) return res.status(400).end();
+        res.json(user);
+    });
+});
+
 router.get('/defaulters', needsGroup('admin'), function (req, res) {
-    Bill.find({ paid: false }).populate('owner').exec(function (err, bill) {
-        if (err) return res.send('an error occured')
-        res.render('deff', { defaulters: bill })
-    })
+    Bill.aggregate(
+        {
+            $match: {
+                paid: false
+            }
+        }, {
+            $project: {
+                owner: '$owner',
+                properties: '$properties',
+                createdAt: '$createdAt',
+                total: '$total',
+                settled: '$settled'
+            }
+        }, {
+            $group: {
+                _id: {
+                    year: { $year: '$createdAt' },
+                    month: { $month: '$createdAt' },
+                    owner: '$owner',
+                    properties: '$properties',
+                    total: { $subtract: ['$total', '$settled'] }
+                }
+            }
+        }
+    ).exec(function (err, bill) {
+        if (err) { console.error(err); return res.send('an error occured'); }
+        console.log(bill);
+        res.render('deff', { defaulters: bill });
+    });
 });
 
 router.get('/search_area', function (req, res) {
@@ -531,8 +577,8 @@ router.get('/geoJson', function (req, res, next) {
                     features: []
                 };
                 props.forEach(function (item) {
-                    console.log(item)
-                    let arr = item.area || null
+                    console.log(item);
+                    let arr = item.area || null;
                     feats.features.push({
                         geometry: {
                             type: 'Point',
@@ -556,6 +602,26 @@ router.get('/geoJson', function (req, res, next) {
                 res.json(feats);
             }
         );
+});
+
+
+router.get('/billdates', needsGroup('admin'), function (req, res, next) {
+    Bill.aggregate(
+        {
+            $group: {
+                _id: {
+                    year: { $year: '$createdAt' },
+                    month: { $month: '$createdAt' }
+                },
+                properties: {
+                    owner: '$owner'
+                }
+            }
+        }
+    ).exec((err, bills) => {
+        if (err) return res.send(err);
+        res.json(bills);
+    });
 });
 
 

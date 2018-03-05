@@ -24,7 +24,14 @@ let billSchema = new Schema({
     total: Number,
     createdAt: {type: Date, default: Date.now},
     transactions: [{type: Schema.Types.ObjectId, ref: 'Transaction'}],
-    paid: {type: Boolean, default: false}
+    paid: {type: Boolean, default: false},
+    arrears:{
+        bill: {
+            type:Schema.Types.ObjectId,
+            ref:'Bill'
+        },
+        amount: Number
+    }
 });
 
 

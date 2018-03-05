@@ -94,7 +94,7 @@
                             x_min: el.location.x.min,
                             x_max: el.location.x.max,
                             y_min: el.location.y.min,
-                            y_max:el.location.y.max
+                            y_max: el.location.y.max
                         };
                     }));
                 }
@@ -224,7 +224,7 @@
         var $form = $('#prop_form'),
             arb = $('#area_bar').val().split('('),
             usb = $('#use_bar').val().split('(')
-        ;
+            ;
         var add_prop = $.post('/users/add_prop', {
             use_code: $form.find('[name="use_code"]').val(),
             sanitation_code: $form.find('[name="sanitation_code"]').val(),
@@ -285,19 +285,19 @@
         let san = Number($(this).attr('data-san')),
             impost = Number($(this).attr('data-impost')),
             rate_val = Number($(this).attr('data-rate_val'))
-        ;
-        $(this).text('¢ '+round_number(san + (impost * rate_val)));
+            ;
+        $(this).text('¢ ' + round_number(san + (impost * rate_val)));
     });
 
 })(jQuery);
 
-                     
-     
-  function round_number(value, places) {
-      if(places){
-          var pow = Math.pow(10, places);
-          return Math.round(value, pow) / pow;
-      }else {
-          return Math.round(value * 100)/100
-      }
-  }
+
+
+function round_number(value, places) {
+    if (places) {
+        var pow = Math.pow(10, places);
+        return Math.round(value, pow) / pow;
+    } else {
+        return Math.round(value * 100) / 100
+    }
+}
