@@ -1,0 +1,91 @@
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="title1">Bill</h2>
+        <div class="blank-page widget-shadow scroll" id="style-2 div1">
+            <p class="pull-right btn btn-dark btn-sm prussy" id="print_it" onclick="window.print()">
+                <i class="fa fa-print" style="color: #fff"></i> Print</p>
+            <p class="pull-left btn btn-dark btn-sm prussy" onclick="window.location.reload()">
+                <i class="fa fa-refresh" style="color: #fff"></i>
+            </p>
+            <div class="clearfix"></div>
+            <form action="/trans" method="post">
+                <div class="input-group col-md-6">
+                    <h4>From</h4>
+                    <input type="number" class="form-control" placeholder="Year" required min="2000" name="from_year">
+                    <input type="number" class="form-control" placeholder="Month" required min="1" max="12" name="from_month">
+                    <input type="number" class="form-control" placeholder="Day" required min="1" max="31" name="from_day">
+
+
+                    <!--div class="input-group-btn">
+                        <button type="submit" class="btn btn-warning btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div-->
+                </div>
+
+                <div class="input-group col-md-6">
+                    <h4>To</h4>
+                    <input type="number" class="form-control" placeholder="Year" required min="2000" name="to_year">
+                    <input type="number" class="form-control" placeholder="Month" required min="1" max="12" name="to_month">
+                    <input type="number" class="form-control" placeholder="Day" required min="1" max="31" name="to_day">
+
+
+                    <!--div class="input-group-btn">
+                        <button type="submit" class="btn btn-warning btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div-->
+                </div>
+                <fieldset>
+                    <button class="btn btn-success">Submit</button>
+                </fieldset>
+            </form>
+            <div class="clearfix"></div>
+            <hr> {{#if trans}}
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Amount</th>
+                        <th>Date of Final Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each trans as |tran|}} {{#if tran.bill.paid}}
+                    <tr>
+                        <td>{{tran.owner.displayName}}</td>
+                        <td>¢ {{tran.bill.total}}</td>
+                        <td>{{tran.bill.transactions.0.date}}</td>
+                    </tr>
+                    {{/if}} {{/each}}
+                </tbody>
+            </table>
+            {{/if}}
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.defaulter-owner').each(function () {
+            let def = $(this);
+            let atr = def.attr('data-owner');
+            console.log('yo')
+            var get_user = $.post('/getuser', {
+                user: def.attr('data-owner')
+            });
+
+            get_user.done(function (data) {
+                console.log(data);
+                //$(this).find().text(data.displayName);
+                //$('#own' + atr).html(data)
+                $('#own' + atr).text(data.displayName)
+                console.log($('#own' + atr))
+            }).fail(function (err) {
+                console.error(err);
+            });
+        });
+    })
+</script>
