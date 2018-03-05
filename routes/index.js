@@ -13,7 +13,8 @@ var express = require('express'),
     Trans = require('../models/transactions'),
     Ticket = require('../models/ticket'),
     Billy = require('../lib/bill'),
-    mailer = require('../config/sendmail')
+    mailer = require('../config/sendmail'),
+    moment = require('moment')
     ;
 
 /* GET home page. */
@@ -446,6 +447,31 @@ router.post('/getuser', needsGroup('admin'), function (req, res) {
     });
 });
 
+router.post('/trans', needsGroup('admin'), function (req, res, next) {
+    let ftod = Number(req.body.from_day) < 10 ? '0' + req.body.from_day : req.body.from_day;
+    let ttod = Number(req.body.to_day) < 10 ? '0' + req.body.to_day : req.body.to_day;
+    let tmon = Number(req.body.to_month) < 10 ? '0' + req.body.to_month : req.body.to_month;
+    let fmon = Number(req.body.from_month) < 10 ? '0' + req.body.from_month : req.body.from_month;
+    let today = moment(`${req.body.from_year}${fmon}${ftod}`).startOf('day');
+    let tomorrow = moment(`${req.body.to_year}${tmon}${ttod}`).startOf('day');
+    // res.json({ today: today.toDate(), tomorrow: tomorrow.toDate() });
+    Trans.find({
+        date: { $gte: today.toDate(), $lt: tomorrow.toDate() }
+    }).populate({
+        path: 'bill owner',
+        populate: [
+            { path: 'transactions' }
+        ]
+    }).exec(function (err, trans) {
+        if (err) return res.send(err);
+        console.log(trans.bill);
+
+        res.render('paid', { trans: trans });
+    })
+});
+router.get('/trans', needsGroup('admin'), function (req, res) {
+    res.render('paid');
+});
 router.get('/defaulters', needsGroup('admin'), function (req, res) {
     Bill.aggregate(
         {
