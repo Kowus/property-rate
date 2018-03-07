@@ -101,6 +101,12 @@
                                     <span>Defaulters</span>
                                 </a>
                             </li>
+                            <li class="treeview">
+                                <a href="/trans">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>By Date</span>
+                                </a>
+                            </li>
                             <li class="header">Billing</li>
                             <li class="treeview">
                                 <a href="/generate-bills">
@@ -114,8 +120,8 @@
                 </nav>
             </aside>
         </div>
-{{/unless}}
-        
+        {{/unless}}
+
         <!--left-fixed -navigation-->
         <!-- header-starts -->
         <div class="sticky-header header-section ">
@@ -191,59 +197,59 @@
                 <div class="clearfix"> </div>
             </div>
         </div>
-            {{/unless}}
-            <!-- //header-ends -->
-            <!-- main content start-->
-            {{{body}}}
-            <!--footer-->
-            <div class="footer">
-                <p>&copy; 2018 {{{title}}}. All Rights Reserved</p>
-            </div>
-            <!--//footer-->
+        {{/unless}}
+        <!-- //header-ends -->
+        <!-- main content start-->
+        {{{body}}}
+        <!--footer-->
+        <div class="footer">
+            <p>&copy; 2018 {{{title}}}. All Rights Reserved</p>
         </div>
+        <!--//footer-->
+    </div>
 
-        <!-- side nav js -->
-        <script src='/js/SidebarNav.min.js' type='text/javascript'></script>
-        <script>
-            $('.sidebar-menu').SidebarNav()
-        </script>
-        <!-- //side nav js -->
+    <!-- side nav js -->
+    <script src='/js/SidebarNav.min.js' type='text/javascript'></script>
+    <script>
+        $('.sidebar-menu').SidebarNav()
+    </script>
+    <!-- //side nav js -->
 
-        <!-- Classie -->
-        <!-- for toggle left push menu script -->
-        <script src="/js/classie.js"></script>
-        <script>
-            var menuLeft = document.getElementById('cbp-spmenu-s1'),
-                showLeftPush = document.getElementById('showLeftPush'),
-                body = document.body;
+    <!-- Classie -->
+    <!-- for toggle left push menu script -->
+    <script src="/js/classie.js"></script>
+    <script>
+        var menuLeft = document.getElementById('cbp-spmenu-s1'),
+            showLeftPush = document.getElementById('showLeftPush'),
+            body = document.body;
 
-            showLeftPush.onclick = function () {
-                classie.toggle(this, 'active');
-                classie.toggle(body, 'cbp-spmenu-push-toright');
-                classie.toggle(menuLeft, 'cbp-spmenu-open');
-                disableOther('showLeftPush');
-            };
+        showLeftPush.onclick = function () {
+            classie.toggle(this, 'active');
+            classie.toggle(body, 'cbp-spmenu-push-toright');
+            classie.toggle(menuLeft, 'cbp-spmenu-open');
+            disableOther('showLeftPush');
+        };
 
-            function disableOther(button) {
-                if (button !== 'showLeftPush') {
-                    classie.toggle(showLeftPush, 'disabled');
-                }
+        function disableOther(button) {
+            if (button !== 'showLeftPush') {
+                classie.toggle(showLeftPush, 'disabled');
             }
-        </script>
-        <!-- //Classie -->
-        <!-- //for toggle left push menu script -->
+        }
+    </script>
+    <!-- //Classie -->
+    <!-- //for toggle left push menu script -->
 
-        <!--scrolling js-->
-        <script src="/js/map.js"></script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS8YsRX1ZDf6gJezMV0UQuCkHr7oc-UGw&callback=initMap">
-        </script>
-        <script src="/js/jquery.nicescroll.js"></script>
-        <script src="/js/scripts.js"></script>
-        <!--//scrolling js-->
+    <!--scrolling js-->
+    <script src="/js/map.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCS8YsRX1ZDf6gJezMV0UQuCkHr7oc-UGw&callback=initMap">
+    </script>
+    <script src="/js/jquery.nicescroll.js"></script>
+    <script src="/js/scripts.js"></script>
+    <!--//scrolling js-->
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="/js/bootstrap.js"> </script>
-        <!-- //Bootstrap Core JavaScript -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.js"> </script>
+    <!-- //Bootstrap Core JavaScript -->
 
 </body>
 
