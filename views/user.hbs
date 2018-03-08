@@ -87,6 +87,7 @@
                                                 <!--<i class="fa fa-warning"></i>-->¢ {{math total "-" settled}}</div>
                                         </div>
                                         <div class="clearfix"></div>
+                                        {{#if isuser}}
                                         <div class="text-center">
                                             {{#if paid}}
                                             <small class=" btn btn-sm btn-success">Paid</small>
@@ -94,6 +95,7 @@
                                             <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
                                             {{/if}}
                                         </div>
+                                        {{/if}}
                                         <hr>
                                         <div style="margin:auto 10px;">
 
