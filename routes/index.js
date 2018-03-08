@@ -525,6 +525,27 @@ router.get('/defaulters', needsGroup('admin'), function (req, res) {
     });
 });
 
+router.get('/non-def', needsGroup('admin'), function (req, res) {
+    Bill.aggregate({
+        $match: {
+            paid: true
+        }
+    }, {
+            $group: {
+                _id: {
+                    owner: '$owner',
+                    issued: { $year: '$createdAt' }
+                },
+                transactions: { $first: '$transactions' }
+            }
+        }
+    ).exec((err, bills) => {
+        if (err) { console.error(err); return res.send('an error occured'); }
+        console.log(bills);
+        res.json(bills);
+    });
+});
+
 router.get('/search_area', function (req, res) {
     console.log(req.query);
     var regex = new RegExp(req.query.term, 'i');
