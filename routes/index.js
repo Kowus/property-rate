@@ -453,6 +453,22 @@ router.post('/getuser', needsGroup('admin'), function (req, res) {
     });
 });
 
+router.get('/all_users', needsGroup('admin'), function (req, res) {
+    User.find().populate({
+        path: 'properties',
+        populate: [
+            {
+                path: 'area'
+            }, {
+                path: 'use_code'
+            }
+        ]
+    }).exec(function (err, users) {
+        if (err) return res.send(err);
+        res.render('usprop', { users: users });
+    });
+});
+
 router.post('/trans', needsGroup('admin'), function (req, res, next) {
     let ftod = Number(req.body.from_day) < 10 ? '0' + req.body.from_day : req.body.from_day;
     let ttod = Number(req.body.to_day) < 10 ? '0' + req.body.to_day : req.body.to_day;
