@@ -46,7 +46,7 @@
                 console.log(data);
                 //$(this).find().text(data.displayName);
                 //$('#own' + atr).html(data)
-                $('#own' + atr).text(data.displayName)
+                $('#own' + atr).html('<a href="/users/' + data._id + '">' + data.displayName + '</a>')
                 console.log($('#own' + atr))
             }).fail(function (err) {
                 console.error(err);
