@@ -688,7 +688,7 @@ function isUserTicket(req, res, next) {
                 console.error(err);
                 return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
             }
-            if (bill.owner.ticket._id == req.body.ticket && (bill.owner._id == req.user._id || req.user.group == 'admin')) {
+            if (bill.owner.ticket._id == req.body.ticket && (bill.owner._id == req.user._id)) {
                 Ticket.findOne({
                     _id: req.body.ticket
                 }).exec((err, ticket) => {
@@ -703,7 +703,7 @@ function isUserTicket(req, res, next) {
                 });
 
             }
-            else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Ticket doesn't belong to this user. I'll call the cops on you!`);
+            else return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=Shame on you, ticket doesn't belong to you!`);
         });
 }
 
