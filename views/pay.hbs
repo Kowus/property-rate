@@ -10,7 +10,8 @@
                 <div class="pull-right btn btn-info">Pay With Ticket</div>
                 <div class="clearfix"></div>
             </div>
-            <br><br>
+            <br>
+            <br>
             <hr>
 
 
@@ -26,33 +27,36 @@
                 <div class="pull-left text-left">
                     <h2 class="text-left">Bill Details</h2>
                     <p class="lead">{{bill._id}}</p>
-                    <h1>¢ {{bill.total}}</h1>
+                    <h1>¢ {{math bill.total "-" bill.settled}}</h1>
                 </div>
                 <div class="clearfix"></div>
                 <hr>
                 <form method="post" action="/pay/ticket">
                     <fieldset class="form-group" style="width:50%; margin: 0 auto;">
                         {{#if message}}
-                            <div class="alert alert-danger alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Warning!</strong> {{message}}
-                            </div>
-                            <br>
-                        {{/if}}
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <strong>Warning!</strong> {{message}}
+                        </div>
+                        <br> {{/if}}
                         <input value="{{bill._id}}" hidden readonly name="bill">
                         <input value="{{bill.owner.ticket._id}}" hidden readonly name="ticket">
                         <input value="{{bill.owner._id}}" hidden readonly name="owner">
-                        <input class="form-control text-right" required name="amount" type="number" step=".01" style="height: 100px; font-size: xx-large;" placeholder="Amount to pay" min="1" {{#if inAm}}value="{{inAm}}"{{/if}}>
+                        <input class="form-control text-right" required name="amount" type="number" step=".01" style="height: 100px; font-size: xx-large;"
+                            placeholder="Amount to pay" min="1" {{#if inAm}}value="{{inAm}}" {{/if}}>
                         <hr>
                         <div class="text-right">
 
-                        <button class="btn btn-success">
-                            <i class="fa fa-money">  |  Pay</i>
-                        </button>
+                            <button class="btn btn-success">
+                                <i class="fa fa-money"> | Pay</i>
+                            </button>
                         </div>
                     </fieldset>
                     <hr>
-                    <br><br>
+                    <br>
+                    <br>
                 </form>
             </div>
 
