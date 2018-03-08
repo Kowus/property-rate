@@ -294,8 +294,14 @@ router.get('/search_user', needsGroup('admin'), function (req, res) {
 
     query.exec(function (err, users) {
         if (!err) {
-
-            res.render('users', { users: users, term: req.query.term });
+            if (users.length > 0) {
+                res.render('users', { users: users, term: req.query.term });
+            } else {
+                res.render('error', {
+                    error: { stack: "Your search didn't match any user we have in our system. Please check and try again.", status: 404 },
+                    message: `No search results for ${req.query.term}`
+                });
+            }
         } else {
 
             res.render('error', {
@@ -455,18 +461,17 @@ router.post('/trans', needsGroup('admin'), function (req, res, next) {
     let today = moment(`${req.body.from_year}${fmon}${ftod}`).startOf('day');
     let tomorrow = moment(`${req.body.to_year}${tmon}${ttod}`).startOf('day');
     // res.json({ today: today.toDate(), tomorrow: tomorrow.toDate() });
-    Trans.find({
-        date: { $gte: today.toDate(), $lt: tomorrow.toDate() }
+    Bill.find({
+        createdAt: { $gte: today.toDate(), $lt: tomorrow.toDate() }
     }).populate({
-        path: 'bill owner',
+        path: 'owner',
         populate: [
             { path: 'transactions' }
         ]
-    }).exec(function (err, trans) {
+    }).exec(function (err, bills) {
         if (err) return res.send(err);
-        console.log(trans.bill);
-
-        res.render('paid', { trans: trans });
+        let issearch = true;
+        res.render('paid', { bills: bills, istrans: bills.length > 0, issearch: issearch });
     })
 });
 router.get('/trans', needsGroup('admin'), function (req, res) {

@@ -41,26 +41,31 @@
                 </fieldset>
             </form>
             <div class="clearfix"></div>
-            <hr> {{#if trans}}
+            <hr> {{#if bills}}
             <table class="table table-responsive">
                 <thead>
                     <tr>
                         <th>Owner</th>
                         <th>Amount</th>
-                        <th>Date of Final Payment</th>
+                        <th>Arrears</th>
+                        <th>Date of Issue</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each trans as |tran|}} {{#if tran.bill.paid}}
+                    {{#each bills as |bill|}} {{#if bill.paid}} {{else}}
                     <tr>
-                        <td>{{tran.owner.displayName}}</td>
-                        <td>¢ {{tran.bill.total}}</td>
-                        <td>{{tran.bill.transactions.0.date}}</td>
+                        <td>{{bill.owner.displayName}}</td>
+                        <td>¢ {{bill.total}}</td>
+                        <td>¢ {{math bill.total "-" bill.settled}}</td>
+                        <td>{{bill.createdAt}}</td>
                     </tr>
                     {{/if}} {{/each}}
                 </tbody>
             </table>
-            {{/if}}
+            {{else}} {{#if issearch}}
+            <h3 class="text-center">No Search Results</p>
+                {{/if}}
+                <hr> {{/if}}
 
 
         </div>
