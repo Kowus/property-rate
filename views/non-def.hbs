@@ -1,0 +1,35 @@
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="title1">Non Defaulters
+        </h2>
+        <div class="blank-page widget-shadow scroll" id="style-2 div1">
+            <ul class="list-group">
+                {{#each bills as |bill|}}
+
+                <li class="list-group-item">
+                    <h3 data-bluna="{{bill._id.owner}}">
+                        <a href="/users/{{bill._id.owner}}">
+                            <span class="text-capitalize" id="disp{{bill._id.owner}}"></span>
+                            <span class="pull-right" id="em{{bill._id.owner}}"></span>
+                        </a>
+                    </h3>
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>Property Number</th>
+                            <th>Area</th>
+                            <th>Use Code</th>
+                        </tr>
+                        {{#each user.properties as |prop|}}
+                        <tr>
+                            <td>{{prop.prop_num}}</td>
+                            <td>{{prop.area.name}}</td>
+                            <td>{{prop.use_code.name}}</td>
+                        </tr>
+                        {{/each}}
+                    </table>
+                </li>
+                <hr style="margin-top:40px; margin-bottom:40px;"> {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

@@ -542,7 +542,7 @@ router.get('/non-def', needsGroup('admin'), function (req, res) {
     ).exec((err, bills) => {
         if (err) { console.error(err); return res.send('an error occured'); }
         console.log(bills);
-        res.json(bills);
+        res.render('non-def', { bills: bills });
     });
 });
 
