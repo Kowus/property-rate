@@ -162,7 +162,7 @@ router.get('/:user_id', function (req, res, next) {
             ;
         req.session.transid = undefined;
         req.session.transtat = undefined;
-        res.render('user', { isuser: req.user._id == user._id, owner: user, use_code: use_code, sanitation: sanitation, transid: transid, transtat: transtat });
+        res.render('user', { isuser: String(req.user._id) == String(user._id), owner: user, use_code: use_code, sanitation: sanitation, transid: transid, transtat: transtat });
     });
 });
 module.exports = router;
