@@ -16,6 +16,11 @@ var express = require('express'),
     mailer = require('../config/sendmail'),
     moment = require('moment')
     ;
+/*
+router.get('/dsaf', function (req, res) {
+    let dat = require('../scratch/areas');
+    res.json(dat);
+});*/
 
 /* GET home page. */
 router.get('/', isLoggedIn, function (req, res, next) {
