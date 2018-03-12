@@ -43,157 +43,163 @@
 <body class="cbp-spmenu-push">
     <div class="main-content">
         {{#unless acc_zone}}
-        <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+            <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+
+                <!--left-fixed -navigation-->
+                {{#unless acc_zonee}}
+                    <aside class="sidebar-left">
+                        <nav class="navbar navbar-inverse">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <h1>
+                                    <a class="navbar-brand" href="/">
+                                        <span class="fa fa-area-chart"></span>Property
+                                        <span class="dashboard_text">Rate Assistance app</span>
+                                    </a>
+                                </h1>
+                            </div>
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="sidebar-menu">
+                                    <li class="header">MAIN NAVIGATION</li>
+                                    <li class="treeview">
+                                        <a href="/">
+                                            <i class="fa fa-dashboard"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+                                    <li class="header">Users</li>
+                                    <li class="treeview">
+                                        <a href="/users/create">
+                                            <i class="fa fa-pencil-square"></i>
+                                            <span>Create</span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview">
+                                        <a href="/users">
+                                            <i class="fa fa-search"></i>
+                                            <span>Search and Update User</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="header">Reports</li>
+                                    <li class="treeview">
+
+                                        <a href="/all_users">
+                                            <i class="fa fa-users"></i>
+                                            <span>All Users</span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview">
+
+                                        <a href="/area_search">
+                                            <i class="fa fa-search"></i>
+                                            <span>Search by Area</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="treeview">
+                                        <a href="/defaulters">
+                                            <i class="fa fa-bookmark-o"></i>
+                                            <span>Defaulters</span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview">
+                                        <a href="/non-def">
+                                            <i class="fa fa-bookmark"></i>
+                                            <span>Non Defaulters</span>
+                                        </a>
+                                    </li>
+                                    <li class="treeview">
+                                        <a href="/trans">
+                                            <i class="fa fa-calendar"></i>
+                                            <span>By Date</span>
+                                        </a>
+                                    </li>
+                                    <li class="header">Billing</li>
+                                    <li class="treeview">
+                                        <a href="/generate-bills">
+                                            <i class="fa fa-gears"></i>
+                                            <span>Generate Bills</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </nav>
+                    </aside>
+            </div>
+            {{/unless}}
 
             <!--left-fixed -navigation-->
-            {{#unless acc_zonee}}
-            <aside class="sidebar-left">
-                <nav class="navbar navbar-inverse">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".collapse" aria-expanded="false">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <h1>
-                            <a class="navbar-brand" href="/">
-                                <span class="fa fa-area-chart"></span>Property
-                                <span class="dashboard_text">Rate Assistance app</span>
-                            </a>
-                        </h1>
+            <!-- header-starts -->
+            <div class="sticky-header header-section ">
+                <div class="header-left">
+
+                    <!--toggle button start-->
+                    <button id="showLeftPush">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <!--toggle button end-->
+                    <div class="profile_details_left">
+
+                        <div class="clearfix"> </div>
                     </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="sidebar-menu">
-                            <li class="header">MAIN NAVIGATION</li>
-                            <li class="treeview">
-                                <a href="/">
-                                    <i class="fa fa-dashboard"></i>
-                                    <span>Dashboard</span>
-                                </a>
-                            </li>
-                            <li class="header">Users</li>
-                            <li class="treeview">
-                                <a href="/users/create">
-                                    <i class="fa fa-pencil-square"></i>
-                                    <span>Create</span>
-                                </a>
-                            </li>
-                            <li class="treeview">
-                                <a href="/users">
-                                    <i class="fa fa-search"></i>
-                                    <span>Search and Update User</span>
-                                </a>
-                            </li>
-
-                            <li class="header">Reports</li>
-                            <li class="treeview">
-
-                                <a href="/all_users">
-                                    <i class="fa fa-users"></i>
-                                    <span>All Users</span>
-                                </a>
-                            </li>
-                            <li class="treeview">
-
-                                <a href="/area_search">
-                                    <i class="fa fa-search"></i>
-                                    <span>Search by Area</span>
-                                </a>
-                            </li>
-
-                            <li class="treeview">
-                                <a href="/defaulters">
-                                    <i class="fa fa-bookmark-o"></i>
-                                    <span>Defaulters</span>
-                                </a>
-                            </li>
-                            <li class="treeview">
-                                <a href="/trans">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>By Date</span>
-                                </a>
-                            </li>
-                            <li class="header">Billing</li>
-                            <li class="treeview">
-                                <a href="/generate-bills">
-                                    <i class="fa fa-gears"></i>
-                                    <span>Generate Bills</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </nav>
-            </aside>
-        </div>
-        {{/unless}}
-
-        <!--left-fixed -navigation-->
-        <!-- header-starts -->
-        <div class="sticky-header header-section ">
-            <div class="header-left">
-
-                <!--toggle button start-->
-                <button id="showLeftPush">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <!--toggle button end-->
-                <div class="profile_details_left">
-
-                    <div class="clearfix"> </div>
-                </div>
-                <div class="header-right">
+                    <div class="header-right">
 
 
 
 
-                    <div class="profile_details">
-                        <ul>
-                            <li class="dropdown profile_details_drop">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <div class="profile_img">
-                                        <span class="prfil-img">
-                                            <!--<img src="/images/2.jpg" alt=""> -->
-                                        </span>
+                        <div class="profile_details">
+                            <ul>
+                                <li class="dropdown profile_details_drop">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <div class="profile_img">
+                                            <span class="prfil-img">
+                                                <!--<img src="/images/2.jpg" alt=""> -->
+                                            </span>
 
-                                        <div class="user-name">
-                                            {{#if user}}
-                                            <p>{{user.displayName}}</p>
-                                            <span>Welcome</span>
-                                            {{else}}
-                                            <a href="/login">Login</a>
-                                            <span>to access your account.</span>
-                                            {{/if}}
+                                            <div class="user-name">
+                                                {{#if user}}
+                                                    <p>{{user.displayName}}</p>
+                                                    <span>Welcome</span>
+                                                {{else}}
+                                                    <a href="/login">Login</a>
+                                                    <span>to access your account.</span>
+                                                {{/if}}
+                                            </div>
+                                            <i class="fa fa-angle-down lnr"></i>
+                                            <i class="fa fa-angle-up lnr"></i>
+                                            <div class="clearfix"></div>
+                                            </span>
                                         </div>
-                                        <i class="fa fa-angle-down lnr"></i>
-                                        <i class="fa fa-angle-up lnr"></i>
-                                        <div class="clearfix"></div>
-                                        </span>
-                                    </div>
-                                </a>
-                                <ul class="dropdown-menu drp-mnu">
+                                    </a>
+                                    <ul class="dropdown-menu drp-mnu">
 
-                                    {{#if user}}
+                                        {{#if user}}
 
-                                    <li>
-                                        <a href="/change-password">
-                                            <i class="fa fa-lock"></i> Change Password</a>
-                                    </li>
-                                    <li>
-                                        <a href="/logout">
-                                            <i class="fa fa-sign-out"></i> Logout</a>
-                                    </li>
-                                    {{/if}}
-                                </ul>
-                            </li>
-                        </ul>
+                                            <li>
+                                                <a href="/change-password">
+                                                    <i class="fa fa-lock"></i> Change Password</a>
+                                            </li>
+                                            <li>
+                                                <a href="/logout">
+                                                    <i class="fa fa-sign-out"></i> Logout</a>
+                                            </li>
+                                        {{/if}}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix"> </div>
                     </div>
                     <div class="clearfix"> </div>
                 </div>
-                <div class="clearfix"> </div>
             </div>
-        </div>
         {{/unless}}
         <!-- //header-ends -->
         <!-- main content start-->
