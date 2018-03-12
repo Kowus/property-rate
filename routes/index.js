@@ -452,7 +452,12 @@ router.post('/getuser', needsGroup('admin'), function (req, res) {
         res.json(user);
     });
 });
-
+router.post('/gettrans', needsGroup('admin'), function (req, res) {
+    Trans.findOne({ _id: req.body.trans }).populate('bill').exec(function (err, trans) {
+        if (err) return res.status(400).end();
+        res.json(trans);
+    });
+});
 router.get('/all_users', needsGroup('admin'), function (req, res) {
     User.find().populate({
         path: 'properties',
@@ -536,11 +541,11 @@ router.get('/non-def', needsGroup('admin'), function (req, res) {
                     owner: '$owner',
                     issued: { $year: '$createdAt' }
                 },
-                transactions: { $first: '$transactions' }
+                transactions: { $addToSet: '$transactions' }
             }
         }
     ).exec((err, bills) => {
-        if (err) { console.error(err); return res.send('an error occured'); }
+        if (err) { console.error(err); return res.send(err); }
         console.log(bills);
         res.render('non-def', { bills: bills });
     });

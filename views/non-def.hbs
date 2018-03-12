@@ -6,16 +6,60 @@
             <ul class="list-group">
                 {{#each bills as |bill|}}
 
-                <li class="list-group-item">
-                    <h3 data-bluna="{{bill._id.owner}}">
-                        <a href="/users/{{bill._id.owner}}">
-                            <span class="text-capitalize" id="disp{{bill._id.owner}}"></span>
-                            <span class="pull-right" data-paid="{{bill.transactions.0}}"></span>
-                        </a>
-                    </h3>
-                </li>
-                <hr style="margin-top:40px; margin-bottom:40px;"> {{/each}}
+                    <li class="list-group-item">
+                        <p class="bill-created">aaa</p>
+                        <h3>
+                            <a href="/users/{{bill._id.owner}}">
+                                <span class="text-capitalize pd-owner" id="disp{{bill._id.owner}}" data-owner="{{bill._id.owner}}"></span>
+                                <span class="pull-right pd-trans" data-paid="{{bill.transactions}}"></span>
+                            </a>
+                        </h3>
+                    </li>
+                    <hr style="margin-top:40px; margin-bottom:40px;"> {{/each}}
             </ul>
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+        $('.pd-owner').each(function () {
+            let def = $(this);
+            let atr = def.attr('data-owner');
+            var get_user = $.post('/getuser', {
+                user: def.attr('data-owner')
+            });
+
+            get_user.done(function (data) {
+                //console.log(data);
+                //$(this).find().text(data.displayName);
+                //$('#own' + atr).html(data)
+                $('#disp' + atr).text(data.displayName)
+                //console.log($('#own' + atr))
+            }).fail(function (err) {
+                console.error(err);
+            });
+        });
+        $('.pd-trans').each(function () {
+            let def = $(this);
+            let atr = def.attr('data-paid').split(',')[0];
+
+            var get_trans = $.post('/gettrans', {
+                trans: atr
+            });
+
+            get_trans.done(function (data) {
+                console.log(data);
+                //$(this).find().text(data.displayName);
+                //$('#own' + atr).html(data)
+                def.text(moment(new Date(data.date)).format('MMM/DD/YYYY'))
+                def.parent().parent().parent().find('.bill-created').text(moment(new Date(data.bill.createdAt)).format('MMM/DD/YYYY'))
+
+            }).fail(function (err) {
+                console.error(err);
+            });
+
+        });
+
+    })
+</script>
