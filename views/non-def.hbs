@@ -3,20 +3,24 @@
         <h2 class="title1">Non Defaulters
         </h2>
         <div class="blank-page widget-shadow scroll" id="style-2 div1">
-            <ul class="list-group">
-                {{#each bills as |bill|}}
 
-                    <li class="list-group-item">
-                        <p class="bill-created">aaa</p>
-                        <h3>
-                            <a href="/users/{{bill._id.owner}}">
-                                <span class="text-capitalize pd-owner" id="disp{{bill._id.owner}}" data-owner="{{bill._id.owner}}"></span>
-                                <span class="pull-right pd-trans" data-paid="{{bill.transactions}}"></span>
-                            </a>
-                        </h3>
-                    </li>
-                    <hr style="margin-top:40px; margin-bottom:40px;"> {{/each}}
-            </ul>
+            <table class="table table-condensed">
+                <tr>
+                    <th>Name</th>
+                    <th>Date Issued</th>
+                    <th>Date Paid</th>
+                </tr>
+                <tbody>
+                    {{#each bills as |bill|}}
+                        <tr>
+                            <td class="text-capitalize pd-owner" id="disp{{bill._id.owner}}" data-owner="{{bill._id.owner}}"></td>
+                            <td class="bill-created"></td>
+                            <td class="pd-trans" data-paid="{{bill.transactions}}"></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
@@ -34,7 +38,7 @@
                 //console.log(data);
                 //$(this).find().text(data.displayName);
                 //$('#own' + atr).html(data)
-                $('#disp' + atr).html('<small>User: </small> ' + data.displayName);
+                $('#disp' + atr).html('<a href="/users/' + data._id + '">' + data.displayName);
                 //console.log($('#own' + atr))
             }).fail(function (err) {
                 console.error(err);
@@ -52,8 +56,8 @@
                 console.log(data);
                 //$(this).find().text(data.displayName);
                 //$('#own' + atr).html(data)
-                def.html('<small>Date Paid: </small>' + moment(new Date(data.date)).format('MMM/DD/YYYY'))
-                def.parent().parent().parent().find('.bill-created').html('<small>Date of Bill Issue</small>: ' + moment(new Date(data.bill.createdAt)).format('MMM/DD/YYYY'))
+                def.html(moment(new Date(data.date)).format('MMM/DD/YYYY'))
+                def.parent().find('.bill-created').html(moment(new Date(data.bill.createdAt)).format('MMM/DD/YYYY'))
 
             }).fail(function (err) {
                 console.error(err);
