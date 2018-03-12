@@ -34,7 +34,7 @@
                 //console.log(data);
                 //$(this).find().text(data.displayName);
                 //$('#own' + atr).html(data)
-                $('#disp' + atr).text(data.displayName)
+                $('#disp' + atr).html('<small>User: </small> ' + data.displayName);
                 //console.log($('#own' + atr))
             }).fail(function (err) {
                 console.error(err);
@@ -52,8 +52,8 @@
                 console.log(data);
                 //$(this).find().text(data.displayName);
                 //$('#own' + atr).html(data)
-                def.text(moment(new Date(data.date)).format('MMM/DD/YYYY'))
-                def.parent().parent().parent().find('.bill-created').text(moment(new Date(data.bill.createdAt)).format('MMM/DD/YYYY'))
+                def.html('<small>Date Paid: </small>' + moment(new Date(data.date)).format('MMM/DD/YYYY'))
+                def.parent().parent().parent().find('.bill-created').html('<small>Date of Bill Issue</small>: ' + moment(new Date(data.bill.createdAt)).format('MMM/DD/YYYY'))
 
             }).fail(function (err) {
                 console.error(err);
