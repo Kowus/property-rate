@@ -735,7 +735,7 @@ function isUserTicket(req, res, next) {
                 console.error(err);
                 return res.redirect(`/pay?inAm=${req.body.amount}&bill=${req.body.bill}&err=${err.message}`);
             }
-            if (bill.owner.ticket._id == req.body.ticket && (bill.owner._id == req.user._id)) {
+            if (String(bill.owner.ticket._id) == String(req.body.ticket) && (String(bill.owner._id) == String(req.user._id)) || req.user.group == 'admin') {
                 Ticket.findOne({
                     _id: req.body.ticket
                 }).exec((err, ticket) => {
