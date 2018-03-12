@@ -6,24 +6,25 @@
         <h2 class="title1">{{owner.displayName}}</h2>
         <div class="elements">
             {{#if transtat}}
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>
-                    <i class="fa fa-thumbs-o-up"></i>
-                    <small>{{transid}} </small>
-                </strong> Transaction Success
-            </div>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>
+                        <i class="fa fa-thumbs-o-up"></i>
+                        <small>{{transid}} </small>
+                    </strong> Transaction Success
+                </div>
             {{/if}}
             <div class="col-sm-4 wthree-crd widgettable">
                 <div class="card card-contact-list">
                     <div class="agileinfo-cdr">
                         <div class="card-header">
-                            <h3>Properties Owned {{#unless acc_zonee}}
-                                <small class="pull-right btn btn-sm btn-dark" data-toggle="modal" data-target="#addPropertyModal">
-                                    <i class="fa fa-plus"></i> Add
-                                </small>
+                            <h3>Properties Owned
+                                {{#unless acc_zonee}}
+                                    <small class="pull-right btn btn-sm btn-dark" data-toggle="modal" data-target="#addPropertyModal">
+                                        <i class="fa fa-plus"></i> Add
+                                    </small>
                                 {{/unless}}
                             </h3>
                             <br>
@@ -35,20 +36,20 @@
                         <div class="card-body p-b-20">
                             <div class="list-group" id="prop-list" style="height: 280px;overflow: scroll">
                                 {{#each owner.properties as |property|}}
-                                <a class="list-group-item media" href="">
-                                    <div class="media-body">
-                                        <div class="pull-left">
-                                            <div class="lg-item-heading">{{property.prop_num}}</div>
-                                        </div>
-                                        <div class="pull-right">
-                                            <div class="lg-item-heading">
-                                                {{property.use_code.code}}
+                                    <a class="list-group-item media" href="">
+                                        <div class="media-body">
+                                            <div class="pull-left">
+                                                <div class="lg-item-heading">{{property.prop_num}}</div>
                                             </div>
-                                        </div>
-                                        <div class="clearfix"></div>
+                                            <div class="pull-right">
+                                                <div class="lg-item-heading">
+                                                    {{property.use_code.code}}
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
 
-                                    </div>
-                                </a>
+                                        </div>
+                                    </a>
                                 {{/each}}
                             </div>
                         </div>
@@ -70,53 +71,53 @@
                         <div class="card-body p-b-20">
                             <div class="list-group" style="height: 280px;overflow: scroll">
                                 {{#each owner.bill}}
-                                <a class="list-group-item media" href="">
-                                    <div class="pull-left">
-                                        <!--<img class="lg-item-img" src="/images/4.jpg" alt="">-->
-                                    </div>
-                                    <div class="media-body">
+                                    <a class="list-group-item media" href="">
                                         <div class="pull-left">
-                                            <div class="lg-item-heading createdAt" data-createdAt="{{createdAt}}">
-                                                Date
-                                            </div>
-                                            <!--<small class="lg-item-text createdAt"
-                                                       data-createdAt="{{createdAt}}"></small>-->
+                                            <!--<img class="lg-item-img" src="/images/4.jpg" alt="">-->
                                         </div>
-                                        <div class="pull-right">
-                                            <div class="lg-item-heading">
-                                                <!--<i class="fa fa-warning"></i>-->¢ {{math total "-" settled}}</div>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                        {{#if isuser}}
-                                        <div class="text-center">
-                                            {{#if paid}}
-                                            <small class=" btn btn-sm btn-success">Paid</small>
-                                            {{else}}
-                                            <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
-                                            {{/if}}
-                                        </div>
-                                        {{/if}}
-                                        <hr>
-                                        <div style="margin:auto 10px;">
-
-                                            {{#each properties as |prop|}}
-
+                                        <div class="media-body">
                                             <div class="pull-left">
-                                                <small>
-                                                    <strong>{{prop.prop_num}}</strong>
-                                                </small>
+                                                <div class="lg-item-heading createdAt" data-createdAt="{{createdAt}}">
+                                                    Date
+                                                </div>
+                                                <!--<small class="lg-item-text createdAt"
+                                                       data-createdAt="{{createdAt}}"></small>-->
                                             </div>
                                             <div class="pull-right">
-
-                                                <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-impost="{{prop.rate_impost}}" data-rate_val="{{prop.rate_val}}"></small>
+                                                <div class="lg-item-heading">
+                                                    <!--<i class="fa fa-warning"></i>-->¢ {{math total "-" settled}}</div>
                                             </div>
                                             <div class="clearfix"></div>
-                                            <small>type: {{prop.sanitation_code.name}} --{{prop.use_code.name}}
-                                            </small>
-                                            <hr class="small"> {{/each}}
+
+                                            <div class="text-center">
+                                                {{#if paid}}
+                                                    <small class=" btn btn-sm btn-success">Paid</small>
+                                                {{else}}
+                                                    <a class=" btn btn-sm btn-danger" href="/pay?bill={{_id}}">Pay</a>
+                                                {{/if}}
+                                            </div>
+
+                                            <hr>
+                                            <div style="margin:auto 10px;">
+
+                                                {{#each properties as |prop|}}
+
+                                                    <div class="pull-left">
+                                                        <small>
+                                                            <strong>{{prop.prop_num}}</strong>
+                                                        </small>
+                                                    </div>
+                                                    <div class="pull-right">
+
+                                                        <small class="calcs" data-san="{{prop.sanitation_code.rate}}" data-impost="{{prop.rate_impost}}" data-rate_val="{{prop.rate_val}}"></small>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <small>type: {{prop.sanitation_code.name}} --{{prop.use_code.name}}
+                                                    </small>
+                                                    <hr class="small"> {{/each}}
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
+                                    </a>
                                 {{/each}}
                             </div>
                         </div>
@@ -135,29 +136,29 @@
                                 <div class="streamline" style="height: 300px; overflow-y: scroll;">
                                     {{#each owner.transactions as |transaction|}}
 
-                                    <div class="sl-item
+                                        <div class="sl-item
                                         {{#if transaction.approved}}
                                             sl-success
                                         {{else}}
                                             sl-primary
                                         {{/if}}">
-                                        <div class="sl-content">
-                                            <small class="text-muted">¢ {{transaction.amount}}</small>
+                                            <div class="sl-content">
+                                                <small class="text-muted">¢ {{transaction.amount}}</small>
 
 
-                                            {{#if transaction.approved}}
-                                            <p class="text-warning lead">
-                                                APPROVED
-                                                <small CLASS="text-muted">{{transaction._id}}</small>
-                                            </p>
-                                            {{else}}
-                                            <p class="text-danger lead">
-                                                UNSUCCESSFUL
-                                                <small class="text-muted">{{transaction._id}}</small>
-                                            </p>
-                                            {{/if}}
+                                                {{#if transaction.approved}}
+                                                    <p class="text-warning lead">
+                                                        APPROVED
+                                                        <small CLASS="text-muted">{{transaction._id}}</small>
+                                                    </p>
+                                                {{else}}
+                                                    <p class="text-danger lead">
+                                                        UNSUCCESSFUL
+                                                        <small class="text-muted">{{transaction._id}}</small>
+                                                    </p>
+                                                {{/if}}
+                                            </div>
                                         </div>
-                                    </div>
                                     {{/each}}
                                 </div>
                             </div>
@@ -185,23 +186,23 @@
             </div>
             <div class="clearfix"></div>
             {{#unless acc_zonee}}
-            <div class="col w3-agile-crd widgettable">
-                <div class="card">
-                    <div class="card-body card-padding">
-                        <div class="">
-                            <header class="widget-header">
-                                <h4 class="widget-title">Update User Details</h4>
-                            </header>
-                            <hr class="widget-separator">
-                            <div class="widget-body">
-                                {{>edit_user}}
-                            </div>
+                <div class="col w3-agile-crd widgettable">
+                    <div class="card">
+                        <div class="card-body card-padding">
+                            <div class="">
+                                <header class="widget-header">
+                                    <h4 class="widget-title">Update User Details</h4>
+                                </header>
+                                <hr class="widget-separator">
+                                <div class="widget-body">
+                                    {{>edit_user}}
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="clearfix"></div>
+                <div class="clearfix"></div>
             {{/unless}}
             <!--//photoday-section-->
 
