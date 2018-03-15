@@ -34,7 +34,7 @@ hbs.registerHelper("math", function(lvalue, operator, rvalue, options) {
         rvalue = operator;
         operator = "+";
     }
-
+//commit
     lvalue = parseFloat(lvalue);
     rvalue = parseFloat(rvalue);
 
