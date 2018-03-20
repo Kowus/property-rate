@@ -1,60 +1,58 @@
-const mongoose = require('mongoose'),
-    Area = require('./area')
-;
+const mongoose = require("mongoose"),
+    Area = require("./area");
 let propSchema = new mongoose.Schema({
     prop_num: {
-        type:String,
-        unique:true
+        type: String,
+        unique: true
     },
-    area: {type: mongoose.Schema.Types.ObjectId, ref: 'Area'},
+    area: { type: mongoose.Schema.Types.ObjectId, ref: "Area" },
     rate_val: {
         type: Number,
         default: 33
     },
-    rate_impost:{
-        type:Number,
-        default:.5
+    rate_impost: {
+        type: Number,
+        default: 0.5
     },
-    len:Number,
-    createdAt:{
-        type:Date,
-        default:Date.now
+    len: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    wid:Number,
-    rcn:Number,
-    dep:Number,
+    wid: Number,
+    rcn: Number,
+    dep: Number,
     use_code: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Use_code'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Use_code"
     },
     sanitation_code: {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'San'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "San"
     },
     location: {
         x: Number,
         y: Number,
         description: String
     },
-    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
 });
 
-propSchema.pre('save', function (next) {
+propSchema.pre("save", function(next) {
     let prop = this;
-    if (this.isModified('area')||this.isModified('prop_num') || this.isNew) {
-        Area.findOne({_id: prop.area}, {_id: 0, code: 1}, (err, area) => {
+    if (this.isModified("area") || this.isModified("prop_num") || this.isNew) {
+        Area.findOne({ _id: prop.area }, { _id: 0, code: 1 }, (err, area) => {
             if (err) {
                 return next(new Error(err));
             }
             prop.prop_num = area.code + prop.prop_num;
             next();
         });
-
     } else {
         return next();
     }
 });
-module.exports = mongoose.model('Property', propSchema);
+module.exports = mongoose.model("Property", propSchema);
 
 /*
 
